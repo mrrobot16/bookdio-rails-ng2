@@ -1,5 +1,4 @@
 ## Synechron Challenge Book
-
 ### Rails Start using Postgresql
 ```bash
 git clone https://github.com/mrrobot16/synechron-book
