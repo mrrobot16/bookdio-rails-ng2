@@ -5,3 +5,14 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+book = {
+  book_name:"Start With Why",
+  author_name:"Simon Sinek",
+  isbn_code:"978-1-59184-644-4",
+  book_quantity:1,
+  published_date:Date.new,
+  book_category:"Leadership",
+  book_issued:1
+}
+
+Book.create(book)
