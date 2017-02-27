@@ -1,0 +1,9 @@
+/.bundle
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+client/node_modules
+client/npm-debug.log
+.byebug_history
+.DS_Store
