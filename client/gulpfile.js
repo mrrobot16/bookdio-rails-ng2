@@ -13,7 +13,7 @@ gulp.task('client-build', clientBuildTask(false, liveReloadTask.notifyChanged));
 gulp.task('client-stylesheet', stylesheetTask(false));
 
 gulp.task('client-stylesheet-watch', function() {
-  gulp.watch(['client/boot.less', 'client/**/*.less'], ['client-stylesheet']);
+  gulp.watch(['client/boot.less', 'client/**/*.less','client/**/*.css'], ['client-stylesheet', 'client-copy']);
 });
 
 gulp.task('clean', cleanTask());

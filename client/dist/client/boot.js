@@ -100,7 +100,7 @@ webpackJsonp([0],{
 	var BookComponent = exports.BookComponent = (_dec = (0, _core.Component)({
 	  selector: 'books',
 	  template: _bookComponent2.default,
-	  styleUrls: ['css/book.css']
+	  styleUrls: ['./css/book.css']
 	}), _dec(_class = function BookComponent() {
 	  _classCallCheck(this, BookComponent);
 	}) || _class);
@@ -110,7 +110,7 @@ webpackJsonp([0],{
 /***/ 67:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <p class=\"lead underlined\">Our Favorite books</p>\n        <ul>\n\n        </ul>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <p class=\"lead underlined\">Our Favorite books</p>\n\n        <div class=\"books\">\n          <table>\n            <tr>\n              <th>Book Name</th>\n              <th>Author</th>\n              <th>ISBN</th>\n              <th>Book Quantiy</th>\n              <th>Published Date</th>\n              <th>Book Category</th>\n              <th>Books Issued</th>\n              <th>Book Transaction</th>\n              <th>Transaction Date</th>\n              <th>Transaction Type</th>\n            </tr>\n            <tr>\n              <td>Start with Why</td>\n              <td>Maria Anders</td>\n              <td>Germany</td>\n              <td>Alfreds Futterkiste</td>\n              <td>Maria Anders</td>\n              <td>Germany</td>\n              <td>Alfreds Futterkiste</td>\n              <td>Maria Anders</td>\n              <td>Germany</td>\n              <td>Maria Anders</td>\n            </tr>\n          </table>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 
