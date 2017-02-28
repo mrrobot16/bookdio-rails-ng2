@@ -9,7 +9,9 @@ export class BookService {
   }
 
   getBooks(){
-    let all_books = this.http.get('/books', {headers: new Headers({ 'Content-Type' : 'application/json; charset=utf-8'})}).map(res=>console.log(res.json()); return res.json());
+    let all_books = this.http.get('/books', {headers: new Headers({ 'Content-Type' : 'application/json; charset=utf-8'})}).map((res)=>{
+      return res.json()
+    });
     return all_books
   }
 

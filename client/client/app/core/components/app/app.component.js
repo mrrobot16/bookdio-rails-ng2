@@ -1,15 +1,14 @@
-import { Component} from '@angular/core'; 
-
-
-import template from './app.template.html';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'my-app',
-  template: template
+  template: `
+  <div class="container body-container">
+      <router-outlet></router-outlet>
+  </div>
+  `
 })
 export class AppComponent {
-
   constructor() {
-
   }
 }

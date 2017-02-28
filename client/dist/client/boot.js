@@ -9,25 +9,23 @@ webpackJsonp([0],{
 
 	__webpack_require__(1);
 
-	__webpack_require__(5);
+	__webpack_require__(70);
 
-	__webpack_require__(21);
+	var _platformBrowserDynamic = __webpack_require__(5);
 
-	var _platformBrowserDynamic = __webpack_require__(29);
+	var _platformBrowser = __webpack_require__(25);
 
-	var _platformBrowser = __webpack_require__(35);
+	var _core = __webpack_require__(7);
 
-	var _core = __webpack_require__(31);
+	var _http = __webpack_require__(27);
 
-	var _http = __webpack_require__(37);
+	var _router = __webpack_require__(28);
 
-	var _router = __webpack_require__(38);
+	var _forms = __webpack_require__(61);
 
-	var _forms = __webpack_require__(63);
+	var _app = __webpack_require__(63);
 
-	var _app = __webpack_require__(65);
-
-	var _core2 = __webpack_require__(68);
+	var _core2 = __webpack_require__(66);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -47,19 +45,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 21:
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(6);
-	var mergeMap_1 = __webpack_require__(22);
-	Observable_1.Observable.prototype.mergeMap = mergeMap_1.mergeMap;
-	Observable_1.Observable.prototype.flatMap = mergeMap_1.mergeMap;
-	//# sourceMappingURL=mergeMap.js.map
-
-/***/ },
-
-/***/ 65:
+/***/ 63:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69,13 +55,13 @@ webpackJsonp([0],{
 	});
 	exports.routes = undefined;
 
-	var _book = __webpack_require__(66);
+	var _book = __webpack_require__(64);
 
 	var routes = exports.routes = [{ path: '', component: _book.BookComponent, pathMatch: 'full' }, { path: 'books', component: _book.BookComponent }];
 
 /***/ },
 
-/***/ 66:
+/***/ 64:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -85,11 +71,15 @@ webpackJsonp([0],{
 	});
 	exports.BookComponent = undefined;
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _dec, _class;
 
-	var _core = __webpack_require__(31);
+	var _core = __webpack_require__(7);
 
-	var _bookComponent = __webpack_require__(67);
+	var _book = __webpack_require__(74);
+
+	var _bookComponent = __webpack_require__(65);
 
 	var _bookComponent2 = _interopRequireDefault(_bookComponent);
 
@@ -101,20 +91,47 @@ webpackJsonp([0],{
 	  selector: 'books',
 	  template: _bookComponent2.default,
 	  styleUrls: ['./css/book.css']
-	}), _dec(_class = function BookComponent() {
-	  _classCallCheck(this, BookComponent);
-	}) || _class);
+	}), _dec(_class = function () {
+	  function BookComponent(book_service) {
+	    _classCallCheck(this, BookComponent);
+
+	    this.all_books = [];
+
+	    this.book_service = book_service;
+	    this.dispayBooks();
+	  }
+
+	  _createClass(BookComponent, [{
+	    key: 'dispayBooks',
+	    value: function dispayBooks() {
+	      var _this = this;
+
+	      var books = this.book_service.getBooks();
+	      books.subscribe(function (books) {
+	        return _this.all_books = books;
+	      }, this.logError);
+	    }
+	  }, {
+	    key: 'logError',
+	    value: function logError(error) {
+	      console.log("error: ", error);
+	    }
+	  }]);
+
+	  return BookComponent;
+	}()) || _class);
+	Reflect.defineMetadata('design:paramtypes', [_book.BookService], BookComponent);
 
 /***/ },
 
-/***/ 67:
+/***/ 65:
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <p class=\"lead underlined\">Our Favorite books</p>\n\n        <div class=\"books\">\n          <table>\n            <tr>\n              <th>Book Name</th>\n              <th>Author</th>\n              <th>ISBN</th>\n              <th>Book Quantiy</th>\n              <th>Published Date</th>\n              <th>Book Category</th>\n              <th>Books Issued</th>\n              <th>Book Transaction</th>\n              <th>Transaction Date</th>\n              <th>Transaction Type</th>\n            </tr>\n            <tr>\n              <td>Start with Why</td>\n              <td>Maria Anders</td>\n              <td>Germany</td>\n              <td>Alfreds Futterkiste</td>\n              <td>Maria Anders</td>\n              <td>Germany</td>\n              <td>Alfreds Futterkiste</td>\n              <td>Maria Anders</td>\n              <td>Germany</td>\n              <td>Maria Anders</td>\n            </tr>\n          </table>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 
-/***/ 68:
+/***/ 66:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -122,19 +139,22 @@ webpackJsonp([0],{
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = exports.AppComponent = undefined;
+	exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = exports.BookService = exports.AppComponent = undefined;
 
-	var _book = __webpack_require__(66);
+	var _book = __webpack_require__(64);
 
-	var _app = __webpack_require__(69);
+	var _app = __webpack_require__(67);
+
+	var _book2 = __webpack_require__(74);
 
 	exports.AppComponent = _app.AppComponent;
-	var CORE_PROVIDERS = exports.CORE_PROVIDERS = [];
+	exports.BookService = _book2.BookService;
+	var CORE_PROVIDERS = exports.CORE_PROVIDERS = [_book2.BookService];
 	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_book.BookComponent, _app.AppComponent];
 
 /***/ },
 
-/***/ 69:
+/***/ 67:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -146,29 +166,61 @@ webpackJsonp([0],{
 
 	var _dec, _class;
 
-	var _core = __webpack_require__(31);
-
-	var _appTemplate = __webpack_require__(70);
-
-	var _appTemplate2 = _interopRequireDefault(_appTemplate);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _core = __webpack_require__(7);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var AppComponent = exports.AppComponent = (_dec = (0, _core.Component)({
 	  selector: 'my-app',
-	  template: _appTemplate2.default
+	  template: '\n  <div class="container body-container">\n      <router-outlet></router-outlet>\n  </div>\n  '
 	}), _dec(_class = function AppComponent() {
 	  _classCallCheck(this, AppComponent);
 	}) || _class);
 
 /***/ },
 
-/***/ 70:
-/***/ function(module, exports) {
+/***/ 74:
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "\n<div class=\"container body-container\">\n    <router-outlet></router-outlet>\n</div>\n"
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.BookService = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _dec, _class;
+
+	var _core = __webpack_require__(7);
+
+	var _http = __webpack_require__(27);
+
+	__webpack_require__(70);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var BookService = exports.BookService = (_dec = (0, _core.Injectable)(), _dec(_class = function () {
+	  function BookService(http) {
+	    _classCallCheck(this, BookService);
+
+	    this.http = http;
+	  }
+
+	  _createClass(BookService, [{
+	    key: 'getBooks',
+	    value: function getBooks() {
+	      var all_books = this.http.get('/books', { headers: new Headers({ 'Content-Type': 'application/json; charset=utf-8' }) }).map(function (res) {
+	        return res.json();
+	      });
+	      return all_books;
+	    }
+	  }]);
+
+	  return BookService;
+	}()) || _class);
+	Reflect.defineMetadata('design:paramtypes', [_http.Http], BookService);
 
 /***/ }
 
