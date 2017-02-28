@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit(bookForm.value)" [formGroup]="bookForm">
+<form (ngSubmit)="onSubmit(bookForm.value, $event)" [formGroup]="bookForm">
     <div class="form-group">
         <label>Book Name</label>
         <input type="text" formControlName="book_name" class="form-control">

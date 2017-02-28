@@ -184,16 +184,35 @@ webpackJsonp([0],{
 	  function BookService(http) {
 	    _classCallCheck(this, BookService);
 
+	    this.books_endpoint = '/books';
+
 	    this.http = http;
+	    this.headers = new Headers({ 'Content-Type': 'application/json' });
 	  }
 
 	  _createClass(BookService, [{
 	    key: 'getBooks',
 	    value: function getBooks() {
-	      var all_books = this.http.get('/books', { headers: new Headers({ 'Content-Type': 'application/json; charset=utf-8' }) }).map(function (res) {
+	      var all_books = this.http.get(this.books_endpoint, { headers: new Headers({ 'Content-Type': 'application/json; charset=utf-8' }) }).map(function (res) {
 	        return res.json();
 	      });
 	      return all_books;
+	    }
+	  }, {
+	    key: 'postBook',
+	    value: function postBook(book) {
+	      var book_params = {
+	        book: book
+	      };
+	      var body = this.stringify(book_params);
+	      return this.http.post(this.books_endpoint, body, { headers: this.headers }).map(function (res) {
+	        return res.json();
+	      });
+	    }
+	  }, {
+	    key: 'stringify',
+	    value: function stringify(object) {
+	      return JSON.stringify(object);
 	    }
 	  }]);
 
@@ -309,8 +328,14 @@ webpackJsonp([0],{
 
 	  _createClass(BookFormComponent, [{
 	    key: 'onSubmit',
-	    value: function onSubmit(bookForm) {
-	      console.log(bookForm);
+	    value: function onSubmit(bookForm, event) {
+	      event.preventDefault();
+	      // bookForm.published_date = new Date(bookForm.published_date)
+	      return this.book_service.postBook(bookForm).subscribe(function (res) {
+	        console.log("res: ", res);
+	      }, function (err) {
+	        console.log("err: ", err);
+	      });
 	    }
 	  }]);
 
@@ -323,7 +348,7 @@ webpackJsonp([0],{
 /***/ 74:
 /***/ function(module, exports) {
 
-	module.exports = "<form (ngSubmit)=\"onSubmit(bookForm.value)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code</label>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
+	module.exports = "<form (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code</label>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
 
 /***/ }
 

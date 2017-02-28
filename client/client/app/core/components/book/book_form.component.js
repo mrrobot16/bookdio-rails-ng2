@@ -21,8 +21,17 @@ export class BookFormComponent {
     });
   }
 
-  onSubmit(bookForm){
-    console.log(bookForm);
+  onSubmit(bookForm, event){
+    event.preventDefault();
+    // bookForm.published_date = new Date(bookForm.published_date)
+    return this.book_service.postBook(bookForm).subscribe(
+            res => {
+              console.log("res: ", res)
+            },
+            err => {
+                console.log("err: ", err)
+              }
+        )
   }
 
 
