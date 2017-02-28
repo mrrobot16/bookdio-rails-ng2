@@ -37,6 +37,7 @@ export class BookComponent {
   }
 }
 
+
 @Pipe({name: 'returnMonthYear'})
 export class ReturnMonthYearPipe implements PipeTransform {
   transform(date) {
