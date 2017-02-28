@@ -31,14 +31,8 @@
           </table>
         </div>
 
-        <div class="button-group">
-          <button class="btn-primary" type="button" name="button" (click)="test()">Add</button>
-          <button class="btn-success" type="button" name="button" (click)="test()">Edit</button>
-          <button class="btn-danger" type="button" name="button" (click)="test()">Delete</button>
-        </div>
-
         <div class="book-form">
-          <book-form></book-form>
+          <book-form [book_id]="book_id"></book-form>
         </div>
     </div>
 </div>
