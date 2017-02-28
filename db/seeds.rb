@@ -10,7 +10,7 @@ book = {
   author_name:"Simon Sinek",
   isbn_code:"978-1-59184-644-4",
   book_quantity:1,
-  published_date:Date.new(2009),
+  published_date:Date.new(2009,10),
   book_category:"Leadership",
   book_issued:1
 }

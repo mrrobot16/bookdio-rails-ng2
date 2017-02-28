@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Pipe, PipeTransform } from '@angular/core';
+
 import { BookService } from '../../services/book.service';
 
 import template from './book.component.html';
@@ -27,8 +28,19 @@ export class BookComponent {
     console.log(this.books);
   }
 
+  selectBook(event){
+    console.log("event: ", event);
+  }
 
   logError(error){
     console.log("error: ", error);
+  }
+}
+
+@Pipe({name: 'returnMonthYear'})
+export class ReturnMonthYearPipe implements PipeTransform {
+  transform(date) {
+    "Oct 1, 2009"
+    return date.slice(0,4)+date.substr(date.length-4)
   }
 }
