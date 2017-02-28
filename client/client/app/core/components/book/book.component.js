@@ -9,8 +9,7 @@ import template from './book.component.html';
   styleUrls: ['./css/book.css']
 })
 export class BookComponent {
-  all_books = [];
-
+  books = [];
   constructor(book_service: BookService){
     this.book_service = book_service;
     this.dispayBooks()
@@ -18,8 +17,16 @@ export class BookComponent {
 
   dispayBooks(){
     let books = this.book_service.getBooks()
-    books.subscribe((books)=>this.all_books = books, this.logError)
+    books.subscribe((books)=>{
+      this.setBooks(books);
+    }, this.logError)
   }
+
+  setBooks(books){
+    this.books = books
+    console.log(this.books);
+  }
+
 
   logError(error){
     console.log("error: ", error);

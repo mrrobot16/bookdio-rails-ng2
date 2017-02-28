@@ -95,7 +95,7 @@ webpackJsonp([0],{
 	  function BookComponent(book_service) {
 	    _classCallCheck(this, BookComponent);
 
-	    this.all_books = [];
+	    this.books = [];
 
 	    this.book_service = book_service;
 	    this.dispayBooks();
@@ -108,8 +108,14 @@ webpackJsonp([0],{
 
 	      var books = this.book_service.getBooks();
 	      books.subscribe(function (books) {
-	        return _this.all_books = books;
+	        _this.setBooks(books);
 	      }, this.logError);
+	    }
+	  }, {
+	    key: 'setBooks',
+	    value: function setBooks(books) {
+	      this.books = books;
+	      console.log(this.books);
 	    }
 	  }, {
 	    key: 'logError',
@@ -127,7 +133,7 @@ webpackJsonp([0],{
 /***/ 65:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <p class=\"lead underlined\">Our Favorite books</p>\n\n        <div class=\"books\">\n          <table>\n            <tr>\n              <th>Book Name</th>\n              <th>Author</th>\n              <th>ISBN</th>\n              <th>Book Quantiy</th>\n              <th>Published Date</th>\n              <th>Book Category</th>\n              <th>Books Issued</th>\n              <th>Book Transaction</th>\n              <th>Transaction Date</th>\n              <th>Transaction Type</th>\n            </tr>\n            <tr>\n              <td>Start with Why</td>\n              <td>Maria Anders</td>\n              <td>Germany</td>\n              <td>Alfreds Futterkiste</td>\n              <td>Maria Anders</td>\n              <td>Germany</td>\n              <td>Alfreds Futterkiste</td>\n              <td>Maria Anders</td>\n              <td>Germany</td>\n              <td>Maria Anders</td>\n            </tr>\n          </table>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table>\n            <tr>\n              <th>Book Name</th>\n              <th>Author</th>\n              <th>ISBN</th>\n              <th>Book Quantiy</th>\n              <th>Published Date</th>\n              <th>Book Category</th>\n              <th>Books Issued</th>\n              <th>Book Transaction</th>\n              <th>Transaction Date</th>\n              <th>Transaction Type</th>\n            </tr>\n            <tr *ngFor=\"let book of books\">\n              <td>{{book.book_name}}</td>\n              <td>{{book.author_name}}</td>\n              <td>{{book.isbn_code}}</td>\n              <td>{{book.book_quantity}}</td>\n              <td>{{book.published_date}}</td>\n              <td>{{book.book_category}}</td>\n              <td>{{book.book_issued}}</td>\n              <td>{{book.book_transaction}}</td>\n              <td>{{book.transaction_date}}</td>\n              <td>{{book.transaction_type}}</td>\n            </tr>\n          </table>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 
