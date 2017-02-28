@@ -1,7 +1,7 @@
 <form (ngSubmit)="onSubmit(bookForm.value, $event)" [formGroup]="bookForm">
     <div class="form-group">
         <label>Book Name</label>
-        <input type="text" formControlName="book_name" class="form-control">
+        <input type="text" [class.disabled]='isOn' formControlName="book_name" class="form-control">
     </div>
 
     <div class="form-group">

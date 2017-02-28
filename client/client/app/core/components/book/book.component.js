@@ -25,11 +25,11 @@ export class BookComponent {
 
   setBooks(books){
     this.books = books
-    console.log(this.books);
+    // console.log(this.books);
   }
 
   selectBook(event){
-    console.log("event id: ", typeof event.target.parentNode.id);
+    // console.log("event id: ", typeof event.target.parentNode.id);
   }
 
   logError(error){

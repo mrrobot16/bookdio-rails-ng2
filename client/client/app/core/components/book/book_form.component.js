@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Directive, Input } from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import { BookService } from '../../services/book.service';
 import template from './book_form.partial.html';
@@ -9,6 +9,7 @@ import template from './book_form.partial.html';
 })
 export class BookFormComponent {
   constructor(book_service: BookService, builder: FormBuilder){
+    this.isOn = true;
     this.book_service = book_service;
     this.builder = builder;
     this.bookForm = this.builder.group({
@@ -34,5 +35,23 @@ export class BookFormComponent {
         )
   }
 
+  test(){
+    return true
+  }
+}
 
+@Directive({
+  selector: '[disableFC][disableCond]'
+})
+export class DisableFCDirective {
+  @Input() disableFC: FormControl;
+  constructor() { }
+  get disableCond(): boolean { // getter, not needed, but here only to completude
+    return !!this.disableFC && this.disableFC.disabled;
+  }
+  @Input('disableCond') set disableCond(s: boolean) {
+    if (!this.disableFC) return;
+    else if (s) this.disableFC.disable();
+    else this.disableFC.enable();
+  }
 }
