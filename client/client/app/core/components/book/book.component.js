@@ -35,6 +35,10 @@ export class BookComponent {
   logError(error){
     console.log("error: ", error);
   }
+
+  test(){
+    
+  }
 }
 
 
