@@ -1,5 +1,5 @@
 import { Component, Pipe, PipeTransform } from '@angular/core';
-
+import {BookFormComponent} from './book_form.component'
 import { BookService } from '../../services/book.service';
 
 import template from './book.component.html';
@@ -37,7 +37,7 @@ export class BookComponent {
   }
 
   test(){
-    
+
   }
 }
 

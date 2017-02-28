@@ -79,6 +79,8 @@ webpackJsonp([0],{
 
 	var _core = __webpack_require__(23);
 
+	var _book_form = __webpack_require__(73);
+
 	var _book = __webpack_require__(66);
 
 	var _bookComponent = __webpack_require__(67);
@@ -204,7 +206,7 @@ webpackJsonp([0],{
 /***/ 67:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table>\n            <tr>\n              <th>Book Name</th>\n              <th>Author</th>\n              <th>ISBN</th>\n              <th>Book Quantiy</th>\n              <th>Published Date</th>\n              <th>Book Category</th>\n              <th>Books Issued</th>\n              <!-- <th>Book Transaction</th>\n              <th>Transaction Date</th>\n              <th>Transaction Type</th> -->\n            </tr>\n            <tr id=\"{{book.id}}\" *ngFor=\"let book of books\" (click)=\"selectBook($event)\">\n              <td>{{book.book_name }}</td>\n              <td>{{book.author_name}}</td>\n              <td>{{book.isbn_code}}</td>\n              <td>{{book.book_quantity}}</td>\n              <td>{{book.published_date | date | returnMonthYear }}</td>\n              <td>{{book.book_category}}</td>\n              <td>{{book.book_issued}}</td>\n              <!-- <td>{{book.book_transaction}}</td>\n              <td>{{book.transaction_date}}</td>\n              <td>{{book.transaction_type}}</td> -->\n            </tr>\n          </table>\n        </div>\n\n        <div class=\"button-group\">\n          <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"test()\">Add</button>\n          <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"test()\">Edit</button>\n          <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"test()\">Delete</button>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table>\n            <tr>\n              <th>Book Name</th>\n              <th>Author</th>\n              <th>ISBN</th>\n              <th>Book Quantiy</th>\n              <th>Published Date</th>\n              <th>Book Category</th>\n              <th>Books Issued</th>\n              <!-- <th>Book Transaction</th>\n              <th>Transaction Date</th>\n              <th>Transaction Type</th> -->\n            </tr>\n            <tr id=\"{{book.id}}\" *ngFor=\"let book of books\" (click)=\"selectBook($event)\">\n              <td>{{book.book_name }}</td>\n              <td>{{book.author_name}}</td>\n              <td>{{book.isbn_code}}</td>\n              <td>{{book.book_quantity}}</td>\n              <td>{{book.published_date | date | returnMonthYear }}</td>\n              <td>{{book.book_category}}</td>\n              <td>{{book.book_issued}}</td>\n              <!-- <td>{{book.book_transaction}}</td>\n              <td>{{book.transaction_date}}</td>\n              <td>{{book.transaction_type}}</td> -->\n            </tr>\n          </table>\n        </div>\n\n        <div class=\"button-group\">\n          <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"test()\">Add</button>\n          <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"test()\">Edit</button>\n          <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"test()\">Delete</button>\n        </div>\n\n        <div class=\"book-form\">\n          <book-form></book-form>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 
@@ -220,6 +222,8 @@ webpackJsonp([0],{
 
 	var _book = __webpack_require__(65);
 
+	var _book_form = __webpack_require__(73);
+
 	var _app = __webpack_require__(69);
 
 	var _book2 = __webpack_require__(66);
@@ -227,7 +231,7 @@ webpackJsonp([0],{
 	exports.AppComponent = _app.AppComponent;
 	exports.BookService = _book2.BookService;
 	var CORE_PROVIDERS = exports.CORE_PROVIDERS = [_book2.BookService];
-	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_book.BookComponent, _book.ReturnMonthYearPipe, _app.AppComponent];
+	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_book.BookComponent, _book.ReturnMonthYearPipe, _book_form.BookFormComponent, _app.AppComponent];
 
 /***/ },
 
@@ -253,6 +257,73 @@ webpackJsonp([0],{
 	}), _dec(_class = function AppComponent() {
 	  _classCallCheck(this, AppComponent);
 	}) || _class);
+
+/***/ },
+
+/***/ 73:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.BookFormComponent = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _dec, _class;
+
+	var _core = __webpack_require__(23);
+
+	var _forms = __webpack_require__(62);
+
+	var _book = __webpack_require__(66);
+
+	var _book_formPartial = __webpack_require__(74);
+
+	var _book_formPartial2 = _interopRequireDefault(_book_formPartial);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var BookFormComponent = exports.BookFormComponent = (_dec = (0, _core.Component)({
+	  selector: 'book-form',
+	  template: _book_formPartial2.default
+	}), _dec(_class = function () {
+	  function BookFormComponent(book_service, builder) {
+	    _classCallCheck(this, BookFormComponent);
+
+	    this.book_service = book_service;
+	    this.builder = builder;
+	    this.bookForm = this.builder.group({
+	      book_name: [''],
+	      author_name: [''],
+	      isbn_code: [''],
+	      book_quantity: [''],
+	      published_date: [''],
+	      book_category: ['Leadership']
+	    });
+	  }
+
+	  _createClass(BookFormComponent, [{
+	    key: 'onSubmit',
+	    value: function onSubmit(bookForm) {
+	      console.log(bookForm);
+	    }
+	  }]);
+
+	  return BookFormComponent;
+	}()) || _class);
+	Reflect.defineMetadata('design:paramtypes', [_book.BookService, _forms.FormBuilder], BookFormComponent);
+
+/***/ },
+
+/***/ 74:
+/***/ function(module, exports) {
+
+	module.exports = "<form (ngSubmit)=\"onSubmit(bookForm.value)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code</label>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
 
 /***/ }
 

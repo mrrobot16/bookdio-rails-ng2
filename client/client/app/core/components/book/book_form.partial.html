@@ -1,0 +1,31 @@
+<form (ngSubmit)="onSubmit(bookForm.value)" [formGroup]="bookForm">
+    <div class="form-group">
+        <label>Book Name</label>
+        <input type="text" formControlName="book_name" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label>Author</label>
+        <input type="text" formControlName="author_name" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>ISBN Code</label>
+        <input type="text" formControlName="isbn_code" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Book Quantity</label>
+        <input type="number" formControlName="book_quantity" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label>Published Date</label>
+        <input type="month" formControlName="published_date" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label>Book Category</label>
+        <input type="text" formControlName="book_category" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Book</button>
+</form>
