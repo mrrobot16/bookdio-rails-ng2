@@ -13,6 +13,8 @@ export class BookFormComponent {
   @Input() book_id;
   constructor(book_service: BookService, builder: FormBuilder){
     this.now = new Date()
+    this.property_names = [];
+    this.current_property_names = [];
     this.editMode = true;
     this.book_service = book_service;
     this.builder = builder;
@@ -27,25 +29,34 @@ export class BookFormComponent {
     // this.editBook()
   }
 
-  toggleDisabled(status) {
-    this.status = status;
-    let property_names = [];
-    let book_attributes = this.bookForm.root.value;
-
-    for (var book_property in book_attributes){
-      property_names.push(book_property);
+  property_names_array(){
+    if(this.current_property_names.length > 0){
+      return this.current_property_names;
     }
+    else {
+      for (var book_property in this.bookForm.root.value){
+        this.property_names.push(book_property);
+      }
+      return this.property_names;
+    }
+  }
 
+  toggleDisabled(status) {
+    var property_names =
+    this.status = status;
     if(this.status=="off"){
-     property_names = property_names.filter(function(book){
+     this.current_property_names = this.property_names_array().filter(function(book){
         return book != "book_quantity";
       })
-     property_names.forEach((inputs)=>{
+     this.current_property_names.forEach((inputs)=>{
         this.bookForm.root.get(inputs).disable();
      })
     }
-    else {
-      property_names.forEach((inputs)=>{
+    if(this.status=="on") {
+      this.current_property_names = this.property_names_array().filter(function(book){
+         return book;
+       })
+      this.current_property_names.forEach((inputs)=>{
          this.bookForm.root.get(inputs).enable();
       })
     }
@@ -60,7 +71,8 @@ export class BookFormComponent {
   }
 
   showForm(){
-    this.toggleDisabled('')
+    this.book_id = 0
+    this.toggleDisabled("on")
   }
 
   postBook(book){

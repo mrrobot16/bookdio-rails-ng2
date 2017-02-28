@@ -232,6 +232,8 @@ webpackJsonp([0],{
 	    _initDefineProp(this, 'book_id', _descriptor, this);
 
 	    this.now = new Date();
+	    this.property_names = [];
+	    this.current_property_names = [];
 	    this.editMode = true;
 	    this.book_service = book_service;
 	    this.builder = builder;
@@ -247,27 +249,36 @@ webpackJsonp([0],{
 	  }
 
 	  _createClass(BookFormComponent, [{
+	    key: 'property_names_array',
+	    value: function property_names_array() {
+	      if (this.current_property_names.length > 0) {
+	        return this.current_property_names;
+	      } else {
+	        for (var book_property in this.bookForm.root.value) {
+	          this.property_names.push(book_property);
+	        }
+	        return this.property_names;
+	      }
+	    }
+	  }, {
 	    key: 'toggleDisabled',
 	    value: function toggleDisabled(status) {
 	      var _this = this;
 
-	      this.status = status;
-	      var property_names = [];
-	      var book_attributes = this.bookForm.root.value;
-
-	      for (var book_property in book_attributes) {
-	        property_names.push(book_property);
-	      }
-
+	      var property_names = this.status = status;
 	      if (this.status == "off") {
-	        property_names = property_names.filter(function (book) {
+	        this.current_property_names = this.property_names_array().filter(function (book) {
 	          return book != "book_quantity";
 	        });
-	        property_names.forEach(function (inputs) {
+	        this.current_property_names.forEach(function (inputs) {
 	          _this.bookForm.root.get(inputs).disable();
 	        });
-	      } else {
-	        property_names.forEach(function (inputs) {
+	      }
+	      if (this.status == "on") {
+	        this.current_property_names = this.property_names_array().filter(function (book) {
+	          return book;
+	        });
+	        this.current_property_names.forEach(function (inputs) {
 	          _this.bookForm.root.get(inputs).enable();
 	        });
 	      }
@@ -284,7 +295,8 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'showForm',
 	    value: function showForm() {
-	      this.toggleDisabled('');
+	      this.book_id = 0;
+	      this.toggleDisabled("on");
 	    }
 	  }, {
 	    key: 'postBook',
