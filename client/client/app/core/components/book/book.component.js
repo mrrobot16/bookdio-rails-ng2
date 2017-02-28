@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import {BookService} from '../../services/book.service'
 import template from './book.component.html';
 
 @Component({
