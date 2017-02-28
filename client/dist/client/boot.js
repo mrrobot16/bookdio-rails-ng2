@@ -71,6 +71,8 @@ webpackJsonp([0],{
 	});
 	exports.ReturnMonthYearPipe = exports.BookComponent = undefined;
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _dec, _class, _dec2, _class3;
@@ -120,7 +122,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'selectBook',
 	    value: function selectBook(event) {
-	      console.log("event: ", event);
+	      console.log("event id: ", _typeof(event.target.parentNode.id));
 	    }
 	  }, {
 	    key: 'logError',
@@ -199,7 +201,7 @@ webpackJsonp([0],{
 /***/ 67:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table>\n            <tr>\n              <th>Book Name</th>\n              <th>Author</th>\n              <th>ISBN</th>\n              <th>Book Quantiy</th>\n              <th>Published Date</th>\n              <th>Book Category</th>\n              <th>Books Issued</th>\n              <th>Book Transaction</th>\n              <th>Transaction Date</th>\n              <th>Transaction Type</th>\n            </tr>\n            <tr id=\"{{book.id}}\" *ngFor=\"let book of books\" (click)=\"selectBook($event)\">\n              <td>{{book.book_name }}</td>\n              <td>{{book.author_name}}</td>\n              <td>{{book.isbn_code}}</td>\n              <td>{{book.book_quantity}}</td>\n              <td>{{book.published_date | date | returnMonthYear }}</td>\n              <td>{{book.book_category}}</td>\n              <td>{{book.book_issued}}</td>\n              <td>{{book.book_transaction}}</td>\n              <td>{{book.transaction_date}}</td>\n              <td>{{book.transaction_type}}</td>\n            </tr>\n          </table>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table>\n            <tr>\n              <th>Book Name</th>\n              <th>Author</th>\n              <th>ISBN</th>\n              <th>Book Quantiy</th>\n              <th>Published Date</th>\n              <th>Book Category</th>\n              <th>Books Issued</th>\n              <!-- <th>Book Transaction</th>\n              <th>Transaction Date</th>\n              <th>Transaction Type</th> -->\n            </tr>\n            <tr id=\"{{book.id}}\" *ngFor=\"let book of books\" (click)=\"selectBook($event)\">\n              <td>{{book.book_name }}</td>\n              <td>{{book.author_name}}</td>\n              <td>{{book.isbn_code}}</td>\n              <td>{{book.book_quantity}}</td>\n              <td>{{book.published_date | date | returnMonthYear }}</td>\n              <td>{{book.book_category}}</td>\n              <td>{{book.book_issued}}</td>\n              <!-- <td>{{book.book_transaction}}</td>\n              <td>{{book.transaction_date}}</td>\n              <td>{{book.transaction_type}}</td> -->\n            </tr>\n          </table>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 

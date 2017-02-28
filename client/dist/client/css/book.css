@@ -11,6 +11,11 @@ td, th {
   padding: 8px;
   text-align: left;
   white-space: nowrap;
+  /*pointer-events: none;*/
+}
+
+td {
+  /*pointer-events: none;*/
 }
 
 tr:nth-child(even) {

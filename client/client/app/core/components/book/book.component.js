@@ -29,7 +29,7 @@ export class BookComponent {
   }
 
   selectBook(event){
-    console.log("event: ", event);
+    console.log("event id: ", typeof event.target.parentNode.id);
   }
 
   logError(error){
