@@ -1,7 +1,6 @@
-import { Component, Pipe, PipeTransform, OnInit } from '@angular/core';
+import { Component,  OnInit } from '@angular/core';
 import {BookFormComponent} from './book_form.component'
 import { BookService } from '../../services/book.service';
-
 import template from './book.component.html';
 
 @Component({
@@ -40,14 +39,5 @@ export class BookComponent implements OnInit {
 
   logError(error){
     console.log("error: ", error);
-  }
-}
-
-
-@Pipe({name: 'returnMonthYear'})
-export class ReturnMonthYearPipe implements PipeTransform {
-  transform(date) {
-    "Oct 1, 2009"
-    return date.slice(0,4)+date.substr(date.length-4)
   }
 }
