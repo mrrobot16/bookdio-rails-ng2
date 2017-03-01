@@ -124,9 +124,8 @@ export class BookFormComponent implements OnInit {
   onSubmit(bookForm, event){
     event.preventDefault();
     if(this.editMode && this.book_id){
-      bookForm.id = this.book_id
       console.log(bookForm);
-      // this.book_service.updateBook(bookForm)
+      this.book_service.updateBook(this.book_id, bookForm.book_quantity)
     }
     else {
       console.log("onSubmit else");

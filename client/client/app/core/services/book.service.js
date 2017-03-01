@@ -18,7 +18,7 @@ export class BookService {
   }
 
   postBook(book){
-    var book_params = {
+    let book_params = {
       book: {
         book_name: book.book_name,
         author_name:book.author_name,
@@ -28,9 +28,42 @@ export class BookService {
         published_date:new Date(book.published_date)
       }
     }
-    var request = new Request(this.books_endpoint, {method:"POST", mode:"cors", headers: new Headers({"Content-Type":"application/json"}), body:JSON.stringify(book_params)});
+    let request = new Request(this.books_endpoint, {method:"POST", mode:"cors", headers: new Headers({"Content-Type":"application/json"}), body:JSON.stringify(book_params)});
     return fetch(request).then((res)=>{return res.json()}).then((res)=> { console.log("res :", res)}, (error)=>{console.log("Error occurred: ", error)});
-
   }
+
+  updateBook(id, quantity){
+    let book_params = {
+      book: {
+        id:id,
+        book_quantity: quantity
+      }
+    }
+    let request = new Request(this.books_endpoint+"/"+book_params.book.id, {
+      method:"PUT",
+      mode:"cors",
+      redirect:"follow",
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      body:JSON.stringify(book_params)
+    })
+    fetch(request).then((res)=>{ console.log("res: "); }, (error)=>{console.log("error message: ", error)});
+  }
+
+
+  putTodo(){
+
+  let request = new Request(todos_endpoint+"/"+this.state.id, {
+    method:"PUT",
+    mode:"cors",
+    redirect:"follow",
+    headers: new Headers({
+      'Content-Type': 'application/json'
+    }),
+    body:JSON.stringify(todo)
+  });
+  fetch(request).then((res)=>{ this.props.getTodos(todos_endpoint) }, (error)=>{console.log("error message: ", error)});
+}
 
 }

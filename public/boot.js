@@ -406,9 +406,8 @@ webpackJsonp([0],[
 	    value: function onSubmit(bookForm, event) {
 	      event.preventDefault();
 	      if (this.editMode && this.book_id) {
-	        bookForm.id = this.book_id;
 	        console.log(bookForm);
-	        // this.book_service.updateBook(bookForm)
+	        this.book_service.updateBook(this.book_id, bookForm.book_quantity);
 	      } else {
 	        console.log("onSubmit else");
 	        return this.postBook(bookForm);
@@ -537,6 +536,50 @@ webpackJsonp([0],[
 	        console.log("res :", res);
 	      }, function (error) {
 	        console.log("Error occurred: ", error);
+	      });
+	    }
+	  }, {
+	    key: 'updateBook',
+	    value: function updateBook(id, quantity) {
+	      var book_params = {
+	        book: {
+	          id: id,
+	          book_quantity: quantity
+	        }
+	      };
+	      var request = new Request(this.books_endpoint + "/" + book_params.book.id, {
+	        method: "PUT",
+	        mode: "cors",
+	        redirect: "follow",
+	        headers: new Headers({
+	          'Content-Type': 'application/json'
+	        }),
+	        body: JSON.stringify(book_params)
+	      });
+	      fetch(request).then(function (res) {
+	        console.log("res: ");
+	      }, function (error) {
+	        console.log("error message: ", error);
+	      });
+	    }
+	  }, {
+	    key: 'putTodo',
+	    value: function putTodo() {
+	      var _this = this;
+
+	      var request = new Request(todos_endpoint + "/" + this.state.id, {
+	        method: "PUT",
+	        mode: "cors",
+	        redirect: "follow",
+	        headers: new Headers({
+	          'Content-Type': 'application/json'
+	        }),
+	        body: JSON.stringify(todo)
+	      });
+	      fetch(request).then(function (res) {
+	        _this.props.getTodos(todos_endpoint);
+	      }, function (error) {
+	        console.log("error message: ", error);
 	      });
 	    }
 	  }]);
