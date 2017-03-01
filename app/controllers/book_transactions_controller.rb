@@ -11,8 +11,12 @@ class BookTransactionsController < ApplicationController
 
   def update
     @book_transaction = BookTransaction.find(params[:id])
-    @book_transaction.update(transaction_type: 'returned', transaction_status:false)
-    @book_transaction.update_book_quantity
+    if(@book_transaction.transaction_status == false)
+      render json: {'error:': "Cant edit a transaction with the status of false"}
+    else
+      @book_transaction.update(transaction_type: 'returned', transaction_status:false)
+      @book_transaction.update_book_quantity
+    end
   end
 
   private

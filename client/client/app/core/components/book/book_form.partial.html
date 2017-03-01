@@ -4,7 +4,7 @@
   <button class="btn-success" type="button" name="button" (click)="viewTransaction()">View Transactions</button>
   <button class="btn-success" type="button" name="button" (click)="issueBook()">Issue/Rent Book</button>
   <button class="btn-danger" type="button" name="button" (click)="deleteBook()">Delete</button>
-  <button class="btn-danger" type="button" name="button" (click)="printBookID()">Print BookID</button>
+  <!-- <button class="btn-danger" type="button" name="button" (click)="printBookID()">Print BookID</button> -->
 </div>
 
 <form [ngClass]="toggleShow" (ngSubmit)="onSubmit(bookForm.value, $event)" [formGroup]="bookForm">

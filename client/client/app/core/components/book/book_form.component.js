@@ -81,17 +81,13 @@ export class BookFormComponent implements OnInit {
 
   showForm(){
     let book_id = this.book_id
-    // console.log("this.book_id: ", this.book_id);
-    // console.log("this.editMode: ", this.editMode);
     if(this.editMode){
-      // console.log('showForm 1st IF: this:editMode: ', this.editMode);
       this.editMode = false;
     }
     else {
       console.log(" else in if(this.editMode:) ");
     }
     if(this.toggleShow == 'hideForm'){
-      // console.log("2nd IF inShowForm() if this.toggleShow == 'hideForm'");
       this.toggleShow = 'showForm'
       this.toggleDisabled("on")
     }
@@ -102,17 +98,12 @@ export class BookFormComponent implements OnInit {
 
   editBook(book){
     if(this.book_id){
-      // console.log(' first IF(this.book_id) editBook(): this.book_id:', this.book_id);
-      // console.log("editBook() before this.editMode = !this.editMode ", this.editMode);
       this.editMode = true;
-      // console.log("this.book_id: ", this.book_id);
-      // console.log("editBook() after this.editMode = !this.editMode ", this.editMode);
       if(this.toggleShow == 'hideForm'){
         this.toggleShow = 'showForm'
         this.toggleDisabled("off")
       }
       else {
-        // console.log("else of if(this.toggleShow == 'hideForm'");
         this.toggleDisabled("off")
       }
     }
@@ -126,17 +117,9 @@ export class BookFormComponent implements OnInit {
   onSubmit(bookForm, event){
     event.preventDefault();
     if(this.editMode && this.book_id){
-
       bookForm.id = this.book_id
-      // console.log("if(this.editMode && this.book_id) inside OnSUbmit editBook mode this.book_id: ", this.book_id);
-      // console.log("bookForm");
-      // console.log(bookForm);
-      // this.book_service.updateBook(bookForm)
     }
     else {
-      // console.log("onSubmit else");
-      // console.log("bookFrom before this.PostBook");
-      // console.log(bookForm);
       this.postBook(bookForm)
     }
   }
@@ -144,44 +127,41 @@ export class BookFormComponent implements OnInit {
   postBook(book){
     this.book_service.postBook(book).subscribe(
     res => {console.log("ress: ", res)},
-    err => { console.log("errr: ", err)});
+    err => { console.log("error in bookFormComponent. thisPostBook: ", err)});
   }
 
   editBook(book){
     if(this.book_id){
-      // console.log(' first IF(this.book_id) editBook(): this.book_id:', this.book_id);
-      // console.log("editBook() before this.editMode = !this.editMode ", this.editMode);
       this.editMode = !this.editMode;
-      // console.log("this.book_id: ", this.book_id);
-      // console.log("editBook() after this.editMode = !this.editMode ", this.editMode);
       if(this.toggleShow == 'hideForm'){
         this.toggleShow = 'showForm'
         this.toggleDisabled("off")
       }
       else {
-        // console.log("else of if(this.toggleShow == 'hideForm'");
         this.toggleDisabled("off")
       }
     }
     else {
-      // console.log("else In editBook() this.book_id: ",this.book_id);
-    }
-  }
-
-  printBookID() {
-    if(this.book_id){
-      console.log("in printBookID if(this.book_id) : ", this.book_id);
-      console.log("this.editMode", this.editMode);
-    }
-    else{
-      console.log("else printBookID");
-      console.log("this.book_id: ", this.book_id);
-      console.log("this.editMode: ", this.editMode);
+    console.log("no this.book_id");
     }
   }
 
   deleteBook(){
 
   }
+
+  // printBookID() {
+  //   if(this.book_id){
+  //     console.log("in printBookID if(this.book_id) : ", this.book_id);
+  //     console.log("this.editMode", this.editMode);
+  //   }
+  //   else{
+  //     console.log("else printBookID");
+  //     console.log("this.book_id: ", this.book_id);
+  //     console.log("this.editMode: ", this.editMode);
+  //   }
+  // }
+
+
 
 }
