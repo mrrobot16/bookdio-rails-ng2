@@ -1,7 +1,12 @@
 class BookTransactionsController < ApplicationController
-  before_action :set_book, only: [:create, :update]
+  before_action :set_book, only: [:create, :update, :index]
   before_action :check_book_quantity, only: [:create]
   before_action :check_book_issued, only: [:update]
+
+  def index
+    @book_transactions = @book.book_transactions
+    render json: @book_transactions
+  end
 
   def create
     @book_transaction = @book.book_transactions.create
