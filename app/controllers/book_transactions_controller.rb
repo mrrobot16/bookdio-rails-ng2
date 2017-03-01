@@ -1,17 +1,18 @@
 class BookTransactionsController < ApplicationController
-  before_action :set_book, only: [:create]
+  before_action :set_book, only: [:create, :update]
   before_action :check_book_quantity, only: [:create]
+  before_action :check_book_issued, only: [:update]
 
   def create
-    transaction = @book.book_transactions.create
-    @book.book_quantity -= 1
-    @book.save!
-    transaction.save!
+    @book_transaction = @book.book_transactions.create
+    @book_transaction.save!
+    render json: @book_transaction
   end
 
   def update
     @book_transaction = BookTransaction.find(params[:id])
     @book_transaction.update(transaction_type: 'returned', transaction_status:false)
+    @book_transaction.update_book_quantity
   end
 
   private
@@ -22,6 +23,12 @@ class BookTransactionsController < ApplicationController
   def check_book_quantity
     if @book.book_quantity < 1
       render json: {'error': 'Cant create BookTransaction because Book.book_quantity < 1'}
+    end
+  end
+
+  def check_book_issued
+    if @book.book_issued < 1
+      render json: {'error': 'Cant create Return Book because Book.book_issued < 1'}
     end
   end
 end
