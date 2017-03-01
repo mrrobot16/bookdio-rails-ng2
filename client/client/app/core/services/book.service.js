@@ -48,22 +48,25 @@ export class BookService {
       }),
       body:JSON.stringify(book_params)
     })
-    fetch(request).then((res)=>{ console.log("res: "); }, (error)=>{console.log("error message: ", error)});
+    return fetch(request).then((res)=>{ console.log("res: "); }, (error)=>{console.log("error message: ", error)});
   }
 
-
-  putTodo(){
-
-  let request = new Request(todos_endpoint+"/"+this.state.id, {
-    method:"PUT",
-    mode:"cors",
-    redirect:"follow",
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    }),
-    body:JSON.stringify(todo)
-  });
-  fetch(request).then((res)=>{ this.props.getTodos(todos_endpoint) }, (error)=>{console.log("error message: ", error)});
-}
+  deleteBook(id){
+    let book_params ={
+      book: {
+        id:id
+      }
+    }
+    let request = new Request(this.books_endpoint+"/"+book_params.book.id, {
+      method:"DELETE",
+      mode:"cors",
+      redirect:"follow",
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      body:JSON.stringify(book_params)
+    })
+    return fetch(request).then((res)=>{ console.log('res: ', res)}, (error)=>{console.log("error: ", error)})
+  }
 
 }

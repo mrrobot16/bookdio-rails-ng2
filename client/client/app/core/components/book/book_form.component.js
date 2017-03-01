@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import { BookService } from '../../services/book.service';
 import 'rxjs/add/operator/toPromise';
@@ -11,10 +11,15 @@ import template from './book_form.partial.html';
 })
 export class BookFormComponent implements OnInit {
   @Input() book_id;
+  @Input() all_books;
+  // @Input() disable_btn;
+  @Output() getAllBooks = new EventEmitter()
   constructor(book_service: BookService, builder: FormBuilder){
     this.book_service = book_service;
     this.builder = builder;
   }
+
+
 
   ngOnInit(){
     this.now = new Date()
@@ -23,10 +28,7 @@ export class BookFormComponent implements OnInit {
     this.editMode = false;
     this.createForm()
     this.toggleShow = 'hideForm';
-  }
 
-  viewTransaction(){
-    return;
   }
 
   issueBook(){
@@ -105,52 +107,24 @@ export class BookFormComponent implements OnInit {
     }
   }
 
-  editBook(book){
-    if(this.book_id){
-      this.editMode = true;
-      if(this.toggleShow == 'hideForm'){
-        this.toggleShow = 'showForm'
-        this.toggleDisabled("off")
-      }
-      else {
-        this.toggleDisabled("off")
-      }
-    }
-    else {
-      console.log("else In editBook() this.book_id: ",this.book_id);
-    }
-  }
-
   onSubmit(bookForm, event){
     event.preventDefault();
     if(this.editMode && this.book_id){
       console.log(bookForm);
-      this.book_service.updateBook(this.book_id, bookForm.book_quantity)
+      return this.book_service.updateBook(this.book_id, bookForm.book_quantity).then(()=>{
+        this.getAllBooks.emit()
+      })
     }
     else {
       console.log("onSubmit else");
-      return this.postBook(bookForm)
-    }
-  }
-
-  editBook(book){
-    if(this.book_id){
-      this.editMode = true;
-      if(this.toggleShow == 'hideForm'){
-        this.toggleShow = 'showForm'
-        this.toggleDisabled("off")
-      }
-      else {
-        this.toggleDisabled("off")
-      }
-    }
-    else {
-      console.log("else In editBook() no this.book_id: ",this.book_id);
+      this.postBook(bookForm)
     }
   }
 
   postBook(book){
-    return this.book_service.postBook(book)
+    return this.book_service.postBook(book).then(()=>{
+      this.getAllBooks.emit();
+    })
   }
 
   editBook(book){
@@ -182,7 +156,25 @@ export class BookFormComponent implements OnInit {
   }
 
   deleteBook(){
-
+    if(this.book_id){
+      let book = this.all_books.filter((book)=>{
+        return book.id == this.book_id
+      });
+      if(book[0].book_issued < 1){
+        console.log("book[0].book_issued is below 1 so it can be deleted");
+        console.log(book[0].book_issued);
+        return this.book_service.deleteBook(this.book_id).then(()=>{
+          this.getAllBooks.emit();
+        })
+      }
+      else {
+        console.log("book[0].book_issued is not < 1");
+        console.log(book[0].book_issued);
+      }
+    }
+    else {
+      console.log("no book ID found");
+    }
   }
 
 }

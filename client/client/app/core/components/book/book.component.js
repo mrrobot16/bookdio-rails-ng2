@@ -16,7 +16,6 @@ export class BookComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.selectBook = ''
     this.displayBooks()
   }
 
@@ -38,6 +37,14 @@ export class BookComponent implements OnInit {
     this.book_id = parseInt(event.target.parentNode.id);
     console.log("this.book_id: ", this.book_id);
     event.target.parentElement.classList.add('selectedBook')
+  }
+
+  viewBookTransactions(){
+
+  }
+
+  viewBooks(){
+
   }
 
   logError(error){
