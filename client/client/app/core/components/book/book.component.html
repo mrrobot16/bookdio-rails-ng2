@@ -16,7 +16,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr id="{{book.id}}" [ngClass]="selectBook"  *ngFor="let book of books" (click)="selectBookID($event)">
+              <tr [hoverHighlight]='blue' id="{{book.id}}" [ngClass]="selectBook"  *ngFor="let book of books" (click)="selectBookID($event)">
                 <td>{{book.book_name }}</td>
                 <td>{{book.author_name}}</td>
                 <td>{{book.isbn_code}}</td>
