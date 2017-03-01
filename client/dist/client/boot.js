@@ -16403,7 +16403,7 @@ webpackJsonp([0],[
 	}), _dec(_class = function AppComponent() {
 	  _classCallCheck(this, AppComponent);
 
-	  console.log('ON TOP2');
+	  console.log('ON TOP23');
 	}) || _class);
 
 /***/ },
