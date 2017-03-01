@@ -4,24 +4,29 @@
         <p class="lead underlined">Our Favorite books</p>
         <div class="books">
           <table>
-            <tr>
-              <th>Book Name</th>
-              <th>Author</th>
-              <th>ISBN</th>
-              <th>Book Quantiy</th>
-              <th>Published Date</th>
-              <th>Book Category</th>
-              <th>Books Issued</th>
-            </tr>
-            <tr id="{{book.id}}" [ngClass]="selectBook"  *ngFor="let book of books" (click)="selectBookID($event)">
-              <td>{{book.book_name }}</td>
-              <td>{{book.author_name}}</td>
-              <td>{{book.isbn_code}}</td>
-              <td>{{book.book_quantity}}</td>
-              <td>{{book.published_date | date | returnMonthYear }}</td>
-              <td>{{book.book_category}}</td>
-              <td>{{book.book_issued}}</td>
-            </tr>
+            <thead>
+              <tr>
+                <th>Book Name</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>Book Quantity</th>
+                <th>Published Date</th>
+                <th>Book Category</th>
+                <th>Books Issued</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="{{book.id}}" [ngClass]="selectBook"  *ngFor="let book of books" (click)="selectBookID($event)">
+                <td>{{book.book_name }}</td>
+                <td>{{book.author_name}}</td>
+                <td>{{book.isbn_code}}</td>
+                <td>{{book.book_quantity}}</td>
+                <td>{{book.published_date | date | returnMonthYear }}</td>
+                <td>{{book.book_category}}</td>
+                <td>{{book.book_issued}}</td>
+              </tr>
+            </tbody>
+
           </table>
         </div>
 

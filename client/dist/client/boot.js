@@ -182,8 +182,12 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'selectBookID',
 	    value: function selectBookID(event) {
-	      console.log("selectBookID");
+	      var all_books = event.target.parentElement.parentElement.children;
+	      for (var x = 0; x < all_books.length; x++) {
+	        all_books[x].classList.remove('selectedBook');
+	      }
 	      this.book_id = parseInt(event.target.parentNode.id);
+	      console.log("this.book_id: ", this.book_id);
 	      event.target.parentElement.classList.add('selectedBook');
 	    }
 	  }, {
@@ -311,6 +315,16 @@ webpackJsonp([0],[
 	      this.editMode = false;
 	      this.createForm();
 	      this.toggleShow = 'hideForm';
+	    }
+	  }, {
+	    key: 'viewTransaction',
+	    value: function viewTransaction() {
+	      return;
+	    }
+	  }, {
+	    key: 'issueBook',
+	    value: function issueBook() {
+	      return;
 	    }
 	  }, {
 	    key: 'createForm',
@@ -16317,13 +16331,13 @@ webpackJsonp([0],[
 /* 361 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"button-group\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"printBookID()\">Print BookID</button>\n</div>\n\n<form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code</label>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
+	module.exports = "<div class=\"button-group\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"viewTransaction()\">View Transactions</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"issueBook()\">Issue/Rent Book</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"printBookID()\">Print BookID</button>\n</div>\n\n<form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code</label>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
 
 /***/ },
 /* 362 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table>\n            <tr>\n              <th>Book Name</th>\n              <th>Author</th>\n              <th>ISBN</th>\n              <th>Book Quantiy</th>\n              <th>Published Date</th>\n              <th>Book Category</th>\n              <th>Books Issued</th>\n            </tr>\n            <tr id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of books\" (click)=\"selectBookID($event)\">\n              <td>{{book.book_name }}</td>\n              <td>{{book.author_name}}</td>\n              <td>{{book.isbn_code}}</td>\n              <td>{{book.book_quantity}}</td>\n              <td>{{book.published_date | date | returnMonthYear }}</td>\n              <td>{{book.book_category}}</td>\n              <td>{{book.book_issued}}</td>\n            </tr>\n          </table>\n        </div>\n\n        <div class=\"book-form\">\n          <book-form [book_id]=\"book_id\"></book-form>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table>\n            <thead>\n              <tr>\n                <th>Book Name</th>\n                <th>Author</th>\n                <th>ISBN</th>\n                <th>Book Quantity</th>\n                <th>Published Date</th>\n                <th>Book Category</th>\n                <th>Books Issued</th>\n              </tr>\n            </thead>\n            <tbody>\n              <tr id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of books\" (click)=\"selectBookID($event)\">\n                <td>{{book.book_name }}</td>\n                <td>{{book.author_name}}</td>\n                <td>{{book.isbn_code}}</td>\n                <td>{{book.book_quantity}}</td>\n                <td>{{book.published_date | date | returnMonthYear }}</td>\n                <td>{{book.book_category}}</td>\n                <td>{{book.book_issued}}</td>\n              </tr>\n            </tbody>\n\n          </table>\n        </div>\n\n        <div class=\"book-form\">\n          <book-form [book_id]=\"book_id\"></book-form>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 /* 363 */

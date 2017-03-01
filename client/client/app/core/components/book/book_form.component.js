@@ -27,6 +27,14 @@ export class BookFormComponent implements OnInit {
 
   }
 
+  viewTransaction(){
+    return;
+  }
+
+  issueBook(){
+    return;
+  }
+
   createForm(){
   this.bookForm = this.builder.group({
       book_name: ['Art Of War'],
