@@ -7,11 +7,7 @@ class CreateBooks < ActiveRecord::Migration[5.0]
       t.integer :book_quantity
       t.date :published_date
       t.string :book_category
-      t.integer :book_issued
-      t.string :book_transaction
-      t.date :transaction_date
-      t.string :transaction_type
-
+      t.integer :book_issued, default: 0
       t.timestamps
     end
   end
