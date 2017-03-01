@@ -15,7 +15,7 @@ module.exports = {
     vendor: './client/vendor.js'
   },
   output: {
-    path: path.resolve(__dirname, '../../', config.destination),
+    path: path.resolve(__dirname, '../../..', config.destination),
     filename: '[name].js'
   },
   module: {
