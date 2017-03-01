@@ -16,10 +16,6 @@ class BookTransactionsController < ApplicationController
 
 
   private
-  def book_transaction_params
-    params.require(:book_transaction).permit(:transaction_type)
-  end
-
   def set_book
     @book = Book.find(params[:id])
   end
