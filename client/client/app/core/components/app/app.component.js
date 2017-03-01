@@ -10,6 +10,6 @@ import { Component} from '@angular/core';
 })
 export class AppComponent {
   constructor() {
-    console.log('ON TOP');
+    console.log('ON TOP2');
   }
 }

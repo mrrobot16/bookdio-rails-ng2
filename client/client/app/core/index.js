@@ -5,10 +5,10 @@ import { BookFormComponent} from './components/book/book_form.component';
 
 // Services
 import { BookService } from './services/book.service';
-export { AppComponent, BookService };
+export { AppComponent, BookService, HighlightDirective };
 // Pipes
 import { ReturnMonthYearPipe } from './pipes/return_month.pipe';
 // Directive
-import {HighlightDirective} from './directives/hightlight.directive';
+import { HighlightDirective } from './directives/highlight.directive';
 export const CORE_PROVIDERS = [BookService];
 export const CORE_DECLARATIONS = [BookComponent, ReturnMonthYearPipe, BookFormComponent, HighlightDirective, AppComponent];

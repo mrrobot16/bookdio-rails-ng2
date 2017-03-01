@@ -3,17 +3,17 @@
 module.exports = {
   client: {
     source: ['client/**/*.{html,css,ico}', '!**/app/**'],
-    destination: '../public',
+    destination: 'dist/client',
     app: ['client/**/*.js']
   },
   general: {
     source: ['package.json', 'Procfile'],
-    destination: 'public'
+    destination: 'dist'
   },
   liveReload: {
     port: 35729
   },
   build: {
-    destination: '../../public'
+    destination: 'dist'
   }
 };
