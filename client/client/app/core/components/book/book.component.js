@@ -17,22 +17,21 @@ export class BookComponent implements OnInit {
   }
 
   ngOnInit(){
+    this.selectBook = ''
     this.displayBooks()
   }
 
   displayBooks(){
     let books = this.book_service.getBooks()
     books.subscribe((books)=>{
-      // console.log("this.books");
-      // console.log(this.books);
       this.books = books
-
     }, this.logError)
   }
 
   selectBookID(event){
     console.log("selectBookID");
     this.book_id = parseInt(event.target.parentNode.id);
+    event.target.parentElement.classList.add('selectedBook')
   }
 
   logError(error){

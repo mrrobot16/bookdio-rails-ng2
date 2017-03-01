@@ -13,7 +13,7 @@
               <th>Book Category</th>
               <th>Books Issued</th>
             </tr>
-            <tr id="{{book.id}}"  *ngFor="let book of books" (click)="selectBookID($event)">
+            <tr id="{{book.id}}" [ngClass]="selectBook"  *ngFor="let book of books" (click)="selectBookID($event)">
               <td>{{book.book_name }}</td>
               <td>{{book.author_name}}</td>
               <td>{{book.isbn_code}}</td>
