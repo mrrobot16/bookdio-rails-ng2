@@ -17,13 +17,16 @@ export class BookComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.dispayBooks()
+    this.displayBooks()
   }
 
-  dispayBooks(){
+  displayBooks(){
     let books = this.book_service.getBooks()
     books.subscribe((books)=>{
+      // console.log("this.books");
+      // console.log(this.books);
       this.books = books
+
     }, this.logError)
   }
 

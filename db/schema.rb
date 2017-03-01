@@ -23,11 +23,8 @@ ActiveRecord::Schema.define(version: 20170227212847) do
     t.date     "published_date"
     t.string   "book_category"
     t.integer  "book_issued"
-    t.string   "book_transaction"
-    t.date     "transaction_date"
-    t.string   "transaction_type"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
 end

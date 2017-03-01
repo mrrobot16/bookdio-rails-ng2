@@ -12,9 +12,6 @@
               <th>Published Date</th>
               <th>Book Category</th>
               <th>Books Issued</th>
-              <!-- <th>Book Transaction</th>
-              <th>Transaction Date</th>
-              <th>Transaction Type</th> -->
             </tr>
             <tr id="{{book.id}}"  *ngFor="let book of books" (click)="selectBookID($event)">
               <td>{{book.book_name }}</td>
@@ -24,9 +21,6 @@
               <td>{{book.published_date | date | returnMonthYear }}</td>
               <td>{{book.book_category}}</td>
               <td>{{book.book_issued}}</td>
-              <!-- <td>{{book.book_transaction}}</td>
-              <td>{{book.transaction_date}}</td>
-              <td>{{book.transaction_type}}</td> -->
             </tr>
           </table>
         </div>

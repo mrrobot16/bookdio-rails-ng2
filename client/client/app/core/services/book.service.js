@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, RequestOptions } from '@angular/http';
+import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -7,7 +8,6 @@ export class BookService {
   books_endpoint = '/books';
   constructor(http: Http) {
     this.http = http;
-    this.headers = new Headers({'Content-Type': 'application/json'});
   }
 
   getBooks(){
@@ -18,16 +18,27 @@ export class BookService {
   }
 
   postBook(book){
-    let book_params = {
-      book: book
+    var book_params = {
+      book: {
+        book_name: book.book_name,
+        author_name:book.author_name,
+        isbn_code:book.isbn_code,
+        book_category:book.book_category,
+        book_quantity:book.book_quantity,
+        published_date:new Date(book.published_date)
+      }
     }
-    let body = this.stringify(book_params)
-    return this.http.post(this.books_endpoint, body,{headers: this.headers}).map((res)=>{
-      return res.json();
-    })
+    let headers = new Headers({'Content-Type': 'application/json'})
+    let options = new RequestOptions({ headers: headers })
+    // console.log(options);
+    let body = JSON.stringify(book_params)
+    console.log("book_params: ", book_params);
+    console.log("JSON.stringify(book_params): ", body, options);
+    return this.http.post(this.books_endpoint, JSON.stringify(book_params)).map((res)=>{
+      console.log("it happen");
+      console.log("res: ", res);
+      res.json();
+    }).catch((error) => console.log(Observable.throw(error.json().error || 'Server error')))
   }
 
-  stringify(object){
-    return JSON.stringify(object)
-  }
 }
