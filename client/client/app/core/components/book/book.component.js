@@ -1,4 +1,4 @@
-import { Component, Pipe, PipeTransform } from '@angular/core';
+import { Component, Pipe, PipeTransform, OnInit } from '@angular/core';
 import {BookFormComponent} from './book_form.component'
 import { BookService } from '../../services/book.service';
 
@@ -9,11 +9,14 @@ import template from './book.component.html';
   template: template,
   styleUrls: ['./css/book.css']
 })
-export class BookComponent {
+export class BookComponent implements OnInit {
   books = [];
   constructor(book_service: BookService){
-    this.book_id = 0;
     this.book_service = book_service;
+    this.book_id = 0;
+  }
+
+  ngOnInit(){
     this.dispayBooks()
   }
 
@@ -24,7 +27,8 @@ export class BookComponent {
     }, this.logError)
   }
 
-  selectBook(event){
+  selectBookID(event){
+    console.log("selectBookID");
     this.book_id = parseInt(event.target.parentNode.id);
   }
 

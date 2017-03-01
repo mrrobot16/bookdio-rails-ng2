@@ -3,7 +3,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-client/node_modules
+node_modules
 npm-debug.log
 .byebug_history
 .DS_Store

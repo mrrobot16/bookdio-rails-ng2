@@ -99,12 +99,16 @@ webpackJsonp([0],{
 
 	    this.books = [];
 
-	    this.book_id = 0;
 	    this.book_service = book_service;
-	    this.dispayBooks();
+	    this.book_id = 0;
 	  }
 
 	  _createClass(BookComponent, [{
+	    key: 'ngOnInit',
+	    value: function ngOnInit() {
+	      this.dispayBooks();
+	    }
+	  }, {
 	    key: 'dispayBooks',
 	    value: function dispayBooks() {
 	      var _this = this;
@@ -115,8 +119,9 @@ webpackJsonp([0],{
 	      }, this.logError);
 	    }
 	  }, {
-	    key: 'selectBook',
-	    value: function selectBook(event) {
+	    key: 'selectBookID',
+	    value: function selectBookID(event) {
+	      console.log("selectBookID");
 	      this.book_id = parseInt(event.target.parentNode.id);
 	    }
 	  }, {
@@ -231,65 +236,122 @@ webpackJsonp([0],{
 
 	    _initDefineProp(this, 'book_id', _descriptor, this);
 
-	    this.now = new Date();
-	    this.editMode = true;
 	    this.book_service = book_service;
 	    this.builder = builder;
-	    this.bookForm = this.builder.group({
-	      book_name: ['The Hard Thing About Hard Things'],
-	      author_name: ['Ben Horowitz'],
-	      isbn_code: ['978-1-26310-644-4'],
-	      book_quantity: [1],
-	      published_date: [this.now],
-	      book_category: ['Leadership']
-	    });
-	    // this.editBook()
 	  }
 
 	  _createClass(BookFormComponent, [{
+	    key: 'ngOnInit',
+	    value: function ngOnInit() {
+	      this.now = new Date().getMonth();
+	      this.property_names = [];
+	      this.current_property_names = [];
+	      this.editMode = false;
+	      this.toggleShow = 'hideForm';
+	      this.bookForm = this.builder.group({
+	        book_name: ['The Hard Thing About Hard Things'],
+	        author_name: ['Ben Horowitz'],
+	        isbn_code: ['978-1-26310-644-4'],
+	        book_quantity: [1],
+	        published_date: [this.now],
+	        book_category: ['Leadership']
+	      });
+	    }
+	  }, {
+	    key: 'property_names_array',
+	    value: function property_names_array() {
+	      if (this.current_property_names.length > 0) {
+	        return this.current_property_names;
+	      } else {
+	        this.property_names = [];
+	        for (var book_property in this.bookForm.root.value) {
+	          this.property_names.push(book_property);
+	        }
+	        return this.property_names;
+	      }
+	    }
+	  }, {
 	    key: 'toggleDisabled',
 	    value: function toggleDisabled(status) {
 	      var _this = this;
 
 	      this.status = status;
-	      var property_names = [];
-	      var book_attributes = this.bookForm.root.value;
-
-	      for (var book_property in book_attributes) {
-	        property_names.push(book_property);
-	      }
-
 	      if (this.status == "off") {
-	        property_names = property_names.filter(function (book) {
+	        this.current_property_names = this.property_names_array().filter(function (book) {
 	          return book != "book_quantity";
 	        });
-	        property_names.forEach(function (inputs) {
+	        this.current_property_names.forEach(function (inputs) {
 	          _this.bookForm.root.get(inputs).disable();
 	        });
-	      } else {
-	        property_names.forEach(function (inputs) {
+	      }
+	      if (this.status == "on") {
+	        this.current_property_names = this.property_names_array().filter(function (book) {
+	          return book;
+	        });
+	        this.current_property_names.forEach(function (inputs) {
 	          _this.bookForm.root.get(inputs).enable();
 	        });
+	      }
+	    }
+	  }, {
+	    key: 'showForm',
+	    value: function showForm() {
+	      var book_id = this.book_id;
+	      console.log("this.book_id: ", this.book_id);
+	      console.log("this.editMode: ", this.editMode);
+	      if (this.editMode) {
+	        console.log('showForm 1st IF: this:editMode: ', this.editMode);
+	        this.editMode = false;
+	      } else {
+	        console.log(" else this.editMode: ");
+	      }
+	      if (this.toggleShow == 'hideForm') {
+	        console.log("2nd IF inShowForm() if this.toggleShow == 'hideForm'");
+	        this.toggleShow = 'showForm';
+	        this.toggleDisabled("on");
+	      } else {
+	        this.toggleDisabled("on");
+	      }
+	    }
+	  }, {
+	    key: 'editBook',
+	    value: function editBook(book) {
+	      if (this.book_id) {
+	        console.log(' first IF(this.book_id) editBook(): this.book_id:', this.book_id);
+	        console.log("editBook() before this.editMode = !this.editMode ", this.editMode);
+	        this.editMode = true;
+	        console.log("this.book_id: ", this.book_id);
+	        console.log("editBook() after this.editMode = !this.editMode ", this.editMode);
+	        if (this.toggleShow == 'hideForm') {
+	          this.toggleShow = 'showForm';
+	          this.toggleDisabled("off");
+	        } else {
+	          console.log("else of if(this.toggleShow == 'hideForm'");
+	          this.toggleDisabled("off");
+	        }
+	      } else {
+	        console.log("else In editBook() this.book_id: ", this.book_id);
 	      }
 	    }
 	  }, {
 	    key: 'onSubmit',
 	    value: function onSubmit(bookForm, event) {
 	      event.preventDefault();
-	      this.book_id ? console.log("this.book_id from component: ", this.book_id) : console.log('no book id');
-	      // console.log(bookForm.published_date);
-	      // bookForm.published_date = new Date(bookForm.published_date)
-	      return this.postBook(bookForm);
-	    }
-	  }, {
-	    key: 'showForm',
-	    value: function showForm() {
-	      this.toggleDisabled('');
+	      if (this.editMode && this.book_id) {
+
+	        bookForm.id = this.book_id;
+	        console.log("if(this.editMode && this.book_id) inside OnSUbmit editBook mode this.book_id: ", this.book_id);
+	        console.log("bookForm");
+	        console.log(bookForm);
+	        // this.book_service.updateBook(bookForm)
+	      } else {
+	        console.log("onSubmit else");
+	        return this.postBook(bookForm);
+	      }
 	    }
 	  }, {
 	    key: 'postBook',
 	    value: function postBook(book) {
-	      console.log(book);
 	      return this.book_service.postBook(book).subscribe(function (res) {
 	        console.log("res: ", res);
 	      }, function (err) {
@@ -299,7 +361,34 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'editBook',
 	    value: function editBook(book) {
-	      this.toggleDisabled('off');
+	      if (this.book_id) {
+	        console.log(' first IF(this.book_id) editBook(): this.book_id:', this.book_id);
+	        console.log("editBook() before this.editMode = !this.editMode ", this.editMode);
+	        this.editMode = !this.editMode;
+	        console.log("this.book_id: ", this.book_id);
+	        console.log("editBook() after this.editMode = !this.editMode ", this.editMode);
+	        if (this.toggleShow == 'hideForm') {
+	          this.toggleShow = 'showForm';
+	          this.toggleDisabled("off");
+	        } else {
+	          console.log("else of if(this.toggleShow == 'hideForm'");
+	          this.toggleDisabled("off");
+	        }
+	      } else {
+	        console.log("else In editBook() this.book_id: ", this.book_id);
+	      }
+	    }
+	  }, {
+	    key: 'printBookID',
+	    value: function printBookID() {
+	      if (this.book_id) {
+	        console.log("in printBookID if(this.book_id) : ", this.book_id);
+	        console.log("this.editMode", this.editMode);
+	      } else {
+	        console.log("else printBookID");
+	        console.log("this.book_id: ", this.book_id);
+	        console.log("this.editMode: ", this.editMode);
+	      }
 	    }
 	  }, {
 	    key: 'deleteBook',
@@ -395,14 +484,14 @@ webpackJsonp([0],{
 /***/ 69:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"button-group\">\n  <button [ngClass]=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n</div>\n\n<form (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code</label>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
+	module.exports = "<div class=\"button-group\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"printBookID()\">Print BookID</button>\n</div>\n\n<form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code</label>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
 
 /***/ },
 
 /***/ 70:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table>\n            <tr>\n              <th>Book Name</th>\n              <th>Author</th>\n              <th>ISBN</th>\n              <th>Book Quantiy</th>\n              <th>Published Date</th>\n              <th>Book Category</th>\n              <th>Books Issued</th>\n              <!-- <th>Book Transaction</th>\n              <th>Transaction Date</th>\n              <th>Transaction Type</th> -->\n            </tr>\n            <tr id=\"{{book.id}}\" *ngFor=\"let book of books\" (click)=\"selectBook($event)\">\n              <td>{{book.book_name }}</td>\n              <td>{{book.author_name}}</td>\n              <td>{{book.isbn_code}}</td>\n              <td>{{book.book_quantity}}</td>\n              <td>{{book.published_date | date | returnMonthYear }}</td>\n              <td>{{book.book_category}}</td>\n              <td>{{book.book_issued}}</td>\n              <!-- <td>{{book.book_transaction}}</td>\n              <td>{{book.transaction_date}}</td>\n              <td>{{book.transaction_type}}</td> -->\n            </tr>\n          </table>\n        </div>\n\n        <div class=\"book-form\">\n          <book-form [book_id]=\"book_id\"></book-form>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table>\n            <tr>\n              <th>Book Name</th>\n              <th>Author</th>\n              <th>ISBN</th>\n              <th>Book Quantiy</th>\n              <th>Published Date</th>\n              <th>Book Category</th>\n              <th>Books Issued</th>\n              <!-- <th>Book Transaction</th>\n              <th>Transaction Date</th>\n              <th>Transaction Type</th> -->\n            </tr>\n            <tr id=\"{{book.id}}\"  *ngFor=\"let book of books\" (click)=\"selectBookID($event)\">\n              <td>{{book.book_name }}</td>\n              <td>{{book.author_name}}</td>\n              <td>{{book.isbn_code}}</td>\n              <td>{{book.book_quantity}}</td>\n              <td>{{book.published_date | date | returnMonthYear }}</td>\n              <td>{{book.book_category}}</td>\n              <td>{{book.book_issued}}</td>\n              <!-- <td>{{book.book_transaction}}</td>\n              <td>{{book.transaction_date}}</td>\n              <td>{{book.transaction_type}}</td> -->\n            </tr>\n          </table>\n        </div>\n\n        <div class=\"book-form\">\n          <book-form [book_id]=\"book_id\"></book-form>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 
