@@ -25,3 +25,10 @@ tr:nth-child(even) {
 .button-group button {
   margin: 1.5em;
 }
+
+.hideForm {
+  visibility: hidden;
+}
+.showForm {
+  visibility: visible;
+}

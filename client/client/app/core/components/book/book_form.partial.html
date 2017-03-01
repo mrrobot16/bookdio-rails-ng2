@@ -1,11 +1,12 @@
 <div class="button-group">
-  <button [ngClass]="btn-primary" type="button" name="button" (click)="showForm()">Add</button>
+  <button class="btn-primary" type="button" name="button" (click)="showForm()">Add</button>
   <button class="btn-success" type="button" name="button" (click)="editBook()">Edit</button>
   <button class="btn-danger" type="button" name="button" (click)="deleteBook()">Delete</button>
 </div>
 
-<form (ngSubmit)="onSubmit(bookForm.value, $event)" [formGroup]="bookForm">
+<form [ngClass]="toggleShow" (ngSubmit)="onSubmit(bookForm.value, $event)" [formGroup]="bookForm">
     <div class="form-group">
+
         <label>Book Name</label>
         <input type="text" formControlName="book_name" class="form-control">
     </div>
