@@ -3,7 +3,11 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+<<<<<<< HEAD
 node_modules
+=======
+client/node_modules
+>>>>>>> 8a9e67ca40ca6e065e5db9abb656027ffe5f14c8
 npm-debug.log
 .byebug_history
 .DS_Store
