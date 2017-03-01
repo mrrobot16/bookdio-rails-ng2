@@ -12,15 +12,15 @@ import template from './book_form.partial.html';
 export class BookFormComponent implements OnInit {
   @Input() book_id;
   constructor(book_service: BookService, builder: FormBuilder){
-    this.now = new Date().getMonth()
-    this.property_names = [];
-    this.current_property_names = [];
-    this.editMode = false;
     this.book_service = book_service;
     this.builder = builder;
   }
 
   ngOnInit(){
+    this.now = new Date().getMonth()
+    this.property_names = [];
+    this.current_property_names = [];
+    this.editMode = false;
     this.toggleShow = 'hideForm';
     this.bookForm = this.builder.group({
       book_name: ['The Hard Thing About Hard Things'],
@@ -66,14 +66,19 @@ export class BookFormComponent implements OnInit {
     }
   }
 
-  toggleFormShow(){
-
-  }
-
   showForm(){
-    this.editMode = !this.editMode
-    this.book_id = 0;
+    let book_id = this.book_id
+    console.log("this.book_id: ", this.book_id);
+    console.log("this.editMode: ", this.editMode);
+    if(this.editMode){
+      console.log('showForm 1st IF: this:editMode: ', this.editMode);
+      this.editMode = false;
+    }
+    else {
+      console.log(" else this.editMode: ");
+    }
     if(this.toggleShow == 'hideForm'){
+      console.log("2nd IF inShowForm() if this.toggleShow == 'hideForm'");
       this.toggleShow = 'showForm'
       this.toggleDisabled("on")
     }
@@ -82,18 +87,44 @@ export class BookFormComponent implements OnInit {
     }
   }
 
-  onSubmit(bookForm, event){
-    event.preventDefault();
-    if(this.editMode && this.book_id){
-      console.log("editBook mode this.book_id: ", this.book_id);
+  editBook(book){
+    if(this.book_id){
+      console.log(' first IF(this.book_id) editBook(): this.book_id:', this.book_id);
+      console.log("editBook() before this.editMode = !this.editMode ", this.editMode);
+      this.editMode = true;
+      console.log("this.book_id: ", this.book_id);
+      console.log("editBook() after this.editMode = !this.editMode ", this.editMode);
+      if(this.toggleShow == 'hideForm'){
+        this.toggleShow = 'showForm'
+        this.toggleDisabled("off")
+      }
+      else {
+        console.log("else of if(this.toggleShow == 'hideForm'");
+        this.toggleDisabled("off")
+      }
     }
     else {
-      console.log("else");
-      // this.book_id ? console.log("this.book_id from component: ", this.book_id) : console.log('no book id');
-      return this.postBook(bookForm)
+      console.log("else In editBook() this.book_id: ",this.book_id);
     }
   }
 
+
+
+  onSubmit(bookForm, event){
+    event.preventDefault();
+    if(this.editMode && this.book_id){
+
+      bookForm.id = this.book_id
+      console.log("if(this.editMode && this.book_id) inside OnSUbmit editBook mode this.book_id: ", this.book_id);
+      console.log("bookForm");
+      console.log(bookForm);
+      // this.book_service.updateBook(bookForm)
+    }
+    else {
+      console.log("onSubmit else");
+      return this.postBook(bookForm)
+    }
+  }
 
   postBook(book){
     return this.book_service.postBook(book).subscribe(
@@ -102,22 +133,37 @@ export class BookFormComponent implements OnInit {
   }
 
   editBook(book){
-    this.editMode = !this.editMode
     if(this.book_id){
+      console.log(' first IF(this.book_id) editBook(): this.book_id:', this.book_id);
+      console.log("editBook() before this.editMode = !this.editMode ", this.editMode);
+      this.editMode = !this.editMode;
+      console.log("this.book_id: ", this.book_id);
+      console.log("editBook() after this.editMode = !this.editMode ", this.editMode);
       if(this.toggleShow == 'hideForm'){
         this.toggleShow = 'showForm'
         this.toggleDisabled("off")
       }
       else {
+        console.log("else of if(this.toggleShow == 'hideForm'");
         this.toggleDisabled("off")
       }
     }
     else {
-      console.log("no this.book_id present");
+      console.log("else In editBook() this.book_id: ",this.book_id);
     }
-
   }
 
+  printBookID() {
+    if(this.book_id){
+      console.log("in printBookID if(this.book_id) : ", this.book_id);
+      console.log("this.editMode", this.editMode);
+    }
+    else{
+      console.log("else printBookID");
+      console.log("this.book_id: ", this.book_id);
+      console.log("this.editMode: ", this.editMode);
+    }
+  }
 
   deleteBook(){
 

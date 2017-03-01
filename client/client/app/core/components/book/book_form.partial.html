@@ -2,6 +2,7 @@
   <button class="btn-primary" type="button" name="button" (click)="showForm()">Add</button>
   <button class="btn-success" type="button" name="button" (click)="editBook()">Edit</button>
   <button class="btn-danger" type="button" name="button" (click)="deleteBook()">Delete</button>
+  <button class="btn-danger" type="button" name="button" (click)="printBookID()">Print BookID</button>
 </div>
 
 <form [ngClass]="toggleShow" (ngSubmit)="onSubmit(bookForm.value, $event)" [formGroup]="bookForm">
@@ -26,7 +27,7 @@
 
     <div class="form-group">
         <label>Published Date</label>
-        <input type="month" formControlName="published_date" class="form-control">
+        <input type="month" formControlName="published_date" maxlength=4 max='2018' class="form-control">
     </div>
 
     <div class="form-group">
