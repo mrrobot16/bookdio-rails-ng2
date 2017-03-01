@@ -295,7 +295,6 @@ webpackJsonp([0],[
 	  _createClass(BookFormComponent, [{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
-	      // console.log("New Form");
 	      this.now = new Date();
 	      this.property_names = [];
 	      this.current_property_names = [];
@@ -326,23 +325,6 @@ webpackJsonp([0],[
 	      });
 	    }
 	  }, {
-	    key: 'ngOnInit',
-	    value: function ngOnInit() {
-	      this.now = new Date().getMonth();
-	      this.property_names = [];
-	      this.current_property_names = [];
-	      this.editMode = false;
-	      this.toggleShow = 'hideForm';
-	      this.bookForm = this.builder.group({
-	        book_name: ['The Hard Thing About Hard Things'],
-	        author_name: ['Ben Horowitz'],
-	        isbn_code: ['978-1-26310-644-4'],
-	        book_quantity: [1],
-	        published_date: [this.now],
-	        book_category: ['Leadership']
-	      });
-	    }
-	  }, {
 	    key: 'property_names_array',
 	    value: function property_names_array() {
 	      if (this.current_property_names.length > 0) {
@@ -370,7 +352,6 @@ webpackJsonp([0],[
 	        });
 	      }
 	      if (this.status == "on") {
-	        console.log('ononon');
 	        this.current_property_names = this.property_names_array().filter(function (book) {
 	          return book;
 	        });
@@ -451,11 +432,7 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'postBook',
 	    value: function postBook(book) {
-	      return this.book_service.postBook(book).subscribe(function (res) {
-	        console.log("res: ", res);
-	      }, function (err) {
-	        console.log("err: ", err);
-	      });
+	      return this.book_service.postBook(book);
 	    }
 	  }, {
 	    key: 'editBook',
@@ -553,18 +530,13 @@ webpackJsonp([0],[
 	          published_date: new Date(book.published_date)
 	        }
 	      };
-	      var headers = new Headers({ 'Content-Type': 'application/json' });
-	      var options = new _http.RequestOptions({ headers: headers });
-	      // console.log(options);
-	      var body = JSON.stringify(book_params);
-	      console.log("book_params: ", book_params);
-	      console.log("JSON.stringify(book_params): ", body, options);
-	      return this.http.post(this.books_endpoint, JSON.stringify(book_params)).map(function (res) {
-	        console.log("it happen");
-	        console.log("res: ", res);
-	        res.json();
-	      }).catch(function (error) {
-	        return console.log(_Rx.Observable.throw(error.json().error || 'Server error'));
+	      var request = new Request(this.books_endpoint, { method: "POST", mode: "cors", headers: new Headers({ "Content-Type": "application/json" }), body: JSON.stringify(book_params) });
+	      return fetch(request).then(function (res) {
+	        return res.json();
+	      }).then(function (res) {
+	        console.log("res :", res);
+	      }, function (error) {
+	        console.log("Error occurred: ", error);
 	      });
 	    }
 	  }]);

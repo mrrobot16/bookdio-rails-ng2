@@ -17,14 +17,12 @@ export class BookFormComponent implements OnInit {
   }
 
   ngOnInit(){
-    // console.log("New Form");
     this.now = new Date()
     this.property_names = [];
     this.current_property_names = [];
     this.editMode = false;
     this.createForm()
     this.toggleShow = 'hideForm';
-
   }
 
   viewTransaction(){
@@ -45,22 +43,6 @@ export class BookFormComponent implements OnInit {
       book_category: ['Strategy']
     })
    }
-
-  ngOnInit(){
-    this.now = new Date().getMonth()
-    this.property_names = [];
-    this.current_property_names = [];
-    this.editMode = false;
-    this.toggleShow = 'hideForm';
-    this.bookForm = this.builder.group({
-      book_name: ['The Hard Thing About Hard Things'],
-      author_name: ['Ben Horowitz'],
-      isbn_code: ['978-1-26310-644-4'],
-      book_quantity: [1],
-      published_date: [this.now],
-      book_category: ['Leadership'],
-    })
-  }
 
   property_names_array(){
     if(this.current_property_names.length > 0){
@@ -86,7 +68,6 @@ export class BookFormComponent implements OnInit {
      })
     }
     if(this.status=="on") {
-      console.log('ononon');
       this.current_property_names = this.property_names_array().filter(function(book){
          return book;
        })
@@ -170,9 +151,7 @@ export class BookFormComponent implements OnInit {
   }
 
   postBook(book){
-    return this.book_service.postBook(book).subscribe(
-    res => {console.log("res: ", res)},
-    err => { console.log("err: ", err)});
+    return this.book_service.postBook(book)
   }
 
   editBook(book){

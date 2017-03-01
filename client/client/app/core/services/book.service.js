@@ -28,17 +28,9 @@ export class BookService {
         published_date:new Date(book.published_date)
       }
     }
-    let headers = new Headers({'Content-Type': 'application/json'})
-    let options = new RequestOptions({ headers: headers })
-    // console.log(options);
-    let body = JSON.stringify(book_params)
-    console.log("book_params: ", book_params);
-    console.log("JSON.stringify(book_params): ", body, options);
-    return this.http.post(this.books_endpoint, JSON.stringify(book_params)).map((res)=>{
-      console.log("it happen");
-      console.log("res: ", res);
-      res.json();
-    }).catch((error) => console.log(Observable.throw(error.json().error || 'Server error')))
+    var request = new Request(this.books_endpoint, {method:"POST", mode:"cors", headers: new Headers({"Content-Type":"application/json"}), body:JSON.stringify(book_params)});
+    return fetch(request).then((res)=>{return res.json()}).then((res)=> { console.log("res :", res)}, (error)=>{console.log("Error occurred: ", error)});
+
   }
 
 }

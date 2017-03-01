@@ -1,5 +1,6 @@
 class Book < ApplicationRecord
   has_many :book_transactions
+  after_initialize :set_book_issued, :if => :new_record?
 
   def update_book_qty(id)
     @book = Book.find(id)
@@ -9,10 +10,16 @@ class Book < ApplicationRecord
   end
 
   def update_book_issued(id)
+    p "self.id"
+    p self.id
     @book = Book.find(id)
     @book.book_quantity += 1
     @book.book_issued -=1
     @book.save!
-  end  
+  end
 
+  private
+  def set_book_issued
+    self.book_issued = 0;
+  end
 end
