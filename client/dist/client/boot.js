@@ -308,7 +308,7 @@ webpackJsonp([0],{
 	    value: function onSubmit(bookForm, event) {
 	      event.preventDefault();
 	      if (this.editMode && this.book_id) {
-	        console.log("editBook mode");
+	        console.log("editBook mode this.book_id: ", this.book_id);
 	      } else {
 	        console.log("else");
 	        // this.book_id ? console.log("this.book_id from component: ", this.book_id) : console.log('no book id');
@@ -328,11 +328,15 @@ webpackJsonp([0],{
 	    key: 'editBook',
 	    value: function editBook(book) {
 	      this.editMode = !this.editMode;
-	      if (this.toggleShow == 'hideForm') {
-	        this.toggleShow = 'showForm';
-	        this.toggleDisabled("off");
+	      if (this.book_id) {
+	        if (this.toggleShow == 'hideForm') {
+	          this.toggleShow = 'showForm';
+	          this.toggleDisabled("off");
+	        } else {
+	          this.toggleDisabled("off");
+	        }
 	      } else {
-	        this.toggleDisabled("off");
+	        console.log("no this.book_id present");
 	      }
 	    }
 	  }, {

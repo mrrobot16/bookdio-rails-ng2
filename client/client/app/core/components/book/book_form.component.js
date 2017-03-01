@@ -85,7 +85,7 @@ export class BookFormComponent implements OnInit {
   onSubmit(bookForm, event){
     event.preventDefault();
     if(this.editMode && this.book_id){
-      console.log("editBook mode");
+      console.log("editBook mode this.book_id: ", this.book_id);
     }
     else {
       console.log("else");
@@ -103,13 +103,19 @@ export class BookFormComponent implements OnInit {
 
   editBook(book){
     this.editMode = !this.editMode
-    if(this.toggleShow == 'hideForm'){
-      this.toggleShow = 'showForm'
-      this.toggleDisabled("off")
+    if(this.book_id){
+      if(this.toggleShow == 'hideForm'){
+        this.toggleShow = 'showForm'
+        this.toggleDisabled("off")
+      }
+      else {
+        this.toggleDisabled("off")
+      }
     }
     else {
-      this.toggleDisabled("off")
+      console.log("no this.book_id present");
     }
+
   }
 
 
