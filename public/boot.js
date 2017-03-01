@@ -182,6 +182,9 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'selectBookID',
 	    value: function selectBookID(event) {
+	      if (event.target.parentElement.classList.contains('selectedBook')) {
+	        event.target.parentElement.classList.remove('selectedBook');
+	      }
 	      var all_books = event.target.parentElement.parentElement.children;
 	      for (var x = 0; x < all_books.length; x++) {
 	        all_books[x].classList.remove('selectedBook');
@@ -367,6 +370,7 @@ webpackJsonp([0],[
 	        });
 	      }
 	      if (this.status == "on") {
+	        console.log('ononon');
 	        this.current_property_names = this.property_names_array().filter(function (book) {
 	          return book;
 	        });
@@ -381,7 +385,10 @@ webpackJsonp([0],[
 	      var book_id = this.book_id;
 	      if (this.editMode) {
 	        this.editMode = false;
+	        this.toggleDisabled("on");
 	      } else {
+	        this.editMode = false;
+	        this.toggleDisabled("on");
 	        console.log(" else in if(this.editMode:) ");
 	      }
 	      if (this.toggleShow == 'hideForm') {
@@ -16402,8 +16409,6 @@ webpackJsonp([0],[
 	  template: '\n  <div class="container body-container">\n      <router-outlet></router-outlet>\n  </div>\n  '
 	}), _dec(_class = function AppComponent() {
 	  _classCallCheck(this, AppComponent);
-
-	  console.log('ON TOP23');
 	}) || _class);
 
 /***/ },

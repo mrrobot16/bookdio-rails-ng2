@@ -86,6 +86,7 @@ export class BookFormComponent implements OnInit {
      })
     }
     if(this.status=="on") {
+      console.log('ononon');
       this.current_property_names = this.property_names_array().filter(function(book){
          return book;
        })
@@ -99,8 +100,11 @@ export class BookFormComponent implements OnInit {
     let book_id = this.book_id
     if(this.editMode){
       this.editMode = false;
+      this.toggleDisabled("on")
     }
     else {
+      this.editMode = false
+      this.toggleDisabled("on")
       console.log(" else in if(this.editMode:) ");
     }
     if(this.toggleShow == 'hideForm'){
@@ -136,8 +140,6 @@ export class BookFormComponent implements OnInit {
     }
   }
 
-
-
   onSubmit(bookForm, event){
     event.preventDefault();
     if(this.editMode && this.book_id){
@@ -167,10 +169,6 @@ export class BookFormComponent implements OnInit {
     }
   }
 
-
-
-
-
   postBook(book){
     return this.book_service.postBook(book).subscribe(
     res => {console.log("res: ", res)},
@@ -190,7 +188,6 @@ export class BookFormComponent implements OnInit {
     }
     else {
     console.log("no this.book_id");
-
     }
   }
 

@@ -1,5 +1,5 @@
 class  StaticController < ApplicationController
   def index
-    render :file => 'public/index.html'
+    render :file => './client/dist/client/index.html'
   end
 end

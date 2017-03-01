@@ -28,6 +28,9 @@ export class BookComponent implements OnInit {
   }
 
   selectBookID(event){
+    if(event.target.parentElement.classList.contains('selectedBook')){
+      event.target.parentElement.classList.remove('selectedBook')
+    }
     let all_books = event.target.parentElement.parentElement.children
     for(var x=0; x < all_books.length; x++ ){
       all_books[x].classList.remove('selectedBook');
