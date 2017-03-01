@@ -5,14 +5,22 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-book = {
-  book_name:"Start With Why",
-  author_name:"Simon Sinek",
-  isbn_code:"978-1-59184-644-4",
-  book_quantity:1,
-  published_date:Date.new(2009,10),
-  book_category:"Leadership",
-  book_issued:1
-}
+books = [{book_name:"Start With Why",
+          author_name:"Simon Sinek",
+          isbn_code:"978-1-59184-644-4",
+          book_quantity:1,
+          published_date:Date.new(2009,10),
+          book_category:"Leadership",
+         },
+         {
+          book_name:"The Hard Thing About Hard Things",
+          author_name:"Ben Horowitz",
+          isbn_code:"978-1-44379-234-5",
+          book_quantity:10,
+          published_date:Date.new(2014,03),
+          book_category:"Entreprenuership",
+         }]
 
-Book.create(book)
+books.each do |book|
+  Book.create(book)
+end
