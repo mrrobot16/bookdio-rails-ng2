@@ -10,11 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20170301083638) do
+=======
+ActiveRecord::Schema.define(version: 0) do
+>>>>>>> 9b54a75230d86e44e408e59fcf57b4cc7a8e2c9d
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+<<<<<<< HEAD
   create_table "book_transactions", force: :cascade do |t|
     t.string   "transaction_type"
     t.integer  "book_id"
@@ -37,4 +42,6 @@ ActiveRecord::Schema.define(version: 20170301083638) do
   end
 
   add_foreign_key "book_transactions", "books"
+=======
+>>>>>>> 9b54a75230d86e44e408e59fcf57b4cc7a8e2c9d
 end

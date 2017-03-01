@@ -5,6 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+<<<<<<< HEAD
 books = [{book_name:"Start With Why",
           author_name:"Simon Sinek",
           isbn_code:"978-1-59184-644-4",
@@ -24,3 +25,5 @@ books = [{book_name:"Start With Why",
 books.each do |book|
   Book.create(book)
 end
+=======
+>>>>>>> 9b54a75230d86e44e408e59fcf57b4cc7a8e2c9d
