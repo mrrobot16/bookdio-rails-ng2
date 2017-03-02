@@ -227,6 +227,8 @@ webpackJsonp([0],[
 
 	var _book = __webpack_require__(67);
 
+	var _book_transaction = __webpack_require__(371);
+
 	__webpack_require__(334);
 
 	var _book_formPartial = __webpack_require__(361);
@@ -285,7 +287,7 @@ webpackJsonp([0],[
 	  template: _book_formPartial2.default,
 	  styleUrls: ['./css/book.css']
 	}), _dec2 = (0, _core.Input)(), _dec3 = (0, _core.Input)(), _dec4 = (0, _core.Output)(), _dec(_class = (_class2 = function () {
-	  function BookFormComponent(book_service, builder) {
+	  function BookFormComponent(book_service, book_transaction_service, builder, element) {
 	    _classCallCheck(this, BookFormComponent);
 
 	    _initDefineProp(this, 'book_id', _descriptor, this);
@@ -294,7 +296,9 @@ webpackJsonp([0],[
 
 	    _initDefineProp(this, 'getAllBooks', _descriptor3, this);
 
+	    this.el = element;
 	    this.book_service = book_service;
+	    this.book_transaction_service = book_transaction_service;
 	    this.builder = builder;
 	  }
 
@@ -305,15 +309,45 @@ webpackJsonp([0],[
 	      this.property_names = [];
 	      this.current_property_names = [];
 	      this.editMode = false;
-	      this.createForm();
 	      this.toggleShow = 'hide';
 	      this.toggleMessage = 'hideMessage';
 	      this.duplicate_isbn = null;
+	      this.createForm();
+	    }
+	  }, {
+	    key: 'filterBookByID',
+	    value: function filterBookByID(books, book_id) {
+	      var book = books.filter(function (book) {
+	        return book.id === book_id;
+	      });
+	      return book[0];
 	    }
 	  }, {
 	    key: 'issueBook',
 	    value: function issueBook() {
-	      return;
+	      var _this = this;
+
+	      // books that need reclick so it marks as selected
+	      // console.log(this.el.nativeElement.parentElement.parentElement.children[3].children["0"].children[1].children);
+	      if (this.book_id) {
+	        console.log(this.all_books);
+	        var book = this.filterBookByID(this.all_books, this.book_id);
+	        console.log(book);
+	        if (book.book_quantity > 0) {
+	          book = {
+	            book: {
+	              id: this.book_id
+	            }
+	          };
+	          console.log("book.book_quantity < 1 is true");
+	          return this.book_transaction_service.postBookTransaction(book).then(function () {
+	            _this.getAllBooks.emit();
+	            _this.book_id = 0;
+	          });
+	        } else {
+	          console.log("Cant ISSUE Because no stock");
+	        }
+	      }
 	    }
 	  }, {
 	    key: 'createForm',
@@ -331,42 +365,50 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'checkBookDuplicates',
 	    value: function checkBookDuplicates() {
-	      var _this = this;
+	      var _this2 = this;
 
 	      this.bookForm.get('isbn_code').valueChanges.subscribe(function (res) {
-	        _this.isbn_code = res;
+	        _this2.isbn_code = res;
 	        return new Promise(function (resolve, reject) {
-	          var book = _this.all_books.filter(function (book) {
-	            return book.isbn_code == _this.isbn_code;
+	          var book = _this2.all_books.filter(function (book) {
+	            return book.isbn_code == _this2.isbn_code;
 	          });
-	          // console.log(book);
 	          if (book.length > 0) {
-	            _this.duplicate_isbn = true;
-	            _this.toggleMessage = 'showMessage';
+	            _this2.duplicate_isbn = true;
+	            _this2.toggleMessage = 'showMessage';
 	          } else {
-	            _this.duplicate_isbn = false;
-	            _this.toggleMessage = 'hideMessage ';
+	            _this2.duplicate_isbn = false;
+	            _this2.toggleMessage = 'hideMessage ';
 	          }
 	        });
 	      });
 	    }
 	  }, {
+	    key: 'postBook',
+	    value: function postBook(book) {
+	      var _this3 = this;
+
+	      return this.book_service.postBook(book).then(function () {
+	        _this3.getAllBooks.emit();
+	      });
+	    }
+	  }, {
 	    key: 'onSubmit',
 	    value: function onSubmit(bookForm, event) {
-	      var _this2 = this;
+	      var _this4 = this;
 
 	      event.preventDefault();
 	      if (this.editMode && this.book_id) {
 	        return this.book_service.updateBook(this.book_id, bookForm.book_quantity).then(function () {
-	          _this2.getAllBooks.emit();
+	          _this4.getAllBooks.emit();
 	        });
 	      } else if (this.duplicate_isbn && !this.editMode) {
 	        var book = this.all_books.filter(function (book) {
-	          return book.isbn_code == _this2.isbn_code;
+	          return book.isbn_code == _this4.isbn_code;
 	        })[0];
 	        book.book_quantity = bookForm.book_quantity + book.book_quantity;
 	        return this.book_service.updateBook(book.id, book.book_quantity).then(function () {
-	          _this2.getAllBooks.emit();
+	          _this4.getAllBooks.emit();
 	        });
 	      } else {
 	        this.postBook(bookForm);
@@ -388,7 +430,7 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'toggleDisabled',
 	    value: function toggleDisabled(status) {
-	      var _this3 = this;
+	      var _this5 = this;
 
 	      this.status = status;
 	      if (this.status == "off") {
@@ -396,7 +438,7 @@ webpackJsonp([0],[
 	          return book != "book_quantity";
 	        });
 	        this.current_property_names.forEach(function (inputs) {
-	          _this3.bookForm.root.get(inputs).disable();
+	          _this5.bookForm.root.get(inputs).disable();
 	        });
 	      }
 	      if (this.status == "on") {
@@ -404,7 +446,7 @@ webpackJsonp([0],[
 	          return book;
 	        });
 	        this.current_property_names.forEach(function (inputs) {
-	          _this3.bookForm.root.get(inputs).enable();
+	          _this5.bookForm.root.get(inputs).enable();
 	        });
 	      }
 	    }
@@ -412,19 +454,18 @@ webpackJsonp([0],[
 	    key: 'showForm',
 	    value: function showForm() {
 	      var book_id = this.book_id;
+	      console.log(book_id);
 	      if (this.editMode) {
 	        this.editMode = false;
 	        this.toggleDisabled("on");
 	      } else {
 	        this.editMode = false;
 	        this.toggleDisabled("on");
-	        // console.log(" else in if(this.editMode:) ");
 	      }
 	      if (this.toggleShow == 'hide') {
 	        if (this.editMode) {
 	          this.editMode = false;
 	        } else {
-	          // console.log(" else this.editMode: ");
 	          this.toggleShow = 'show';
 	        }
 	        if (this.toggleShow == 'hide') {
@@ -434,15 +475,6 @@ webpackJsonp([0],[
 	          this.toggleDisabled("on");
 	        }
 	      }
-	    }
-	  }, {
-	    key: 'postBook',
-	    value: function postBook(book) {
-	      var _this4 = this;
-
-	      return this.book_service.postBook(book).then(function () {
-	        _this4.getAllBooks.emit();
-	      });
 	    }
 	  }, {
 	    key: 'editBook',
@@ -462,21 +494,18 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'deleteBook',
 	    value: function deleteBook() {
-	      var _this5 = this;
+	      var _this6 = this;
 
 	      if (this.book_id) {
 	        var book = this.all_books.filter(function (book) {
-	          return book.id == _this5.book_id;
+	          return book.id == _this6.book_id;
 	        });
 	        if (book[0].book_issued < 1) {
-	          console.log("book[0].book_issued is below 1 so it can be deleted");
-	          console.log(book[0].book_issued);
 	          return this.book_service.deleteBook(this.book_id).then(function () {
-	            _this5.getAllBooks.emit();
+	            _this6.getAllBooks.emit();
 	          });
 	        } else {
 	          console.log("book[0].book_issued is not < 1");
-	          console.log(book[0].book_issued);
 	        }
 	      } else {
 	        console.log("no book ID found");
@@ -501,7 +530,7 @@ webpackJsonp([0],[
 	    return new _core.EventEmitter();
 	  }
 	})), _class2)) || _class);
-	Reflect.defineMetadata('design:paramtypes', [_book.BookService, _forms.FormBuilder], BookFormComponent);
+	Reflect.defineMetadata('design:paramtypes', [_book.BookService, _book_transaction.BookTransactionService, _forms.FormBuilder, _core.ElementRef], BookFormComponent);
 
 /***/ },
 /* 67 */
@@ -16389,13 +16418,13 @@ webpackJsonp([0],[
 /* 361 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"button-group\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <!-- <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"viewTransaction()\">View Transactions</button> -->\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"issueBook()\">Issue Book</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n  <!-- <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"printBookID()\">Print BookID</button> -->\n    <!-- <button class=\"btn\" type=\"button\" name=\"button\" (click)=\"checkBookDuplicates()\">CheckISBN</button> -->\n</div>\n\n<form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code <span [ngClass]=\"toggleMessage\">Duplicate Book ISBN</span> </label>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
+	module.exports = "<div class=\"button-group\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <!-- <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"viewTransaction()\">View Transactions</button> -->\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"issueBook()\">Issue Book</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n  <!-- <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"printBookID()\">Print BookID</button> -->\n    <!-- <button class=\"btn\" type=\"button\" name=\"button\" (click)=\"checkBookDuplicates()\">CheckISBN</button> -->\n</div>\n\n<form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code <span [ngClass]=\"toggleMessage\">Warning: Duplicate Book ISBN</span> </label>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
 
 /***/ },
 /* 362 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <div class=\"button-group\">\n          <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"viewBooks()\">View Books</button>\n          <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"viewBookTransactions()\">View Book Transactions</button>\n        </div>\n        <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table>\n            <thead>\n              <tr>\n                <th>Book Name</th>\n                <th>Author</th>\n                <th>ISBN</th>\n                <th>Book Quantity</th>\n                <th>Published Date</th>\n                <th>Book Category</th>\n                <th>Books Issued</th>\n              </tr>\n            </thead>\n            <tbody>\n                  <tr [myHighlight]=\"blue\" id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of books\" (click)=\"selectBookID($event)\">\n                    <td>{{book.book_name }}</td>\n                    <td>{{book.author_name}}</td>\n                    <td>{{book.isbn_code}}</td>\n                    <td>{{book.book_quantity}}</td>\n                    <td>{{book.published_date | date | returnMonthYear }}</td>\n                    <td>{{book.book_category}}</td>\n                    <td>{{book.book_issued}}</td>\n                  </tr>\n            </tbody>\n\n          </table>\n        </div>\n\n        <div class=\"book-form\">\n          <book-form (getAllBooks)='displayBooks()' [all_books]='books' [book_id]=\"book_id\"></book-form>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <div class=\"button-group\">\n          <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"viewBooks()\">View Books</button>\n          <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"viewBookTransactions()\">View Book Transactions</button>\n        </div>\n        <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table width=\"400\" height=\"5\">\n            <thead>\n              <tr>\n                <th>Book Name</th>\n                <th>Author</th>\n                <th>ISBN</th>\n                <th>Book Quantity</th>\n                <th>Published Date</th>\n                <th>Book Category</th>\n                <th>Books Issued</th>\n              </tr>\n            </thead>\n            <tbody>\n                  <tr [myHighlight]=\"blue\" id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of books\" (click)=\"selectBookID($event)\">\n                    <td>{{book.book_name }}</td>\n                    <td>{{book.author_name}}</td>\n                    <td>{{book.isbn_code}}</td>\n                    <td>{{book.book_quantity}}</td>\n                    <td>{{book.published_date | date | returnMonthYear }}</td>\n                    <td>{{book.book_category}}</td>\n                    <td>{{book.book_issued}}</td>\n                  </tr>\n            </tbody>\n\n          </table>\n        </div>\n\n        <div class=\"book-form\">\n          <book-form (getAllBooks)='displayBooks()' [all_books]='books' [book_id]=\"book_id\"></book-form>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 /* 363 */
@@ -16406,7 +16435,7 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = exports.HighlightDirective = exports.BookService = exports.AppComponent = undefined;
+	exports.HighlightDirective = exports.BookTransactionService = exports.BookService = exports.AppComponent = exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = undefined;
 
 	var _app = __webpack_require__(364);
 
@@ -16416,23 +16445,26 @@ webpackJsonp([0],[
 
 	var _book2 = __webpack_require__(67);
 
+	var _book_transaction = __webpack_require__(371);
+
 	var _return_month = __webpack_require__(365);
 
 	var _highlight = __webpack_require__(366);
 
-	// Components
-	exports.AppComponent = _app.AppComponent;
-	exports.BookService = _book2.BookService;
-	exports.HighlightDirective = _highlight.HighlightDirective;
+	// Export all
+
+
 	// Pipes
 
-
 	// Services
-
+	var CORE_PROVIDERS = exports.CORE_PROVIDERS = [_book2.BookService, _book_transaction.BookTransactionService];
 	// Directive
-
-	var CORE_PROVIDERS = exports.CORE_PROVIDERS = [_book2.BookService];
+	// Components
 	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_book.BookComponent, _return_month.ReturnMonthYearPipe, _book_form.BookFormComponent, _highlight.HighlightDirective, _app.AppComponent];
+	exports.AppComponent = _app.AppComponent;
+	exports.BookService = _book2.BookService;
+	exports.BookTransactionService = _book_transaction.BookTransactionService;
+	exports.HighlightDirective = _highlight.HighlightDirective;
 
 /***/ },
 /* 364 */
@@ -16599,6 +16631,73 @@ webpackJsonp([0],[
 	  }
 	}), _applyDecoratedDescriptor(_class2.prototype, 'onMouseEnter', [_dec4], Object.getOwnPropertyDescriptor(_class2.prototype, 'onMouseEnter'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'onMouseLeave', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'onMouseLeave'), _class2.prototype)), _class2)) || _class);
 	Reflect.defineMetadata('design:paramtypes', [_core.ElementRef], HighlightDirective);
+
+/***/ },
+/* 367 */,
+/* 368 */,
+/* 369 */,
+/* 370 */,
+/* 371 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.BookTransactionService = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _dec, _class;
+
+	var _core = __webpack_require__(23);
+
+	var _http = __webpack_require__(29);
+
+	__webpack_require__(5);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var BookTransactionService = exports.BookTransactionService = (_dec = (0, _core.Injectable)(), _dec(_class = function () {
+	  function BookTransactionService(http) {
+	    _classCallCheck(this, BookTransactionService);
+
+	    this.book_transactions_endpoint = '/books/:book_id/book_transactions';
+	    this.update_book_transaction = '/books/:book_id/book_transactions/:id';
+
+	    this.http = http;
+	  }
+
+	  _createClass(BookTransactionService, [{
+	    key: 'getBookTransactions',
+	    value: function getBookTransactions() {
+	      console.log("get all book transactions");
+	      // get all book transactions
+	    }
+	  }, {
+	    key: 'postBookTransaction',
+	    value: function postBookTransaction(book) {
+	      var request = new Request('/books/' + book.book.id + '/book_transactions', { method: "POST", mode: "cors", headers: new Headers({ "Content-Type": "application/json" }), body: JSON.stringify(book) });
+	      return fetch(request).then(function (res) {
+	        return res.json();
+	      }).then(function (res) {
+	        console.log("res :", res);
+	      }, function (error) {
+	        console.log("Error occurred: ", error);
+	      });
+	    }
+	  }, {
+	    key: 'updateBookTransaction',
+	    value: function updateBookTransaction() {
+	      console.log("update book transactions");
+	      // update book transaction
+	    }
+	  }]);
+
+	  return BookTransactionService;
+	}()) || _class);
+	Reflect.defineMetadata('design:paramtypes', [_http.Http], BookTransactionService);
 
 /***/ }
 ]);
