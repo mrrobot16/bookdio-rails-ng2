@@ -152,7 +152,7 @@ webpackJsonp([0],[
 	var BookComponent = exports.BookComponent = (_dec = (0, _core.Component)({
 	  selector: 'books',
 	  template: _bookComponent2.default,
-	  styleUrls: ['./css/book.css']
+	  styleUrls: ['./css/stylesheet.css']
 	}), _dec(_class = function () {
 	  function BookComponent(book_service) {
 	    _classCallCheck(this, BookComponent);
@@ -285,7 +285,7 @@ webpackJsonp([0],[
 	var BookFormComponent = exports.BookFormComponent = (_dec = (0, _core.Component)({
 	  selector: 'book-form',
 	  template: _book_formPartial2.default,
-	  styleUrls: ['./css/book.css']
+	  styleUrls: ['./css/stylesheet.css']
 	}), _dec2 = (0, _core.Input)(), _dec3 = (0, _core.Input)(), _dec4 = (0, _core.Output)(), _dec(_class = (_class2 = function () {
 	  function BookFormComponent(book_service, book_transaction_service, builder, element) {
 	    _classCallCheck(this, BookFormComponent);
@@ -16424,7 +16424,7 @@ webpackJsonp([0],[
 /* 362 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <h1>Welcome to our Book Recommendations</h1>\n        <div class=\"button-group\">\n          <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"viewBooks()\">View Books</button>\n          <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"viewBookTransactions()\">View Book Transactions</button>\n        </div>\n        <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table width=\"400\" height=\"5\">\n            <thead>\n              <tr>\n                <th>Book Name</th>\n                <th>Author</th>\n                <th>ISBN</th>\n                <th>Book Quantity</th>\n                <th>Published Date</th>\n                <th>Book Category</th>\n                <th>Books Issued</th>\n              </tr>\n            </thead>\n            <tbody>\n                  <tr [myHighlight]=\"blue\" id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of books\" (click)=\"selectBookID($event)\">\n                    <td>{{book.book_name }}</td>\n                    <td>{{book.author_name}}</td>\n                    <td>{{book.isbn_code}}</td>\n                    <td>{{book.book_quantity}}</td>\n                    <td>{{book.published_date | date | returnMonthYear }}</td>\n                    <td>{{book.book_category}}</td>\n                    <td>{{book.book_issued}}</td>\n                  </tr>\n            </tbody>\n\n          </table>\n        </div>\n\n        <div class=\"book-form\">\n          <book-form (getAllBooks)='displayBooks()' [all_books]='books' [book_id]=\"book_id\"></book-form>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <div class=\"books\">\n          <table width=\"400\" height=\"5\">\n            <thead>\n              <tr>\n                <th>Book Name</th>\n                <th>Author</th>\n                <th>ISBN</th>\n                <th>Book Quantity</th>\n                <th>Published Date</th>\n                <th>Book Category</th>\n                <th>Books Issued</th>\n              </tr>\n            </thead>\n            <tbody>\n                  <tr [myHighlight]=\"blue\" id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of books\" (click)=\"selectBookID($event)\">\n                    <td>{{book.book_name }}</td>\n                    <td>{{book.author_name}}</td>\n                    <td>{{book.isbn_code}}</td>\n                    <td>{{book.book_quantity}}</td>\n                    <td>{{book.published_date | date | returnMonthYear }}</td>\n                    <td>{{book.book_category}}</td>\n                    <td>{{book.book_issued}}</td>\n                  </tr>\n            </tbody>\n\n          </table>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' [all_books]='books' [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 /* 363 */
@@ -16477,18 +16477,38 @@ webpackJsonp([0],[
 	});
 	exports.AppComponent = undefined;
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _dec, _class;
 
 	var _core = __webpack_require__(23);
+
+	var _router = __webpack_require__(30);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var AppComponent = exports.AppComponent = (_dec = (0, _core.Component)({
 	  selector: 'my-app',
-	  template: '\n  <div class="container body-container">\n      <router-outlet></router-outlet>\n  </div>\n  '
-	}), _dec(_class = function AppComponent() {
-	  _classCallCheck(this, AppComponent);
-	}) || _class);
+	  template: '\n  <div class="container body-container">\n    <div>\n    <h1>Welcome to our Book Recommendations</h1>\n    <div class="button-group">\n      <button class="btn-primary" type="button" name="button" (click)="viewBooks()">View Books</button>\n      <button class="btn-success" type="button" name="button" (click)="viewBookTransactions()">View Book Transactions</button>\n    </div>\n    <p class="lead underlined">Our Favorite books</p>\n    </div>\n    <router-outlet></router-outlet>\n  </div>\n  ',
+	  styleUrls: ['./css/stylesheet.css']
+	}), _dec(_class = function () {
+	  function AppComponent(router) {
+	    _classCallCheck(this, AppComponent);
+
+	    this.router = router;
+	  }
+
+	  _createClass(AppComponent, [{
+	    key: 'viewBooks',
+	    value: function viewBooks() {}
+	  }, {
+	    key: 'viewBookTransactions',
+	    value: function viewBookTransactions() {}
+	  }]);
+
+	  return AppComponent;
+	}()) || _class);
+	Reflect.defineMetadata('design:paramtypes', [_router.Router], AppComponent);
 
 /***/ },
 /* 365 */

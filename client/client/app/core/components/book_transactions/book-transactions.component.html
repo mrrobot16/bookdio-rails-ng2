@@ -1,0 +1,22 @@
+<table width="400" height="5">
+  <thead>
+    <tr>
+      <th>Book ID</th>
+      <th>Transaction Type</th>
+      <th>Transaction Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ngFor="let book_transaction of books">
+      <td>{{book.book_name }}</td>
+      <td>{{book.author_name}}</td>
+      <td>{{book.isbn_code}}</td>
+      <td>{{book.book_quantity}}</td>
+      <td>{{book.published_date | date | returnMonthYear }}</td>
+      <td>{{book.book_category}}</td>
+      <td>{{book.book_issued}}</td>
+      <td><button class="btn-danger" (click)="returnBookIssue()">Close Transaction/Return Book</button></td>
+    </tr>
+  </tbody>
+
+</table>

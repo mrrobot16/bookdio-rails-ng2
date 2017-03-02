@@ -6,7 +6,7 @@ import template from './book.component.html';
 @Component({
   selector: 'books',
   template: template,
-  styleUrls: ['./css/book.css']
+  styleUrls: ['./css/stylesheet.css']
 })
 export class BookComponent implements OnInit {
   books = [];

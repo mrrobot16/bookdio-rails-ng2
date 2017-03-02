@@ -8,7 +8,7 @@ import template from './book_form.partial.html';
 @Component({
   selector: 'book-form',
   template: template,
-  styleUrls:['./css/book.css']
+  styleUrls:['./css/stylesheet.css']
 })
 export class BookFormComponent implements OnInit {
   @Input() book_id;

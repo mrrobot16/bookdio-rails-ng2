@@ -1,11 +1,5 @@
 <div class="row">
     <div class="col-sm-12">
-        <h1>Welcome to our Book Recommendations</h1>
-        <div class="button-group">
-          <button class="btn-primary" type="button" name="button" (click)="viewBooks()">View Books</button>
-          <button class="btn-success" type="button" name="button" (click)="viewBookTransactions()">View Book Transactions</button>
-        </div>
-        <p class="lead underlined">Our Favorite books</p>
         <div class="books">
           <table width="400" height="5">
             <thead>
@@ -32,10 +26,9 @@
             </tbody>
 
           </table>
-        </div>
-
-        <div class="book-form">
-          <book-form (getAllBooks)='displayBooks()' [all_books]='books' [book_id]="book_id"></book-form>
+          <div class="book-form">
+            <book-form (getAllBooks)='displayBooks()' [all_books]='books' [book_id]="book_id"></book-form>
+          </div>
         </div>
     </div>
 </div>
