@@ -12,14 +12,11 @@ import template from './book_form.partial.html';
 export class BookFormComponent implements OnInit {
   @Input() book_id;
   @Input() all_books;
-  // @Input() disable_btn;
   @Output() getAllBooks = new EventEmitter()
   constructor(book_service: BookService, builder: FormBuilder){
     this.book_service = book_service;
     this.builder = builder;
   }
-
-
 
   ngOnInit(){
     this.now = new Date()
@@ -27,8 +24,9 @@ export class BookFormComponent implements OnInit {
     this.current_property_names = [];
     this.editMode = false;
     this.createForm()
-    this.toggleShow = 'hideForm';
-
+    this.toggleShow = 'hide';
+    this.toggleMessage = 'hideMessage'
+    this.duplicate_isbn = null
   }
 
   issueBook(){
@@ -44,6 +42,48 @@ export class BookFormComponent implements OnInit {
       published_date: ['2017-04'],
       book_category: ['Strategy']
     })
+    this.checkBookDuplicates();
+   }
+
+   checkBookDuplicates(){
+     this.bookForm.get('isbn_code').valueChanges.subscribe((res)=>{
+       this.isbn_code = res
+       return new Promise((resolve,reject)=>{
+         let book = this.all_books.filter((book)=>{
+         return book.isbn_code == this.isbn_code
+        })
+        // console.log(book);
+        if(book.length > 0){
+          this.duplicate_isbn = true
+          this.toggleMessage = 'showMessage'
+        }
+        else {
+          this.duplicate_isbn = false
+          this.toggleMessage = 'hideMessage '
+        }
+      })
+    })
+   }
+
+   onSubmit(bookForm, event){
+     event.preventDefault();
+     if(this.editMode && this.book_id){
+       return this.book_service.updateBook(this.book_id, bookForm.book_quantity).then(()=>{
+         this.getAllBooks.emit()
+       })
+     }
+     else if (this.duplicate_isbn && !this.editMode) {
+       let book = this.all_books.filter((book)=>{
+         return book.isbn_code == this.isbn_code
+       })[0]
+       book.book_quantity = bookForm.book_quantity + book.book_quantity
+       return this.book_service.updateBook(book.id, book.book_quantity).then(()=>{
+         this.getAllBooks.emit()
+       })
+     }
+     else {
+       this.postBook(bookForm)
+     }
    }
 
   property_names_array(){
@@ -88,17 +128,18 @@ export class BookFormComponent implements OnInit {
     else {
       this.editMode = false
       this.toggleDisabled("on")
-      console.log(" else in if(this.editMode:) ");
+      // console.log(" else in if(this.editMode:) ");
     }
-    if(this.toggleShow == 'hideForm'){
+    if(this.toggleShow == 'hide'){
     if(this.editMode){
       this.editMode = false;
     }
     else {
-      console.log(" else this.editMode: ");
+      // console.log(" else this.editMode: ");
+      this.toggleShow = 'show'
     }
-    if(this.toggleShow == 'hideForm'){
-      this.toggleShow = 'showForm'
+    if(this.toggleShow == 'hide'){
+      this.toggleShow = 'show'
       this.toggleDisabled("on")
     }
     else {
@@ -107,19 +148,6 @@ export class BookFormComponent implements OnInit {
     }
   }
 
-  onSubmit(bookForm, event){
-    event.preventDefault();
-    if(this.editMode && this.book_id){
-      console.log(bookForm);
-      return this.book_service.updateBook(this.book_id, bookForm.book_quantity).then(()=>{
-        this.getAllBooks.emit()
-      })
-    }
-    else {
-      console.log("onSubmit else");
-      this.postBook(bookForm)
-    }
-  }
 
   postBook(book){
     return this.book_service.postBook(book).then(()=>{
@@ -130,8 +158,8 @@ export class BookFormComponent implements OnInit {
   editBook(book){
     if(this.book_id){
       this.editMode = !this.editMode;
-      if(this.toggleShow == 'hideForm'){
-        this.toggleShow = 'showForm'
+      if(this.toggleShow == 'hide'){
+        this.toggleShow = 'show'
         this.toggleDisabled("off")
       }
       else {
@@ -140,18 +168,6 @@ export class BookFormComponent implements OnInit {
     }
     else {
     console.log("no this.book_id");
-    }
-  }
-
-  printBookID() {
-    if(this.book_id){
-      console.log("in printBookID if(this.book_id) : ", this.book_id);
-      console.log("this.editMode", this.editMode);
-    }
-    else{
-      console.log("else printBookID");
-      console.log("this.book_id: ", this.book_id);
-      console.log("this.editMode: ", this.editMode);
     }
   }
 

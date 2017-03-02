@@ -9,4 +9,3 @@ import '@angular/router';
 import '@angular/http';
 import '@angular/forms';
 import * as _ from 'underscore';
-console.log(_)

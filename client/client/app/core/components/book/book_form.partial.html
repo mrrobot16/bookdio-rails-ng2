@@ -5,6 +5,7 @@
   <button class="btn-success" type="button" name="button" (click)="issueBook()">Issue Book</button>
   <button class="btn-danger" type="button" name="button" (click)="deleteBook()">Delete</button>
   <!-- <button class="btn-danger" type="button" name="button" (click)="printBookID()">Print BookID</button> -->
+    <!-- <button class="btn" type="button" name="button" (click)="checkBookDuplicates()">CheckISBN</button> -->
 </div>
 
 <form [ngClass]="toggleShow" (ngSubmit)="onSubmit(bookForm.value, $event)" [formGroup]="bookForm">
@@ -18,7 +19,7 @@
         <input type="text" formControlName="author_name" class="form-control">
     </div>
     <div class="form-group">
-        <label>ISBN Code</label>
+        <label>ISBN Code <span [ngClass]="toggleMessage">Duplicate Book ISBN</span> </label>
         <input type="text" formControlName="isbn_code" class="form-control">
     </div>
     <div class="form-group">
