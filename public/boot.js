@@ -116,9 +116,9 @@ webpackJsonp([0],[
 	});
 	exports.routes = undefined;
 
-	var _book = __webpack_require__(65);
+	var _index = __webpack_require__(363);
 
-	var routes = exports.routes = [{ path: '', component: _book.BookComponent, pathMatch: 'full' }, { path: 'books', component: _book.BookComponent }];
+	var routes = exports.routes = [{ path: '', component: _index.BookComponent, pathMatch: 'full' }, { path: 'books', component: _index.BookComponent }, { path: 'book_transactions', component: _index.BookTransactionComponent }];
 
 /***/ },
 /* 65 */
@@ -16435,7 +16435,7 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.HighlightDirective = exports.BookTransactionService = exports.BookService = exports.AppComponent = exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = undefined;
+	exports.HighlightDirective = exports.BookTransactionService = exports.BookService = exports.BookTransactionComponent = exports.BookComponent = exports.AppComponent = exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = undefined;
 
 	var _app = __webpack_require__(364);
 
@@ -16443,9 +16443,11 @@ webpackJsonp([0],[
 
 	var _book_form = __webpack_require__(66);
 
+	var _book_transaction = __webpack_require__(372);
+
 	var _book2 = __webpack_require__(67);
 
-	var _book_transaction = __webpack_require__(371);
+	var _book_transaction2 = __webpack_require__(371);
 
 	var _return_month = __webpack_require__(365);
 
@@ -16457,13 +16459,15 @@ webpackJsonp([0],[
 	// Pipes
 
 	// Services
-	var CORE_PROVIDERS = exports.CORE_PROVIDERS = [_book2.BookService, _book_transaction.BookTransactionService];
-	// Directive
 	// Components
-	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_book.BookComponent, _return_month.ReturnMonthYearPipe, _book_form.BookFormComponent, _highlight.HighlightDirective, _app.AppComponent];
+	var CORE_PROVIDERS = exports.CORE_PROVIDERS = [_book2.BookService, _book_transaction2.BookTransactionService];
+	// Directive
+	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_app.AppComponent, _book.BookComponent, _book_form.BookFormComponent, _book_transaction.BookTransactionComponent, _highlight.HighlightDirective, _return_month.ReturnMonthYearPipe];
 	exports.AppComponent = _app.AppComponent;
+	exports.BookComponent = _book.BookComponent;
+	exports.BookTransactionComponent = _book_transaction.BookTransactionComponent;
 	exports.BookService = _book2.BookService;
-	exports.BookTransactionService = _book_transaction.BookTransactionService;
+	exports.BookTransactionService = _book_transaction2.BookTransactionService;
 	exports.HighlightDirective = _highlight.HighlightDirective;
 
 /***/ },
@@ -16500,10 +16504,16 @@ webpackJsonp([0],[
 
 	  _createClass(AppComponent, [{
 	    key: 'viewBooks',
-	    value: function viewBooks() {}
+	    value: function viewBooks() {
+	      console.log(this.router);
+	      this.router.navigate(['books']);
+	    }
 	  }, {
 	    key: 'viewBookTransactions',
-	    value: function viewBookTransactions() {}
+	    value: function viewBookTransactions() {
+	      // console.log(this.router);
+	      this.router.navigate(['book_transactions']);
+	    }
 	  }]);
 
 	  return AppComponent;
@@ -16718,6 +16728,66 @@ webpackJsonp([0],[
 	  return BookTransactionService;
 	}()) || _class);
 	Reflect.defineMetadata('design:paramtypes', [_http.Http], BookTransactionService);
+
+/***/ },
+/* 372 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.BookTransactionComponent = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _dec, _class;
+
+	var _core = __webpack_require__(23);
+
+	var _book_transaction = __webpack_require__(371);
+
+	var _book_transactionComponent = __webpack_require__(373);
+
+	var _book_transactionComponent2 = _interopRequireDefault(_book_transactionComponent);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var BookTransactionComponent = exports.BookTransactionComponent = (_dec = (0, _core.Component)({
+	  selector: 'book-transactions',
+	  template: _book_transactionComponent2.default,
+	  styleUrls: ['./css/stylesheet.css']
+	}), _dec(_class = function () {
+	  function BookTransactionComponent(book_transaction_service) {
+	    _classCallCheck(this, BookTransactionComponent);
+
+	    this.book_transaction_service = book_transaction_service;
+	  }
+
+	  _createClass(BookTransactionComponent, [{
+	    key: 'ngOnInit',
+	    value: function ngOnInit() {
+	      this.book_transactions = ["1", "2", "3", "5", "6"];
+	    }
+	  }, {
+	    key: 'returnBookIssue',
+	    value: function returnBookIssue(book_transaction) {
+	      console.log(book_transaction);
+	    }
+	  }]);
+
+	  return BookTransactionComponent;
+	}()) || _class);
+	Reflect.defineMetadata('design:paramtypes', [_book_transaction.BookTransactionService], BookTransactionComponent);
+
+/***/ },
+/* 373 */
+/***/ function(module, exports) {
+
+	module.exports = "<table width=\"400\" height=\"5\" id=\"book_transactions\">\n  <thead>\n    <tr>\n      <th>Book ID</th>\n      <th>Transaction Type</th>\n      <th>Transaction Status</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let book_transaction of book_transactions\">\n      <td>{{book.book_name }</td>\n      <td>{{book.author_name}</td>\n      <td>{{book.isbn_code}</td>\n      <button class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n    </tr>\n  </tbody>\n\n</table>\n"
 
 /***/ }
 ]);

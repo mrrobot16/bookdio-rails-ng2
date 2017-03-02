@@ -1,0 +1,18 @@
+<table width="400" height="5" id="book_transactions">
+  <thead>
+    <tr>
+      <th>Book ID</th>
+      <th>Transaction Type</th>
+      <th>Transaction Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let book_transaction of book_transactions">
+      <td>{{book.book_name }</td>
+      <td>{{book.author_name}</td>
+      <td>{{book.isbn_code}</td>
+      <button class="btn-danger" (click)="returnBookIssue(book_transaction)">Return Book</button>
+    </tr>
+  </tbody>
+
+</table>

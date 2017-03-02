@@ -23,10 +23,12 @@ export class AppComponent {
     this.router = router
   }
   viewBooks(){
-
+    console.log(this.router);
+    this.router.navigate(['books'])
   }
   viewBookTransactions(){
-    
+    // console.log(this.router);
+    this.router.navigate(['book_transactions'])
   }
 
 

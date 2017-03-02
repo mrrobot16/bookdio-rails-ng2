@@ -48,3 +48,9 @@ form > div:nth-child(3) > label > span {
   background-color: red;
   color: white;
 }
+
+table#book_transactions > tbody > tr > button {
+  margin-left: 1em;
+  margin-top: 8px;
+  height: 1.8em;
+}
