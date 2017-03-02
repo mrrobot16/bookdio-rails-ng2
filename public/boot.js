@@ -983,7 +983,7 @@ webpackJsonp([0],{
 /***/ 77:
 /***/ function(module, exports) {
 
-	module.exports = "<table width=\"400\" height=\"5\" id=\"book_transactions\">\n  <thead>\n    <tr>\n      <th>Transaction Date</th>\n      <th>Transaction Type</th>\n      <th>Transaction Status</th>\n      <th>Returned Date </th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let book_transaction of book_transactions\">\n      <td>{{book_transaction.created_at | date }}</td>\n      <td>{{book_transaction.transaction_type}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n      <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n    </tr>\n  </tbody>\n\n</table>\n"
+	module.exports = "<table width=\"400\" height=\"5\" id=\"book_transactions\">\n  <thead>\n    <tr>\n      <th>Transaction Date</th>\n      <th>Transaction Type</th>\n      <th>Transaction Status</th>\n      <th>Returned Date </th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let book_transaction of book_transactions\">\n      <td>{{book_transaction.created_at | date }}</td>\n      <td>{{book_transaction.transaction_type | uppercase}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n      <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n    </tr>\n  </tbody>\n\n</table>\n"
 
 /***/ },
 
