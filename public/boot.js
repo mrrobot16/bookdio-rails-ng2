@@ -181,9 +181,6 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'selectBookID',
 	    value: function selectBookID(event) {
-	      if (event.target.parentElement.classList.contains('selectedBook')) {
-	        event.target.parentElement.classList.remove('selectedBook');
-	      }
 	      var all_books = event.target.parentElement.parentElement.children;
 	      for (var x = 0; x < all_books.length; x++) {
 	        all_books[x].classList.remove('selectedBook');
@@ -300,8 +297,6 @@ webpackJsonp([0],[
 	    this.book_service = book_service;
 	    this.builder = builder;
 	  }
-	  // @Input() disable_btn;
-
 
 	  _createClass(BookFormComponent, [{
 	    key: 'ngOnInit',
@@ -311,7 +306,9 @@ webpackJsonp([0],[
 	      this.current_property_names = [];
 	      this.editMode = false;
 	      this.createForm();
-	      this.toggleShow = 'hideForm';
+	      this.toggleShow = 'hide';
+	      this.toggleMessage = 'hideMessage';
+	      this.duplicate_isbn = null;
 	    }
 	  }, {
 	    key: 'issueBook',
@@ -329,6 +326,51 @@ webpackJsonp([0],[
 	        published_date: ['2017-04'],
 	        book_category: ['Strategy']
 	      });
+	      this.checkBookDuplicates();
+	    }
+	  }, {
+	    key: 'checkBookDuplicates',
+	    value: function checkBookDuplicates() {
+	      var _this = this;
+
+	      this.bookForm.get('isbn_code').valueChanges.subscribe(function (res) {
+	        _this.isbn_code = res;
+	        return new Promise(function (resolve, reject) {
+	          var book = _this.all_books.filter(function (book) {
+	            return book.isbn_code == _this.isbn_code;
+	          });
+	          // console.log(book);
+	          if (book.length > 0) {
+	            _this.duplicate_isbn = true;
+	            _this.toggleMessage = 'showMessage';
+	          } else {
+	            _this.duplicate_isbn = false;
+	            _this.toggleMessage = 'hideMessage ';
+	          }
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'onSubmit',
+	    value: function onSubmit(bookForm, event) {
+	      var _this2 = this;
+
+	      event.preventDefault();
+	      if (this.editMode && this.book_id) {
+	        return this.book_service.updateBook(this.book_id, bookForm.book_quantity).then(function () {
+	          _this2.getAllBooks.emit();
+	        });
+	      } else if (this.duplicate_isbn && !this.editMode) {
+	        var book = this.all_books.filter(function (book) {
+	          return book.isbn_code == _this2.isbn_code;
+	        })[0];
+	        book.book_quantity = bookForm.book_quantity + book.book_quantity;
+	        return this.book_service.updateBook(book.id, book.book_quantity).then(function () {
+	          _this2.getAllBooks.emit();
+	        });
+	      } else {
+	        this.postBook(bookForm);
+	      }
 	    }
 	  }, {
 	    key: 'property_names_array',
@@ -346,7 +388,7 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'toggleDisabled',
 	    value: function toggleDisabled(status) {
-	      var _this = this;
+	      var _this3 = this;
 
 	      this.status = status;
 	      if (this.status == "off") {
@@ -354,7 +396,7 @@ webpackJsonp([0],[
 	          return book != "book_quantity";
 	        });
 	        this.current_property_names.forEach(function (inputs) {
-	          _this.bookForm.root.get(inputs).disable();
+	          _this3.bookForm.root.get(inputs).disable();
 	        });
 	      }
 	      if (this.status == "on") {
@@ -362,7 +404,7 @@ webpackJsonp([0],[
 	          return book;
 	        });
 	        this.current_property_names.forEach(function (inputs) {
-	          _this.bookForm.root.get(inputs).enable();
+	          _this3.bookForm.root.get(inputs).enable();
 	        });
 	      }
 	    }
@@ -376,45 +418,30 @@ webpackJsonp([0],[
 	      } else {
 	        this.editMode = false;
 	        this.toggleDisabled("on");
-	        console.log(" else in if(this.editMode:) ");
+	        // console.log(" else in if(this.editMode:) ");
 	      }
-	      if (this.toggleShow == 'hideForm') {
+	      if (this.toggleShow == 'hide') {
 	        if (this.editMode) {
 	          this.editMode = false;
 	        } else {
-	          console.log(" else this.editMode: ");
+	          // console.log(" else this.editMode: ");
+	          this.toggleShow = 'show';
 	        }
-	        if (this.toggleShow == 'hideForm') {
-	          this.toggleShow = 'showForm';
+	        if (this.toggleShow == 'hide') {
+	          this.toggleShow = 'show';
 	          this.toggleDisabled("on");
 	        } else {
 	          this.toggleDisabled("on");
 	        }
-	      }
-	    }
-	  }, {
-	    key: 'onSubmit',
-	    value: function onSubmit(bookForm, event) {
-	      var _this2 = this;
-
-	      event.preventDefault();
-	      if (this.editMode && this.book_id) {
-	        console.log(bookForm);
-	        return this.book_service.updateBook(this.book_id, bookForm.book_quantity).then(function () {
-	          _this2.getAllBooks.emit();
-	        });
-	      } else {
-	        console.log("onSubmit else");
-	        this.postBook(bookForm);
 	      }
 	    }
 	  }, {
 	    key: 'postBook',
 	    value: function postBook(book) {
-	      var _this3 = this;
+	      var _this4 = this;
 
 	      return this.book_service.postBook(book).then(function () {
-	        _this3.getAllBooks.emit();
+	        _this4.getAllBooks.emit();
 	      });
 	    }
 	  }, {
@@ -422,8 +449,8 @@ webpackJsonp([0],[
 	    value: function editBook(book) {
 	      if (this.book_id) {
 	        this.editMode = !this.editMode;
-	        if (this.toggleShow == 'hideForm') {
-	          this.toggleShow = 'showForm';
+	        if (this.toggleShow == 'hide') {
+	          this.toggleShow = 'show';
 	          this.toggleDisabled("off");
 	        } else {
 	          this.toggleDisabled("off");
@@ -433,31 +460,19 @@ webpackJsonp([0],[
 	      }
 	    }
 	  }, {
-	    key: 'printBookID',
-	    value: function printBookID() {
-	      if (this.book_id) {
-	        console.log("in printBookID if(this.book_id) : ", this.book_id);
-	        console.log("this.editMode", this.editMode);
-	      } else {
-	        console.log("else printBookID");
-	        console.log("this.book_id: ", this.book_id);
-	        console.log("this.editMode: ", this.editMode);
-	      }
-	    }
-	  }, {
 	    key: 'deleteBook',
 	    value: function deleteBook() {
-	      var _this4 = this;
+	      var _this5 = this;
 
 	      if (this.book_id) {
 	        var book = this.all_books.filter(function (book) {
-	          return book.id == _this4.book_id;
+	          return book.id == _this5.book_id;
 	        });
 	        if (book[0].book_issued < 1) {
 	          console.log("book[0].book_issued is below 1 so it can be deleted");
 	          console.log(book[0].book_issued);
 	          return this.book_service.deleteBook(this.book_id).then(function () {
-	            _this4.getAllBooks.emit();
+	            _this5.getAllBooks.emit();
 	          });
 	        } else {
 	          console.log("book[0].book_issued is not < 1");
@@ -16374,7 +16389,7 @@ webpackJsonp([0],[
 /* 361 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"button-group\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <!-- <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"viewTransaction()\">View Transactions</button> -->\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"issueBook()\">Issue Book</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n  <!-- <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"printBookID()\">Print BookID</button> -->\n</div>\n\n<form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code</label>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
+	module.exports = "<div class=\"button-group\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <!-- <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"viewTransaction()\">View Transactions</button> -->\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"issueBook()\">Issue Book</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n  <!-- <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"printBookID()\">Print BookID</button> -->\n    <!-- <button class=\"btn\" type=\"button\" name=\"button\" (click)=\"checkBookDuplicates()\">CheckISBN</button> -->\n</div>\n\n<form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code <span [ngClass]=\"toggleMessage\">Duplicate Book ISBN</span> </label>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
 
 /***/ },
 /* 362 */
