@@ -10,9 +10,17 @@ export class BookTransactionService {
     this.http = http;
   }
 
-  getBookTransactions(){
+  getBookTransactions(id){
     console.log("get all book transactions");
-    // get all book transactions
+    let all_book_transactions = this.http.get('/books/'+id+'/book_transactions', {headers: new Headers({ 'Content-Type' : 'application/json; charset=utf-8'})}).map((res)=>{
+      console.log("getBookTransactions: ", res.json());
+      return res.json()
+    })
+    return all_book_transactions;
+  }
+
+  getBooks(){
+
   }
 
   postBookTransaction(book){

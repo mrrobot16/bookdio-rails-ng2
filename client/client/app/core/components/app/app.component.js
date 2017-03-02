@@ -11,7 +11,6 @@ import {Router} from '@angular/router';
       <button class="btn-primary" type="button" name="button" (click)="viewBooks()">View Books</button>
       <button class="btn-success" type="button" name="button" (click)="viewBookTransactions()">View Book Transactions</button>
     </div>
-    <p class="lead underlined">Our Favorite books</p>
     </div>
     <router-outlet></router-outlet>
   </div>
