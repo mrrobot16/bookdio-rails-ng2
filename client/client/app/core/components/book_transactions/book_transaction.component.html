@@ -13,7 +13,7 @@
       <td>{{book_transaction.transaction_type}}</td>
       <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>
       <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>
-      <button *ngIf='book_transaction.transaction_status' class="btn-danger" (click)="returnBookIssue(book_transaction.id)">Return Book</button>
+      <button *ngIf='book_transaction.transaction_status' class="btn-danger" (click)="returnBookIssue(book_transaction)">Return Book</button>
     </tr>
   </tbody>
 

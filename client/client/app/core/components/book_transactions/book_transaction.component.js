@@ -29,19 +29,15 @@ export class BookTransactionComponent implements OnInit {
   }
 
   getBookTransactions(id){
-    console.log(id);
     let book_transactions = this.book_transaction_service.getBookTransactions(id)
     book_transactions.subscribe((book_transactions)=>{
-      console.log(this.book_transactions);
       this.book_transactions = book_transactions
     }, this.logError)
   }
   returnBookIssue(book_transaction){
-    this.book_transaction_service.updateBookTransaction()
-  }
-
-  returnBoolean(bool){
-    return bool
+    this.book_transaction_service.updateBookTransaction(book_transaction).then(()=>{
+      this.getBookTransactions(this.shared_service.getBookID())
+    })
   }
 
   logError(error){

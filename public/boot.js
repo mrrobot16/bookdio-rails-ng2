@@ -765,9 +765,19 @@ webpackJsonp([0],{
 	    }
 	  }, {
 	    key: 'updateBookTransaction',
-	    value: function updateBookTransaction() {
-	      console.log("update book transactions");
-	      // update book transaction
+	    value: function updateBookTransaction(book_transaction) {
+	      var book = {
+	        book_transaction: {
+	          id: book_transaction.id
+	        }
+	      };
+	      var endpoint = '/books/' + book_transaction.book_id + '/book_transactions/' + book_transaction.id;
+	      var request = new Request(endpoint, { method: "PUT", mode: "cors", headers: new Headers({ "Content-Type": "application/json" }), body: JSON.stringify(book) });
+	      return fetch(request).then(function (res) {
+	        return res.json();
+	      }).then(function (res) {}, function (error) {
+	        console.log("Error occurred: ", error);
+	      });
 	    }
 	  }]);
 
@@ -943,22 +953,19 @@ webpackJsonp([0],{
 	    value: function getBookTransactions(id) {
 	      var _this = this;
 
-	      console.log(id);
 	      var book_transactions = this.book_transaction_service.getBookTransactions(id);
 	      book_transactions.subscribe(function (book_transactions) {
-	        console.log(_this.book_transactions);
 	        _this.book_transactions = book_transactions;
 	      }, this.logError);
 	    }
 	  }, {
 	    key: 'returnBookIssue',
 	    value: function returnBookIssue(book_transaction) {
-	      this.book_transaction_service.updateBookTransaction();
-	    }
-	  }, {
-	    key: 'returnBoolean',
-	    value: function returnBoolean(bool) {
-	      return bool;
+	      var _this2 = this;
+
+	      this.book_transaction_service.updateBookTransaction(book_transaction).then(function () {
+	        _this2.getBookTransactions(_this2.shared_service.getBookID());
+	      });
 	    }
 	  }, {
 	    key: 'logError',
@@ -976,7 +983,7 @@ webpackJsonp([0],{
 /***/ 77:
 /***/ function(module, exports) {
 
-	module.exports = "<table width=\"400\" height=\"5\" id=\"book_transactions\">\n  <thead>\n    <tr>\n      <th>Transaction Date</th>\n      <th>Transaction Type</th>\n      <th>Transaction Status</th>\n      <th>Returned Date </th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let book_transaction of book_transactions\">\n      <td>{{book_transaction.created_at | date }}</td>\n      <td>{{book_transaction.transaction_type}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n      <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction.id)\">Return Book</button>\n    </tr>\n  </tbody>\n\n</table>\n"
+	module.exports = "<table width=\"400\" height=\"5\" id=\"book_transactions\">\n  <thead>\n    <tr>\n      <th>Transaction Date</th>\n      <th>Transaction Type</th>\n      <th>Transaction Status</th>\n      <th>Returned Date </th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let book_transaction of book_transactions\">\n      <td>{{book_transaction.created_at | date }}</td>\n      <td>{{book_transaction.transaction_type}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n      <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n    </tr>\n  </tbody>\n\n</table>\n"
 
 /***/ },
 

@@ -22,10 +22,15 @@ export class BookTransactionService {
     return fetch(request).then((res)=>{return res.json()}).then((res)=> { }, (error)=>{console.log("Error occurred: ", error)});
   }
 
-  updateBookTransaction(){
-    console.log("update book transactions");
-    // update book transaction
+  updateBookTransaction(book_transaction){
+    let book = {
+      book_transaction: {
+        id:book_transaction.id
+      }
+    }
+    let endpoint = '/books/'+book_transaction.book_id+'/book_transactions/'+book_transaction.id
+    let request = new Request(endpoint, {method:"PUT", mode:"cors", headers: new Headers({"Content-Type":"application/json"}), body:JSON.stringify(book)})
+    return fetch(request).then((res)=>{return res.json()}).then((res)=> { }, (error)=>{console.log("Error occurred: ", error)});
   }
-
 
 }
