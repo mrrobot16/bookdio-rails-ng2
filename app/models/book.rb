@@ -1,4 +1,10 @@
 class Book < ApplicationRecord
+  validates :book_name, presence: true
+  validates :author_name, presence: true
+  validates :isbn_code, presence: true
+  validates :book_quantity, presence: true
+  validates :published_date, presence: true
+  validates :book_category, presence: true
   has_many :book_transactions, dependent: :destroy
   after_initialize :set_book_issued, :if => :new_record?
 
