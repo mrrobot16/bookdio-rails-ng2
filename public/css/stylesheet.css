@@ -40,9 +40,14 @@ td, th {
   display:inherit
 }
 
-form > div:nth-child(3) > label > span {
+form > div:nth-child(3) > label > div > span {
   color:red;
 }
+
+form > div:nth-child(3) > div > button {
+  margin: 1em 0;
+}
+
 
 .selectedBook {
   background-color: red;
