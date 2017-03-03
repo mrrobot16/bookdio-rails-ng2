@@ -1,5 +1,5 @@
 class Book < ApplicationRecord
-  has_many :book_transactions
+  has_many :book_transactions, dependent: :destroy
   after_initialize :set_book_issued, :if => :new_record?
 
   def update_book_qty(id)
