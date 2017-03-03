@@ -131,7 +131,7 @@ webpackJsonp([0],{
 
 	var AppComponent = exports.AppComponent = (_dec = (0, _core.Component)({
 	  selector: 'my-app',
-	  template: '\n  <div class="container body-container">\n    <div>\n    <h1>Welcome to our Book Recommendations</h1>\n    <div class="button-group">\n      <button class="btn-primary" type="button" name="button" (click)="viewBooks()">View Books</button>\n      <button class="btn-success" type="button" name="button" (click)="viewBookTransactions()">View Book Transactions</button>\n    </div>\n    </div>\n    <router-outlet></router-outlet>\n  </div>\n  ',
+	  template: '\n  <div class="container body-container">\n    <div>\n    <h1>Welcome to our Book Recommendations</h1>\n    <div class="flex-center">\n      <button class="btn-primary" type="button" name="button" (click)="viewBooks()">View Books</button>\n      <button class="btn-success" type="button" name="button" (click)="viewBookTransactions()">View Book Transactions</button>\n    </div>\n    </div>\n    <router-outlet></router-outlet>\n  </div>\n  ',
 	  styleUrls: ['./css/stylesheet.css']
 	}), _dec(_class = function () {
 	  function AppComponent(router) {
@@ -381,8 +381,19 @@ webpackJsonp([0],{
 	      this.editMode = false;
 	      this.toggleShow = 'hide';
 	      this.toggleMessage = 'hideMessage';
+	      this.toggleEditError = 'hideMessage';
 	      this.duplicate_isbn = null;
 	      this.createForm();
+	    }
+	  }, {
+	    key: 'toggleEditMessage',
+	    value: function toggleEditMessage() {
+	      this.toggleEditError = 'showMessage';
+	      if (this.toggleEditError == 'showMessage') {
+	        this.toggleEditError = 'hideMessage';
+	      } else {
+	        this.toggleEditError == 'showMessage';
+	      }
 	    }
 	  }, {
 	    key: 'filterBookByID',
@@ -523,6 +534,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'showForm',
 	    value: function showForm() {
+	      this.toggleEditError = 'hideMessage';
 	      var book_id = this.book_id;
 	      console.log(book_id);
 	      if (this.editMode) {
@@ -549,6 +561,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'editBook',
 	    value: function editBook(book) {
+	      this.toggleEditError = 'hideMessage';
 	      if (this.book_id) {
 	        this.editMode = !this.editMode;
 	        if (this.toggleShow == 'hide') {
@@ -558,6 +571,7 @@ webpackJsonp([0],{
 	          this.toggleDisabled("off");
 	        }
 	      } else {
+	        this.toggleEditError = 'showMessage';
 	        console.log("no this.book_id");
 	      }
 	    }
@@ -808,7 +822,7 @@ webpackJsonp([0],{
 /***/ 72:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"button-group\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <!-- <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"viewTransaction()\">View Transactions</button> -->\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"issueBook()\">Issue Book</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n  <!-- <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"printBookID()\">Print BookID</button> -->\n    <!-- <button class=\"btn\" type=\"button\" name=\"button\" (click)=\"checkBookDuplicates()\">CheckISBN</button> -->\n</div>\n\n<form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code</label>\n        <div [ngClass]=\"toggleMessage\">\n          <span>Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>\n          <button class=\"btn-primary\" type=\"button\" (click)=\"toggleDisabled('off')\">Confirm</button>\n        </div>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
+	module.exports = "<div class=\"flex-center\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"issueBook()\">Issue Book</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n</div>\n\n<div [ngClass]='toggleEditError' class=\"flex-center\">\n  <p>You must select book from in order to edit</p>\n</div>\n\n<form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code</label>\n        <div [ngClass]=\"toggleMessage\">\n          <span>Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>\n          <button class=\"btn-primary\" type=\"button\" (click)=\"toggleDisabled('off')\">Confirm</button>\n        </div>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
 
 /***/ },
 
@@ -859,7 +873,7 @@ webpackJsonp([0],{
 	        return this.book_id;
 	      } else {
 	        console.log('no_book_id');
-	        return "no_book_id";
+	        return 0;
 	      }
 	    }
 	  }, {
@@ -940,13 +954,20 @@ webpackJsonp([0],{
 	    this.book_transaction_service = book_transaction_service;
 	    this.shared_service = shared_service;
 	    this.subscribe();
-	    this.getBookTransactions(this.shared_service.getBookID());
 	  }
 
 	  _createClass(BookTransactionComponent, [{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
 	      console.log('init');
+	      this.book_id = this.shared_service.getBookID();
+	      this.getBookTransactions(this.book_id);
+	      this.zero_transaction_message = false;
+	    }
+	  }, {
+	    key: 'getBookID',
+	    value: function getBookID() {
+	      return this.shared_service.getBookID();
 	    }
 	  }, {
 	    key: 'subscribe',
@@ -960,10 +981,19 @@ webpackJsonp([0],{
 	    value: function getBookTransactions(id) {
 	      var _this = this;
 
-	      var book_transactions = this.book_transaction_service.getBookTransactions(id);
-	      book_transactions.subscribe(function (book_transactions) {
-	        _this.book_transactions = book_transactions;
-	      }, this.logError);
+	      if (id) {
+	        var book_transactions = this.book_transaction_service.getBookTransactions(id);
+	        book_transactions.subscribe(function (book_transactions) {
+	          _this.book_transactions = book_transactions;
+	          if (_this.book_transactions.length === 0) {
+	            _this.zero_transaction_message = true;
+	          }
+	          return;
+	        }, this.logError);
+	      } else {
+	        console.log('no id in getBookTransactions');
+	        return;
+	      }
 	    }
 	  }, {
 	    key: 'returnBookIssue',
@@ -990,7 +1020,7 @@ webpackJsonp([0],{
 /***/ 77:
 /***/ function(module, exports) {
 
-	module.exports = "<table width=\"400\" height=\"5\" id=\"book_transactions\">\n  <thead>\n    <tr>\n      <th>Transaction Date</th>\n      <th>Transaction Type</th>\n      <th>Transaction Status</th>\n      <th>Returned Date </th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let book_transaction of book_transactions\">\n      <td>{{book_transaction.created_at | date }}</td>\n      <td>{{book_transaction.transaction_type | uppercase}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n      <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n    </tr>\n  </tbody>\n\n</table>\n"
+	module.exports = "<table *ngIf=\"shared_service.getBookID()\" width=\"400\" height=\"5\" id=\"book_transactions\">\n  <thead *ngIf='!zero_transaction_message'>\n    <tr>\n      <th>Transaction Date</th>\n      <th>Transaction Type</th>\n      <th>Transaction Status</th>\n      <th>Returned Date </th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let book_transaction of book_transactions\">\n      <td>{{book_transaction.created_at | date }}</td>\n      <td>{{book_transaction.transaction_type | uppercase}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n      <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n    </tr>\n  </tbody>\n</table>\n<p class=\"flex-center\" *ngIf='zero_transaction_message'>No book transaction for this book</p>\n\n<div *ngIf='!shared_service.getBookID()' class=\"flex-center\">\n  <h3>No Book go to <a href=\"#/books\">Books</a> and select a book to view transactions</h3>\n</div>\n"
 
 /***/ },
 

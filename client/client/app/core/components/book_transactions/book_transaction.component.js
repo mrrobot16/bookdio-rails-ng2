@@ -15,11 +15,18 @@ export class BookTransactionComponent implements OnInit {
     this.book_transaction_service = book_transaction_service;
     this.shared_service = shared_service;
     this.subscribe()
-    this.getBookTransactions(this.shared_service.getBookID())
+
   }
 
   ngOnInit(){
     console.log('init');
+    this.book_id = this.shared_service.getBookID()
+    this.getBookTransactions(this.book_id)
+    this.zero_transaction_message = false;
+  }
+
+  getBookID(){
+    return this.shared_service.getBookID()
   }
 
   subscribe() {
@@ -29,10 +36,22 @@ export class BookTransactionComponent implements OnInit {
   }
 
   getBookTransactions(id){
-    let book_transactions = this.book_transaction_service.getBookTransactions(id)
-    book_transactions.subscribe((book_transactions)=>{
-      this.book_transactions = book_transactions
-    }, this.logError)
+    if(id){
+      let book_transactions = this.book_transaction_service.getBookTransactions(id)
+      book_transactions.subscribe((book_transactions)=>{
+        this.book_transactions = book_transactions
+        if(this.book_transactions.length === 0){
+          this.zero_transaction_message = true
+        }
+        return;
+      }, this.logError)
+    }
+    else {
+      console.log('no id in getBookTransactions');
+      return;
+
+    }
+
   }
   returnBookIssue(book_transaction){
     this.book_transaction_service.updateBookTransaction(book_transaction).then(()=>{

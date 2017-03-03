@@ -28,8 +28,19 @@ export class BookFormComponent implements OnInit {
     this.editMode = false;
     this.toggleShow = 'hide';
     this.toggleMessage = 'hideMessage'
+    this.toggleEditError = 'hideMessage'
     this.duplicate_isbn = null
     this.createForm()
+  }
+
+  toggleEditMessage(){
+    this.toggleEditError = 'showMessage'
+    if(this.toggleEditError == 'showMessage'){
+      this.toggleEditError = 'hideMessage'
+    }
+    else {
+      this.toggleEditError == 'showMessage'
+    }
   }
 
   filterBookByID(books, book_id){
@@ -156,6 +167,7 @@ export class BookFormComponent implements OnInit {
   }
 
   showForm(){
+    this.toggleEditError = 'hideMessage'
     let book_id = this.book_id
     console.log(book_id);
     if(this.editMode){
@@ -184,6 +196,7 @@ export class BookFormComponent implements OnInit {
   }
 
   editBook(book){
+    this.toggleEditError = 'hideMessage'
     if(this.book_id){
       this.editMode = !this.editMode;
       if(this.toggleShow == 'hide'){
@@ -195,6 +208,7 @@ export class BookFormComponent implements OnInit {
       }
     }
     else {
+      this.toggleEditError = 'showMessage'
     console.log("no this.book_id");
     }
   }

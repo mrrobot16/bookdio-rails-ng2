@@ -23,7 +23,7 @@ export class SharedService {
     }
     else {
       console.log('no_book_id');
-      return "no_book_id"
+      return 0;
     }
   }
 

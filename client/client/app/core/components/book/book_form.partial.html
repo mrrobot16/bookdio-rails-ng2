@@ -1,11 +1,12 @@
-<div class="button-group">
+<div class="flex-center">
   <button class="btn-primary" type="button" name="button" (click)="showForm()">Add</button>
   <button class="btn-success" type="button" name="button" (click)="editBook()">Edit</button>
-  <!-- <button class="btn-success" type="button" name="button" (click)="viewTransaction()">View Transactions</button> -->
   <button class="btn-success" type="button" name="button" (click)="issueBook()">Issue Book</button>
   <button class="btn-danger" type="button" name="button" (click)="deleteBook()">Delete</button>
-  <!-- <button class="btn-danger" type="button" name="button" (click)="printBookID()">Print BookID</button> -->
-    <!-- <button class="btn" type="button" name="button" (click)="checkBookDuplicates()">CheckISBN</button> -->
+</div>
+
+<div [ngClass]='toggleEditError' class="flex-center">
+  <p>You must select book from in order to edit</p>
 </div>
 
 <form [ngClass]="toggleShow" (ngSubmit)="onSubmit(bookForm.value, $event)" [formGroup]="bookForm">

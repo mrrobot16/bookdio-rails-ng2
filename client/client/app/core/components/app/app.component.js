@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
   <div class="container body-container">
     <div>
     <h1>Welcome to our Book Recommendations</h1>
-    <div class="button-group">
+    <div class="flex-center">
       <button class="btn-primary" type="button" name="button" (click)="viewBooks()">View Books</button>
       <button class="btn-success" type="button" name="button" (click)="viewBookTransactions()">View Book Transactions</button>
     </div>
