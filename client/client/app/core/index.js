@@ -1,7 +1,19 @@
-import { BookComponent, ReturnMonthYearPipe } from './components/book/book.component';
-import { BookFormComponent} from './components/book/book_form.component';
+// Components
 import { AppComponent } from './components/app/app.component';
+import { BookComponent} from './components/book/book.component';
+import { BookFormComponent} from './components/book/book_form.component';
+import { BookTransactionComponent } from './components/book_transactions/book_transaction.component';
+// Services
 import { BookService } from './services/book.service';
-export { AppComponent, BookService };
-export const CORE_PROVIDERS = [BookService];
-export const CORE_DECLARATIONS = [BookComponent, ReturnMonthYearPipe, BookFormComponent, AppComponent];
+import { SharedService } from './services/shared.service';
+import { BookTransactionService } from './services/book_transaction.service';
+
+
+// Pipes
+import { ReturnMonthYearPipe } from './pipes/return_month.pipe';
+// Directive
+import { HighlightDirective } from './directives/highlight.directive';
+// Export all
+export const CORE_PROVIDERS = [BookService, BookTransactionService, SharedService];
+export const CORE_DECLARATIONS = [AppComponent, BookComponent, BookFormComponent, BookTransactionComponent, HighlightDirective, ReturnMonthYearPipe];
+export { AppComponent, BookComponent, BookTransactionComponent, BookService, SharedService, BookTransactionService, HighlightDirective };

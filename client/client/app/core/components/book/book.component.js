@@ -1,47 +1,65 @@
-import { Component, Pipe, PipeTransform, OnInit } from '@angular/core';
+import { Component,  OnInit } from '@angular/core';
 import {BookFormComponent} from './book_form.component'
 import { BookService } from '../../services/book.service';
-
+import { SharedService } from '../../services/shared.service';
+import { Subscription } from 'rxjs/Subscription';
 import template from './book.component.html';
 
 @Component({
   selector: 'books',
   template: template,
-  styleUrls: ['./css/book.css']
+  styleUrls: ['./css/stylesheet.css']
 })
 export class BookComponent implements OnInit {
   books = [];
-  constructor(book_service: BookService){
+  book_ids = [];
+  subscription = Subscription;
+  constructor(book_service: BookService, shared_service: SharedService){
     this.book_service = book_service;
+    // this.subscription = subscription;
+    this.shared_service = shared_service;
     this.book_id = 0;
+    this.subscribe();
   }
 
   ngOnInit(){
-    this.dispayBooks()
+    this.displayBooks()
   }
 
-  dispayBooks(){
+  displayBooks(){
     let books = this.book_service.getBooks()
     books.subscribe((books)=>{
       this.books = books
     }, this.logError)
   }
 
-  selectBookID(event){
-    console.log("selectBookID");
-    this.book_id = parseInt(event.target.parentNode.id);
+  send_id(id) {
+    let payload = {
+      id:id,
+      text: `Message ${id}`
+    }
+    this.shared_service.broadcast('receiver', payload);
   }
+
+  selectBookID(event){
+    let all_books = event.target.parentElement.parentElement.children
+    for(var x=0; x < all_books.length; x++ ){
+      all_books[x].classList.remove('selectedBook');
+    }
+    this.book_id = parseInt(event.target.parentNode.id);
+    this.send_id(this.book_id)
+    console.log("this.book_id: ", this.book_id);
+    event.target.parentElement.classList.add('selectedBook')
+  }
+
+  subscribe() {
+      this.subscription = this.shared_service.subscribe('sender', (payload) => {
+        console.log("bookComponet");
+        this.book_ids.push(payload);
+      })
+    }
 
   logError(error){
     console.log("error: ", error);
-  }
-}
-
-
-@Pipe({name: 'returnMonthYear'})
-export class ReturnMonthYearPipe implements PipeTransform {
-  transform(date) {
-    "Oct 1, 2009"
-    return date.slice(0,4)+date.substr(date.length-4)
   }
 }

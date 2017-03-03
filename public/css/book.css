@@ -13,9 +13,9 @@ td, th {
   white-space: nowrap;
 }
 
-tr:nth-child(even) {
+/*tr:nth-child(even) {*/
   /*background-color: #dddddd;*/
-}
+/*}*/
 
 .button-group {
   display: flex;
@@ -26,9 +26,25 @@ tr:nth-child(even) {
   margin: 1.5em;
 }
 
-.hideForm {
+.hide {
   visibility: hidden;
 }
-.showForm {
+.show {
   visibility: visible;
+}
+
+.hideMessage {
+  display: none;
+}
+.showMessage {
+  display:inherit
+}
+
+form > div:nth-child(3) > label > span {
+  color:red;
+}
+
+.selectedBook {
+  background-color: red;
+  color: white;
 }

@@ -7,7 +7,6 @@ export class BookService {
   books_endpoint = '/books';
   constructor(http: Http) {
     this.http = http;
-    this.headers = new Headers({'Content-Type': 'application/json'});
   }
 
   getBooks(){
@@ -19,15 +18,54 @@ export class BookService {
 
   postBook(book){
     let book_params = {
-      book: book
+      book: {
+        book_name: book.book_name,
+        author_name:book.author_name,
+        isbn_code:book.isbn_code,
+        book_category:book.book_category,
+        book_quantity:book.book_quantity,
+        published_date:new Date(book.published_date)
+      }
     }
-    let body = this.stringify(book_params)
-    return this.http.post(this.books_endpoint, body,{headers: this.headers}).map((res)=>{
-      return res.json();
-    })
+    let request = new Request(this.books_endpoint, {method:"POST", mode:"cors", headers: new Headers({"Content-Type":"application/json"}), body:JSON.stringify(book_params)});
+    return fetch(request).then((res)=>{return res.json()}).then((res)=> { console.log("res :", res)}, (error)=>{console.log("Error occurred: ", error)});
   }
 
-  stringify(object){
-    return JSON.stringify(object)
+  updateBook(id, quantity){
+    let book_params = {
+      book: {
+        id:id,
+        book_quantity: quantity
+      }
+    }
+    let request = new Request(this.books_endpoint+"/"+book_params.book.id, {
+      method:"PUT",
+      mode:"cors",
+      redirect:"follow",
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      body:JSON.stringify(book_params)
+    })
+    return fetch(request).then((res)=>{ console.log("res: "); }, (error)=>{console.log("error message: ", error)});
   }
+
+  deleteBook(id){
+    let book_params ={
+      book: {
+        id:id
+      }
+    }
+    let request = new Request(this.books_endpoint+"/"+book_params.book.id, {
+      method:"DELETE",
+      mode:"cors",
+      redirect:"follow",
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      body:JSON.stringify(book_params)
+    })
+    return fetch(request).then((res)=>{ console.log('res: ', res)}, (error)=>{console.log("error: ", error)})
+  }
+
 }

@@ -1,13 +1,15 @@
 <div class="button-group">
   <button class="btn-primary" type="button" name="button" (click)="showForm()">Add</button>
   <button class="btn-success" type="button" name="button" (click)="editBook()">Edit</button>
+  <!-- <button class="btn-success" type="button" name="button" (click)="viewTransaction()">View Transactions</button> -->
+  <button class="btn-success" type="button" name="button" (click)="issueBook()">Issue Book</button>
   <button class="btn-danger" type="button" name="button" (click)="deleteBook()">Delete</button>
-  <button class="btn-danger" type="button" name="button" (click)="printBookID()">Print BookID</button>
+  <!-- <button class="btn-danger" type="button" name="button" (click)="printBookID()">Print BookID</button> -->
+    <!-- <button class="btn" type="button" name="button" (click)="checkBookDuplicates()">CheckISBN</button> -->
 </div>
 
 <form [ngClass]="toggleShow" (ngSubmit)="onSubmit(bookForm.value, $event)" [formGroup]="bookForm">
     <div class="form-group">
-
         <label>Book Name</label>
         <input type="text" formControlName="book_name" class="form-control">
     </div>
@@ -18,6 +20,10 @@
     </div>
     <div class="form-group">
         <label>ISBN Code</label>
+        <div [ngClass]="toggleMessage">
+          <span>Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>
+          <button class="btn-primary" type="button" (click)="toggleDisabled('off')">Confirm</button>
+        </div>
         <input type="text" formControlName="isbn_code" class="form-control">
     </div>
     <div class="form-group">

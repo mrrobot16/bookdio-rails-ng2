@@ -1,0 +1,61 @@
+.underlined {
+    text-decoration: underline;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/*tr:nth-child(even) {*/
+  /*background-color: #dddddd;*/
+/*}*/
+
+.button-group {
+  display: flex;
+  justify-content: center;
+}
+
+.button-group button {
+  margin: 1.5em;
+}
+
+.hide {
+  visibility: hidden;
+}
+.show {
+  visibility: visible;
+}
+
+.hideMessage {
+  display: none;
+}
+.showMessage {
+  display:inherit
+}
+
+form > div:nth-child(3) > label > div > span {
+  color:red;
+}
+
+form > div:nth-child(3) > div > button {
+  margin: 1em 0;
+}
+
+
+.selectedBook {
+  background-color: red;
+  color: white;
+}
+
+table#book_transactions > tbody > tr > button {
+  margin-left: 1em;
+  margin-top: 8px;
+  height: 1.8em;
+}

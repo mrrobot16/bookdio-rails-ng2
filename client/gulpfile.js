@@ -13,15 +13,11 @@ gulp.task('client-build', clientBuildTask(false, liveReloadTask.notifyChanged));
 gulp.task('client-stylesheet', stylesheetTask(false));
 
 gulp.task('client-stylesheet-watch', function() {
-  gulp.watch(['client/boot.less', 'client/**/*.less','client/**/*.css'], ['client-stylesheet', 'client-copy']);
+  gulp.watch(['client/boot.less', 'client/**/*.html','client/**/*.less','client/**/*.css'], ['client-copy','client-stylesheet']);
 });
 
 gulp.task('clean', cleanTask());
 
 gulp.task('serve', function(done) {
-  runSequence(
-    'clean',
-    ['client-build', 'client-copy', 'client-stylesheet', 'livereload', 'client-stylesheet-watch'],
-    done
-  )
+  runSequence('clean',['client-build', 'client-copy', 'client-stylesheet', 'client-stylesheet-watch'],'serve',done)
 });

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
-  resources :books
-    root :to => 'static#index'
+  root :to => 'static#index'
+  resources :books do
+    resources :book_transactions
+  end 
 end
