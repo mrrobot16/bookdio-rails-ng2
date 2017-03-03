@@ -85,9 +85,9 @@ webpackJsonp([0],{
 
 	var _book_transaction2 = __webpack_require__(70);
 
-	var _return_month = __webpack_require__(78);
+	var _return_month = __webpack_require__(77);
 
-	var _highlight = __webpack_require__(79);
+	var _highlight = __webpack_require__(78);
 
 	// Export all
 
@@ -941,7 +941,7 @@ webpackJsonp([0],{
 
 	var _Subscription = __webpack_require__(11);
 
-	var _book_transactionComponent = __webpack_require__(77);
+	var _book_transactionComponent = __webpack_require__(83);
 
 	var _book_transactionComponent2 = _interopRequireDefault(_book_transactionComponent);
 
@@ -1003,6 +1003,12 @@ webpackJsonp([0],{
 	        return;
 	      }
 	    }
+	    // sortByStatus(book_transactions){
+	    //   this.book_transactions = book_transactions.sort((a,b)=>{
+	    //     return (a === b)? 0 : a? -1 : 1;
+	    //   }
+	    // }
+
 	  }, {
 	    key: 'returnBookIssue',
 	    value: function returnBookIssue(book_transaction) {
@@ -1026,13 +1032,6 @@ webpackJsonp([0],{
 /***/ },
 
 /***/ 77:
-/***/ function(module, exports) {
-
-	module.exports = "<table *ngIf=\"shared_service.getBookID()\" width=\"400\" height=\"5\" id=\"book_transactions\">\n  <thead *ngIf='!zero_transaction_message'>\n    <tr>\n      <th>Transaction Date</th>\n      <th>Transaction Type</th>\n      <th>Transaction Status</th>\n      <th>Returned Date </th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let book_transaction of book_transactions\">\n      <td>{{book_transaction.created_at | date }}</td>\n      <td>{{book_transaction.transaction_type | uppercase}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n      <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n    </tr>\n  </tbody>\n</table>\n<p class=\"flex-center\" *ngIf='zero_transaction_message'>No book transaction for this book</p>\n\n<div *ngIf='!shared_service.getBookID()' class=\"flex-center\">\n  <h3>No Book go to <a href=\"#/books\">Books</a> and select a book to view transactions</h3>\n</div>\n"
-
-/***/ },
-
-/***/ 78:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1069,7 +1068,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 79:
+/***/ 78:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1173,6 +1172,13 @@ webpackJsonp([0],{
 	  }
 	}), _applyDecoratedDescriptor(_class2.prototype, 'onMouseEnter', [_dec4], Object.getOwnPropertyDescriptor(_class2.prototype, 'onMouseEnter'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'onMouseLeave', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'onMouseLeave'), _class2.prototype)), _class2)) || _class);
 	Reflect.defineMetadata('design:paramtypes', [_core.ElementRef], HighlightDirective);
+
+/***/ },
+
+/***/ 83:
+/***/ function(module, exports) {
+
+	module.exports = "<table *ngIf=\"shared_service.getBookID()\" width=\"400\" height=\"5\" id=\"book_transactions\">\n  <thead *ngIf='!zero_transaction_message'>\n    <tr>\n      <th>Transaction Date</th>\n      <th>Transaction Type</th>\n      <th>Transaction Status</th>\n      <th>Returned Date </th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let book_transaction of book_transactions\">\n      <td>{{book_transaction.created_at | date }}</td>\n      <td>{{book_transaction.transaction_type | uppercase}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n      <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n    </tr>\n  </tbody>\n</table>\n<p class=\"flex-center\" *ngIf='zero_transaction_message'>No book transaction for this book</p>\n\n<div *ngIf='!shared_service.getBookID()' class=\"flex-center\">\n  <h3>No Book Transactions go to <a href=\"#/books\">Books</a> and select a book to view transactions</h3>\n</div>\n"
 
 /***/ }
 

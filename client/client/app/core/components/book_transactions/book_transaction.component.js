@@ -49,10 +49,14 @@ export class BookTransactionComponent implements OnInit {
     else {
       console.log('no id in getBookTransactions');
       return;
-
     }
-
   }
+  // sortByStatus(book_transactions){
+  //   this.book_transactions = book_transactions.sort((a,b)=>{
+  //     return (a === b)? 0 : a? -1 : 1;
+  //   }
+  // }
+
   returnBookIssue(book_transaction){
     this.book_transaction_service.updateBookTransaction(book_transaction).then(()=>{
       this.getBookTransactions(this.shared_service.getBookID())
