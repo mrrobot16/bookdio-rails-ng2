@@ -20,8 +20,8 @@
     </div>
     <div class="form-group">
         <label>ISBN Code</label>
-        <div>
-          <span [ngClass]="toggleMessage">Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>
+        <div [ngClass]="toggleMessage">
+          <span>Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>
           <button class="btn-primary" type="button" (click)="toggleDisabled('off')">Confirm</button>
         </div>
         <input type="text" formControlName="isbn_code" class="form-control">
