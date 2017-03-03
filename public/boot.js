@@ -205,15 +205,15 @@ webpackJsonp([0],{
 	    this.subscription = _Subscription.Subscription;
 
 	    this.book_service = book_service;
-	    // this.subscription = subscription;
 	    this.shared_service = shared_service;
-	    this.book_id = 0;
 	    this.subscribe();
 	  }
 
 	  _createClass(BookComponent, [{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
+	      this.book_id = 0;
+	      this.send_id_book_transaction(this.book_id);
 	      this.displayBooks();
 	    }
 	  }, {
@@ -227,8 +227,8 @@ webpackJsonp([0],{
 	      }, this.logError);
 	    }
 	  }, {
-	    key: 'send_id',
-	    value: function send_id(id) {
+	    key: 'send_id_book_transaction',
+	    value: function send_id_book_transaction(id) {
 	      var payload = {
 	        id: id,
 	        text: 'Message ' + id
@@ -239,13 +239,21 @@ webpackJsonp([0],{
 	    key: 'selectBookID',
 	    value: function selectBookID(event) {
 	      var all_books = event.target.parentElement.parentElement.children;
-	      for (var x = 0; x < all_books.length; x++) {
-	        all_books[x].classList.remove('selectedBook');
+	      all_books = [].slice.call(all_books);
+	      all_books.forEach(function (book) {
+	        if (book.classList.contains('selectedBook') && book != event.target.parentElement) {
+	          book.classList.remove('selectedBook');
+	        }
+	      });
+	      if (event.target.parentElement.classList.contains('selectedBook')) {
+	        event.target.parentElement.classList.remove('selectedBook');
+	        this.book_id = 0;
+	        this.send_id_book_transaction(this.book_id);
+	      } else {
+	        this.book_id = parseInt(event.target.parentNode.id);
+	        this.send_id_book_transaction(this.book_id);
+	        event.target.parentElement.classList.toggle('selectedBook');
 	      }
-	      this.book_id = parseInt(event.target.parentNode.id);
-	      this.send_id(this.book_id);
-	      console.log("this.book_id: ", this.book_id);
-	      event.target.parentElement.classList.add('selectedBook');
 	    }
 	  }, {
 	    key: 'subscribe',
@@ -253,7 +261,6 @@ webpackJsonp([0],{
 	      var _this2 = this;
 
 	      this.subscription = this.shared_service.subscribe('sender', function (payload) {
-	        console.log("bookComponet");
 	        _this2.book_ids.push(payload);
 	      });
 	    }

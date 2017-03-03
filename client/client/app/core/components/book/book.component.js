@@ -16,13 +16,13 @@ export class BookComponent implements OnInit {
   subscription = Subscription;
   constructor(book_service: BookService, shared_service: SharedService){
     this.book_service = book_service;
-    // this.subscription = subscription;
     this.shared_service = shared_service;
-    this.book_id = 0;
     this.subscribe();
   }
 
   ngOnInit(){
+    this.book_id = 0;
+    this.send_id_book_transaction(this.book_id)
     this.displayBooks()
   }
 
@@ -33,7 +33,7 @@ export class BookComponent implements OnInit {
     }, this.logError)
   }
 
-  send_id(id) {
+  send_id_book_transaction(id) {
     let payload = {
       id:id,
       text: `Message ${id}`
@@ -41,20 +41,30 @@ export class BookComponent implements OnInit {
     this.shared_service.broadcast('receiver', payload);
   }
 
+
   selectBookID(event){
     let all_books = event.target.parentElement.parentElement.children
-    for(var x=0; x < all_books.length; x++ ){
-      all_books[x].classList.remove('selectedBook');
+    all_books = [].slice.call(all_books);
+    all_books.forEach((book)=>{
+      if(book.classList.contains('selectedBook') && book != event.target.parentElement){
+        book.classList.remove('selectedBook')
+      }
+    })
+    if(event.target.parentElement.classList.contains('selectedBook')){
+      event.target.parentElement.classList.remove('selectedBook')
+      this.book_id = 0
+      this.send_id_book_transaction(this.book_id)
     }
-    this.book_id = parseInt(event.target.parentNode.id);
-    this.send_id(this.book_id)
-    console.log("this.book_id: ", this.book_id);
-    event.target.parentElement.classList.add('selectedBook')
+    else {
+      this.book_id = parseInt(event.target.parentNode.id)
+      this.send_id_book_transaction(this.book_id)
+      event.target.parentElement.classList.toggle('selectedBook')
+    }
   }
+
 
   subscribe() {
       this.subscription = this.shared_service.subscribe('sender', (payload) => {
-        console.log("bookComponet");
         this.book_ids.push(payload);
       })
     }
