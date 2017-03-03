@@ -830,7 +830,7 @@ webpackJsonp([0],{
 /***/ 72:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"flex-center\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"issueBook()\">Issue Book</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n</div>\n\n<div [ngClass]='toggleEditError' class=\"flex-center\">\n  <p>You must select book from in order to edit</p>\n</div>\n\n<form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code</label>\n        <div [ngClass]=\"toggleMessage\">\n          <span>Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>\n          <button class=\"btn-primary\" type=\"button\" (click)=\"toggleDisabled('off')\">Confirm</button>\n        </div>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\">\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\">\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
+	module.exports = "<div class=\"flex-center\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"issueBook()\">Issue Book</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n</div>\n\n<div [ngClass]='toggleEditError' class=\"flex-center\">\n  <p>You must select book from in order to edit</p>\n</div>\n\n<form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\" required>\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\" required>\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code</label>\n        <div [ngClass]=\"toggleMessage\">\n          <span>Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>\n          <button class=\"btn-primary\" type=\"button\" (click)=\"toggleDisabled('off')\">Confirm</button>\n        </div>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\" required>\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\" required>\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\" required>\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\" required>\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
 
 /***/ },
 
@@ -967,7 +967,6 @@ webpackJsonp([0],{
 	  _createClass(BookTransactionComponent, [{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
-	      console.log('init');
 	      this.book_id = this.shared_service.getBookID();
 	      this.getBookTransactions(this.book_id);
 	      this.zero_transaction_message = false;
@@ -980,9 +979,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'subscribe',
 	    value: function subscribe() {
-	      this.subscription = this.shared_service.subscribe('receiver', function (payload) {
-	        console.log("book_transactionsComponent");
-	      });
+	      this.subscription = this.shared_service.subscribe('receiver', function (payload) {});
 	    }
 	  }, {
 	    key: 'getBookTransactions',

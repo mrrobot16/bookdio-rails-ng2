@@ -12,12 +12,12 @@
 <form [ngClass]="toggleShow" (ngSubmit)="onSubmit(bookForm.value, $event)" [formGroup]="bookForm">
     <div class="form-group">
         <label>Book Name</label>
-        <input type="text" formControlName="book_name" class="form-control">
+        <input type="text" formControlName="book_name" class="form-control" required>
     </div>
 
     <div class="form-group">
         <label>Author</label>
-        <input type="text" formControlName="author_name" class="form-control">
+        <input type="text" formControlName="author_name" class="form-control" required>
     </div>
     <div class="form-group">
         <label>ISBN Code</label>
@@ -25,21 +25,21 @@
           <span>Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>
           <button class="btn-primary" type="button" (click)="toggleDisabled('off')">Confirm</button>
         </div>
-        <input type="text" formControlName="isbn_code" class="form-control">
+        <input type="text" formControlName="isbn_code" class="form-control" required>
     </div>
     <div class="form-group">
         <label>Book Quantity</label>
-        <input type="number" formControlName="book_quantity" class="form-control">
+        <input type="number" formControlName="book_quantity" class="form-control" required>
     </div>
 
     <div class="form-group">
         <label>Published Date</label>
-        <input type="month" formControlName="published_date" maxlength=4 max='2018' class="form-control">
+        <input type="month" formControlName="published_date" maxlength=4 max='2018' class="form-control" required>
     </div>
 
     <div class="form-group">
         <label>Book Category</label>
-        <input type="text" formControlName="book_category" class="form-control">
+        <input type="text" formControlName="book_category" class="form-control" required>
     </div>
 
     <button type="submit" class="btn btn-primary">Save Book</button>

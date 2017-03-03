@@ -19,7 +19,6 @@ export class BookTransactionComponent implements OnInit {
   }
 
   ngOnInit(){
-    console.log('init');
     this.book_id = this.shared_service.getBookID()
     this.getBookTransactions(this.book_id)
     this.zero_transaction_message = false;
@@ -31,7 +30,6 @@ export class BookTransactionComponent implements OnInit {
 
   subscribe() {
     this.subscription = this.shared_service.subscribe('receiver', (payload) => {
-      console.log("book_transactionsComponent")
     })
   }
 
