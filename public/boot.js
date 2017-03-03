@@ -433,13 +433,20 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'createForm',
 	    value: function createForm() {
+	      //     book_name: ['Art Of War'],
+	      //     author_name: ['Sun Tzu'],
+	      //     isbn_code: ['523-1-19025-264-3'],
+	      //     book_quantity: [5],
+	      //     published_date: ['2017-04'],
+	      //     book_category: ['Strategy']
+
 	      this.bookForm = this.builder.group({
-	        book_name: ['Art Of War'],
-	        author_name: ['Sun Tzu'],
-	        isbn_code: ['523-1-19025-264-3'],
-	        book_quantity: [5],
-	        published_date: ['2017-04'],
-	        book_category: ['Strategy']
+	        book_name: [''],
+	        author_name: [''],
+	        isbn_code: [''],
+	        book_quantity: [''],
+	        published_date: [''],
+	        book_category: ['']
 	      });
 	      this.checkBookDuplicates();
 	    }
@@ -471,6 +478,7 @@ webpackJsonp([0],{
 
 	      return this.book_service.postBook(book).then(function () {
 	        _this3.getAllBooks.emit();
+	        _this3.bookForm.reset();
 	      });
 	    }
 	  }, {

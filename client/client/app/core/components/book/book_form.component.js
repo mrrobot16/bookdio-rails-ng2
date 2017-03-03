@@ -76,13 +76,20 @@ export class BookFormComponent implements OnInit {
   }
 
   createForm(){
+    //     book_name: ['Art Of War'],
+    //     author_name: ['Sun Tzu'],
+    //     isbn_code: ['523-1-19025-264-3'],
+    //     book_quantity: [5],
+    //     published_date: ['2017-04'],
+    //     book_category: ['Strategy']
+
     this.bookForm = this.builder.group({
-        book_name: ['Art Of War'],
-        author_name: ['Sun Tzu'],
-        isbn_code: ['523-1-19025-264-3'],
-        book_quantity: [5],
-        published_date: ['2017-04'],
-        book_category: ['Strategy']
+        book_name: [''],
+        author_name: [''],
+        isbn_code: [''],
+        book_quantity: [''],
+        published_date: [''],
+        book_category: ['']
     })
     this.checkBookDuplicates();
    }
@@ -109,6 +116,7 @@ export class BookFormComponent implements OnInit {
    postBook(book){
      return this.book_service.postBook(book).then(()=>{
        this.getAllBooks.emit();
+       this.bookForm.reset();
      })
    }
 
