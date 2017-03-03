@@ -85,9 +85,9 @@ webpackJsonp([0],{
 
 	var _book_transaction2 = __webpack_require__(70);
 
-	var _return_month = __webpack_require__(77);
+	var _return_month = __webpack_require__(78);
 
-	var _highlight = __webpack_require__(78);
+	var _highlight = __webpack_require__(79);
 
 	// Export all
 
@@ -239,12 +239,15 @@ webpackJsonp([0],{
 	    key: 'selectBookID',
 	    value: function selectBookID(event) {
 	      var all_books = event.target.parentElement.parentElement.children;
-	      all_books = [].slice.call(all_books);
-	      all_books.forEach(function (book) {
-	        if (book.classList.contains('selectedBook') && book != event.target.parentElement) {
-	          book.classList.remove('selectedBook');
+	      // all_books = [].slice.call(all_books);
+	      // all_books.forEach((book)=>{
+	      //
+	      // })
+	      for (var x = 0; x > all_books.length; x++) {
+	        if (all_books[x].classList.contains('selectedBook') && all_books[x] != event.target.parentElement) {
+	          all_books[x].classList.remove('selectedBook');
 	        }
-	      });
+	      }
 	      if (event.target.parentElement.classList.contains('selectedBook')) {
 	        event.target.parentElement.classList.remove('selectedBook');
 	        this.book_id = 0;
@@ -830,7 +833,7 @@ webpackJsonp([0],{
 /***/ 72:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"flex-center\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"issueBook()\">Issue Book</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n</div>\n\n<div [ngClass]='toggleEditError' class=\"flex-center\">\n  <p>You must select book from in order to edit</p>\n</div>\n\n<form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n    <div class=\"form-group\">\n        <label>Book Name</label>\n        <input type=\"text\" formControlName=\"book_name\" class=\"form-control\" required>\n    </div>\n\n    <div class=\"form-group\">\n        <label>Author</label>\n        <input type=\"text\" formControlName=\"author_name\" class=\"form-control\" required>\n    </div>\n    <div class=\"form-group\">\n        <label>ISBN Code</label>\n        <div [ngClass]=\"toggleMessage\">\n          <span>Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>\n          <button class=\"btn-primary\" type=\"button\" (click)=\"toggleDisabled('off')\">Confirm</button>\n        </div>\n        <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\" required>\n    </div>\n    <div class=\"form-group\">\n        <label>Book Quantity</label>\n        <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\" required>\n    </div>\n\n    <div class=\"form-group\">\n        <label>Published Date</label>\n        <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\" required>\n    </div>\n\n    <div class=\"form-group\">\n        <label>Book Category</label>\n        <input type=\"text\" formControlName=\"book_category\" class=\"form-control\" required>\n    </div>\n\n    <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n</form>\n"
+	module.exports = "<div class=\"flex-center container\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button>\n  <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"issueBook()\">Issue Book</button>\n  <button class=\"btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\">Delete</button>\n</div>\n\n<div [ngClass]='toggleEditError' class=\"flex-center container\">\n  <p>You must select book from in order to edit</p>\n</div>\n<div class=\"container\">\n  <form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n      <div class=\"form-group\">\n          <label>Book Name</label>\n          <input type=\"text\" formControlName=\"book_name\" class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Author</label>\n          <input type=\"text\" formControlName=\"author_name\" class=\"form-control\" required>\n      </div>\n      <div class=\"form-group\">\n          <label>ISBN Code</label>\n          <div [ngClass]=\"toggleMessage\">\n            <span>Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>\n            <button class=\"btn-primary\" type=\"button\" (click)=\"toggleDisabled('off')\">Confirm</button>\n          </div>\n          <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\" required>\n      </div>\n      <div class=\"form-group\">\n          <label>Book Quantity</label>\n          <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Published Date</label>\n          <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Book Category</label>\n          <input type=\"text\" formControlName=\"book_category\" class=\"form-control\" required>\n      </div>\n\n      <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n  </form>\n</div>\n"
 
 /***/ },
 
@@ -915,7 +918,7 @@ webpackJsonp([0],{
 /***/ 75:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table width=\"400\" height=\"5\">\n            <thead>\n              <tr>\n                <th>Book Name</th>\n                <th>Author</th>\n                <th>ISBN</th>\n                <th>Book Quantity</th>\n                <th>Published Date</th>\n                <th>Book Category</th>\n                <th>Books Issued</th>\n              </tr>\n            </thead>\n            <tbody>\n                  <tr [myHighlight]=\"blue\" id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of books\" (click)=\"selectBookID($event)\">\n                    <td>{{book.book_name }}</td>\n                    <td>{{book.author_name}}</td>\n                    <td>{{book.isbn_code}}</td>\n                    <td>{{book.book_quantity}}</td>\n                    <td>{{book.published_date | date | returnMonthYear }}</td>\n                    <td>{{book.book_category}}</td>\n                    <td>{{book.book_issued}}</td>\n                  </tr>\n            </tbody>\n\n          </table>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' [all_books]='books' [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table width=\"400\" height=\"5\">\n            <thead>\n              <tr>\n                <th>Book Name</th>\n                <th>Author</th>\n                <th>ISBN</th>\n                <th>Book Quantity</th>\n                <th>Published Date</th>\n                <th>Book Category</th>\n                <th>Books Issued</th>\n              </tr>\n            </thead>\n            <tbody>\n                  <tr [myHighlight]=\"blue\" id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of books\" (click)=\"selectBookID($event)\">\n                    <td>{{book.book_name }}</td>\n                    <td>{{book.author_name}}</td>\n                    <td>{{book.isbn_code}}</td>\n                    <td>{{book.book_quantity}}</td>\n                    <td>{{book.published_date | date | returnMonthYear }}</td>\n                    <td>{{book.book_category}}</td>\n                    <td>{{book.book_issued}}</td>\n                  </tr>\n            </tbody>\n\n          </table>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' [all_books]='books' [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 
@@ -941,7 +944,7 @@ webpackJsonp([0],{
 
 	var _Subscription = __webpack_require__(11);
 
-	var _book_transactionComponent = __webpack_require__(83);
+	var _book_transactionComponent = __webpack_require__(77);
 
 	var _book_transactionComponent2 = _interopRequireDefault(_book_transactionComponent);
 
@@ -1029,6 +1032,13 @@ webpackJsonp([0],{
 /***/ },
 
 /***/ 77:
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"container\">\n  <table *ngIf=\"shared_service.getBookID()\" width=\"400\" height=\"5\" id=\"book_transactions\">\n    <thead *ngIf='!zero_transaction_message'>\n      <tr>\n        <th>Transaction Date</th>\n        <th>Transaction Type</th>\n        <th>Transaction Status</th>\n        <th>Returned Date </th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let book_transaction of book_transactions\">\n        <td>{{book_transaction.created_at | date }}</td>\n        <td>{{book_transaction.transaction_type | uppercase}}</td>\n        <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n        <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n        <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n      </tr>\n    </tbody>\n  </table>\n  <p class=\"flex-center\" *ngIf='zero_transaction_message'>No book transaction for this book</p>\n\n  <div *ngIf='!shared_service.getBookID()' class=\"flex-center\">\n    <h3>No Book Transactions go to <a href=\"#/books\">Books</a> and select a book to view transactions</h3>\n  </div>\n</div>\n"
+
+/***/ },
+
+/***/ 78:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1065,7 +1075,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 78:
+/***/ 79:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1169,13 +1179,6 @@ webpackJsonp([0],{
 	  }
 	}), _applyDecoratedDescriptor(_class2.prototype, 'onMouseEnter', [_dec4], Object.getOwnPropertyDescriptor(_class2.prototype, 'onMouseEnter'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'onMouseLeave', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'onMouseLeave'), _class2.prototype)), _class2)) || _class);
 	Reflect.defineMetadata('design:paramtypes', [_core.ElementRef], HighlightDirective);
-
-/***/ },
-
-/***/ 83:
-/***/ function(module, exports) {
-
-	module.exports = "<table *ngIf=\"shared_service.getBookID()\" width=\"400\" height=\"5\" id=\"book_transactions\">\n  <thead *ngIf='!zero_transaction_message'>\n    <tr>\n      <th>Transaction Date</th>\n      <th>Transaction Type</th>\n      <th>Transaction Status</th>\n      <th>Returned Date </th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let book_transaction of book_transactions\">\n      <td>{{book_transaction.created_at | date }}</td>\n      <td>{{book_transaction.transaction_type | uppercase}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n      <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n      <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n    </tr>\n  </tbody>\n</table>\n<p class=\"flex-center\" *ngIf='zero_transaction_message'>No book transaction for this book</p>\n\n<div *ngIf='!shared_service.getBookID()' class=\"flex-center\">\n  <h3>No Book Transactions go to <a href=\"#/books\">Books</a> and select a book to view transactions</h3>\n</div>\n"
 
 /***/ }
 

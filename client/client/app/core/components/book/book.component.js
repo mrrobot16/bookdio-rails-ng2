@@ -44,12 +44,15 @@ export class BookComponent implements OnInit {
 
   selectBookID(event){
     let all_books = event.target.parentElement.parentElement.children
-    all_books = [].slice.call(all_books);
-    all_books.forEach((book)=>{
-      if(book.classList.contains('selectedBook') && book != event.target.parentElement){
-        book.classList.remove('selectedBook')
+    // all_books = [].slice.call(all_books);
+    // all_books.forEach((book)=>{
+    //
+    // })
+    for(var x=0; x>all_books.length;x++){
+      if(all_books[x].classList.contains('selectedBook') && all_books[x] != event.target.parentElement){
+        all_books[x].classList.remove('selectedBook')
       }
-    })
+    }
     if(event.target.parentElement.classList.contains('selectedBook')){
       event.target.parentElement.classList.remove('selectedBook')
       this.book_id = 0
