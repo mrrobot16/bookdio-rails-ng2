@@ -20,6 +20,7 @@ import {Router} from '@angular/router';
 export class AppComponent {
   constructor(router: Router) {
     this.router = router
+    console.log("fillForm");
   }
   viewBooks(){
     console.log(this.router);

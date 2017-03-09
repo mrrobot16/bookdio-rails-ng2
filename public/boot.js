@@ -138,6 +138,7 @@ webpackJsonp([0],{
 	    _classCallCheck(this, AppComponent);
 
 	    this.router = router;
+	    console.log("fillForm");
 	  }
 
 	  _createClass(AppComponent, [{
@@ -379,8 +380,15 @@ webpackJsonp([0],{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
 	      this.now = new Date();
-	      this.property_names = [];
-	      this.current_property_names = [];
+	      this.property_names = ["book_name", "author_name", "isbn_code", "published_date", "book_category", "book_quantity"];
+	      // this.book = {
+	      //   book_name:'How To Win Friends & Influence People',
+	      //   author_name:"Dale Carnegie",
+	      //   isbn_code:"978-1-59184-644-1",
+	      //   published_date:"1930-06-16".slice(0, -3),
+	      //   book_category:"Salesmanship",
+	      //   book_quantity:'15'
+	      // }
 	      this.editMode = false;
 	      this.toggleShow = 'hide';
 	      this.toggleMessage = 'hideMessage';
@@ -436,13 +444,6 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'createForm',
 	    value: function createForm() {
-	      //     book_name: ['Art Of War'],
-	      //     author_name: ['Sun Tzu'],
-	      //     isbn_code: ['523-1-19025-264-3'],
-	      //     book_quantity: [5],
-	      //     published_date: ['2017-04'],
-	      //     book_category: ['Strategy']
-
 	      this.bookForm = this.builder.group({
 	        book_name: [''],
 	        author_name: [''],
@@ -469,7 +470,7 @@ webpackJsonp([0],{
 	            _this2.toggleMessage = 'showMessage';
 	          } else {
 	            _this2.duplicate_isbn = false;
-	            _this2.toggleMessage = 'hideMessage ';
+	            _this2.toggleMessage = 'hideMessage';
 	          }
 	        });
 	      });
@@ -511,30 +512,28 @@ webpackJsonp([0],{
 	    value: function toggleDisabled(status) {
 	      var _this5 = this;
 
-	      var property_names = ["book_name", "author_name", "isbn_code", "published_date", "book_category"];
+	      var property_names = this.property_names.filter(function (property) {
+	        return property != "book_quantity";
+	      });
 	      this.status = status;
 	      if (this.status == "off") {
 	        property_names.forEach(function (inputs) {
 	          _this5.bookForm.root.get(inputs).disable();
 	        });
-	        property_names = [];
-	        console.log(property_names);
 	      }
 	      if (this.status == "on") {
 	        property_names.forEach(function (inputs) {
 	          _this5.bookForm.root.get(inputs).enable();
 	        });
-	        property_names = [];
-	        console.log(property_names);
 	      }
-	      console.log(property_names);
 	    }
 	  }, {
 	    key: 'showForm',
 	    value: function showForm() {
+	      this.cleanForm();
 	      this.toggleEditError = 'hideMessage';
-	      var book_id = this.book_id;
-	      console.log(book_id);
+	      var book_id = 0;
+	      // console.log(book_id);
 	      if (this.editMode) {
 	        this.editMode = false;
 	        this.toggleDisabled("on");
@@ -573,32 +572,43 @@ webpackJsonp([0],{
 	        this.toggleEditError = 'showMessage';
 	        console.log("no this.book_id");
 	      }
+	      this.toggleMessage = 'hideMessage';
 	    }
 	  }, {
 	    key: 'loadBookEdit',
 	    value: function loadBookEdit() {
-	      console.log(this.book_id);
-	      // this.bookForm = this.builder.group({
-	      // book_name: ['Art Of War'],
-	      // author_name: ['Sun Tzu'],
-	      // isbn_code: ['523-1-19025-264-3'],
-	      // book_quantity: [5],
-	      // published_date: ['2017-04'],
-	      // book_category: ['Strategy']
-	      // })
-	    }
-	  }, {
-	    key: 'deleteBook',
-	    value: function deleteBook() {
 	      var _this6 = this;
 
 	      if (this.book_id) {
 	        var book = this.all_books.filter(function (book) {
 	          return book.id == _this6.book_id;
 	        });
+	        this.property_names.forEach(function (prop_name) {
+	          prop_name == 'published_date' ? _this6.bookForm.get(prop_name).setValue(book[0][prop_name].slice(0, -3)) : _this6.bookForm.get(prop_name).setValue(book[0][prop_name]);
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'cleanForm',
+	    value: function cleanForm() {
+	      var _this7 = this;
+
+	      this.property_names.forEach(function (prop_name) {
+	        _this7.bookForm.get(prop_name).setValue(null);
+	      });
+	    }
+	  }, {
+	    key: 'deleteBook',
+	    value: function deleteBook() {
+	      var _this8 = this;
+
+	      if (this.book_id) {
+	        var book = this.all_books.filter(function (book) {
+	          return book.id == _this8.book_id;
+	        });
 	        if (book[0].book_issued < 1) {
 	          return this.book_service.deleteBook(this.book_id).then(function () {
-	            _this6.getAllBooks.emit();
+	            _this8.getAllBooks.emit();
 	          });
 	        } else {
 	          console.log("book[0].book_issued is not < 1");
@@ -873,7 +883,7 @@ webpackJsonp([0],{
 	  _createClass(SharedService, [{
 	    key: 'broadcast',
 	    value: function broadcast(type, payload) {
-	      console.log("broadcast");
+	      // console.log("broadcast");
 	      this.handler.next({ type: type, payload: payload });
 	      this.book_id = payload.id;
 	    }
@@ -884,7 +894,7 @@ webpackJsonp([0],{
 	        console.log(this.book_id);
 	        return this.book_id;
 	      } else {
-	        console.log('no_book_id');
+	        // console.log('no_book_id');
 	        return 0;
 	      }
 	    }
@@ -895,7 +905,7 @@ webpackJsonp([0],{
 	        return message.type === type;
 	      }).map(function (message) {
 	        message.payload;
-	        console.log(message);
+	        // console.log(message);
 	      }).subscribe(callback);
 	    }
 	  }]);
