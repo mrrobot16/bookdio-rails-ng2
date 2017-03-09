@@ -507,40 +507,27 @@ webpackJsonp([0],{
 	      }
 	    }
 	  }, {
-	    key: 'property_names_array',
-	    value: function property_names_array() {
-	      if (this.current_property_names.length > 0) {
-	        return this.current_property_names;
-	      } else {
-	        this.property_names = [];
-	        for (var book_property in this.bookForm.root.value) {
-	          this.property_names.push(book_property);
-	        }
-	        return this.property_names;
-	      }
-	    }
-	  }, {
 	    key: 'toggleDisabled',
 	    value: function toggleDisabled(status) {
 	      var _this5 = this;
 
+	      var property_names = ["book_name", "author_name", "isbn_code", "published_date", "book_category"];
 	      this.status = status;
 	      if (this.status == "off") {
-	        this.current_property_names = this.property_names_array().filter(function (book) {
-	          return book != "book_quantity";
-	        });
-	        this.current_property_names.forEach(function (inputs) {
+	        property_names.forEach(function (inputs) {
 	          _this5.bookForm.root.get(inputs).disable();
 	        });
+	        property_names = [];
+	        console.log(property_names);
 	      }
 	      if (this.status == "on") {
-	        this.current_property_names = this.property_names_array().filter(function (book) {
-	          return book;
-	        });
-	        this.current_property_names.forEach(function (inputs) {
+	        property_names.forEach(function (inputs) {
 	          _this5.bookForm.root.get(inputs).enable();
 	        });
+	        property_names = [];
+	        console.log(property_names);
 	      }
+	      console.log(property_names);
 	    }
 	  }, {
 	    key: 'showForm',
@@ -571,7 +558,8 @@ webpackJsonp([0],{
 	    }
 	  }, {
 	    key: 'editBook',
-	    value: function editBook(book) {
+	    value: function editBook() {
+	      this.loadBookEdit();
 	      this.toggleEditError = 'hideMessage';
 	      if (this.book_id) {
 	        this.editMode = !this.editMode;
@@ -585,6 +573,19 @@ webpackJsonp([0],{
 	        this.toggleEditError = 'showMessage';
 	        console.log("no this.book_id");
 	      }
+	    }
+	  }, {
+	    key: 'loadBookEdit',
+	    value: function loadBookEdit() {
+	      console.log(this.book_id);
+	      // this.bookForm = this.builder.group({
+	      // book_name: ['Art Of War'],
+	      // author_name: ['Sun Tzu'],
+	      // isbn_code: ['523-1-19025-264-3'],
+	      // book_quantity: [5],
+	      // published_date: ['2017-04'],
+	      // book_category: ['Strategy']
+	      // })
 	    }
 	  }, {
 	    key: 'deleteBook',
