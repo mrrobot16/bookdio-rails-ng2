@@ -14,7 +14,8 @@ export class BookFormComponent implements OnInit {
   @Input() book_id;
   @Input() all_books;
   @Output() getAllBooks = new EventEmitter()
-  constructor(book_service: BookService, book_transaction_service: BookTransactionService, builder: FormBuilder, element: ElementRef){
+  constructor(book_service: BookService, book_transaction_service: BookTransactionService,
+    builder: FormBuilder, element: ElementRef){
     this.el = element;
     this.book_service = book_service;
     this.book_transaction_service = book_transaction_service;
@@ -23,8 +24,16 @@ export class BookFormComponent implements OnInit {
 
   ngOnInit(){
     this.now = new Date()
-    this.property_names = [];
-    this.current_property_names = [];
+    this.property_names = ["book_name", "author_name", "isbn_code",
+    "published_date", "book_category", "book_quantity"]
+    // this.book = {
+    //   book_name:'How To Win Friends & Influence People',
+    //   author_name:"Dale Carnegie",
+    //   isbn_code:"978-1-59184-644-1",
+    //   published_date:"1930-06-16".slice(0, -3),
+    //   book_category:"Salesmanship",
+    //   book_quantity:'15'
+    // }
     this.editMode = false;
     this.toggleShow = 'hide';
     this.toggleMessage = 'hideMessage'
@@ -76,13 +85,6 @@ export class BookFormComponent implements OnInit {
   }
 
   createForm(){
-    //     book_name: ['Art Of War'],
-    //     author_name: ['Sun Tzu'],
-    //     isbn_code: ['523-1-19025-264-3'],
-    //     book_quantity: [5],
-    //     published_date: ['2017-04'],
-    //     book_category: ['Strategy']
-
     this.bookForm = this.builder.group({
         book_name: [''],
         author_name: [''],
@@ -107,7 +109,7 @@ export class BookFormComponent implements OnInit {
         }
         else {
           this.duplicate_isbn = false
-          this.toggleMessage = 'hideMessage '
+          this.toggleMessage = 'hideMessage'
         }
       })
     })
@@ -143,29 +145,27 @@ export class BookFormComponent implements OnInit {
 
 
   toggleDisabled(status) {
-    let property_names = ["book_name", "author_name", "isbn_code", "published_date", "book_category"]
+    let property_names = this.property_names.filter(property=>{
+      return property != "book_quantity"
+    })
     this.status = status;
     if(this.status=="off"){
      property_names.forEach((inputs)=>{
         this.bookForm.root.get(inputs).disable();
      })
-     property_names = []
-     console.log(property_names);
     }
     if(this.status=="on") {
       property_names.forEach((inputs)=>{
          this.bookForm.root.get(inputs).enable();
       })
-      property_names = []
-      console.log(property_names);
     }
-    console.log(property_names);
   }
 
   showForm(){
+    this.cleanForm()
     this.toggleEditError = 'hideMessage'
-    let book_id = this.book_id
-    console.log(book_id);
+    let book_id = 0
+    // console.log(book_id);
     if(this.editMode){
       this.editMode = false;
       this.toggleDisabled("on")
@@ -208,18 +208,21 @@ export class BookFormComponent implements OnInit {
       this.toggleEditError = 'showMessage'
     console.log("no this.book_id");
     }
+    this.toggleMessage = 'hideMessage'
   }
 
   loadBookEdit(){
-    console.log(this.book_id);
-    // this.bookForm = this.builder.group({
-          // book_name: ['Art Of War'],
-          // author_name: ['Sun Tzu'],
-          // isbn_code: ['523-1-19025-264-3'],
-          // book_quantity: [5],
-          // published_date: ['2017-04'],
-          // book_category: ['Strategy']
-    // })
+    if(this.book_id){
+      let book = this.all_books.filter((book)=>{return book.id == this.book_id})
+      this.property_names.forEach(prop_name=>{
+        prop_name=='published_date' ? this.bookForm.get(prop_name).setValue(book[0][prop_name].slice(0,-3)) : this.bookForm.get(prop_name).setValue(book[0][prop_name])
+      })
+    }
+  }
+  cleanForm(){
+    this.property_names.forEach((prop_name)=>{
+      this.bookForm.get(prop_name).setValue(null)
+    })
   }
 
   deleteBook(){

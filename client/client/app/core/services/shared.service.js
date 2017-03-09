@@ -11,7 +11,7 @@ export class SharedService {
   }
 
   broadcast(type, payload){
-    console.log("broadcast");
+    // console.log("broadcast");
     this.handler.next({ type, payload });
     this.book_id = payload.id
   }
@@ -22,7 +22,7 @@ export class SharedService {
       return this.book_id
     }
     else {
-      console.log('no_book_id');
+      // console.log('no_book_id');
       return 0;
     }
   }
@@ -32,7 +32,7 @@ subscribe(type, callback){
     .filter(message => message.type === type)
     .map((message) => {
       message.payload
-      console.log(message);
+      // console.log(message);
     })
     .subscribe(callback);
 }
