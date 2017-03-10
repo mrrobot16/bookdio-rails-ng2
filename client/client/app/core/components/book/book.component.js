@@ -11,18 +11,21 @@ import template from './book.component.html';
   styleUrls: ['./css/stylesheet.css']
 })
 export class BookComponent implements OnInit {
-  books = [];
-  all_books
-  book_ids = [];
+  books = []
+  current_books = []
+  book_index = 0
+  all_books = []
+  book_ids = []
   subscription = Subscription;
+
   constructor(book_service: BookService, shared_service: SharedService){
-    this.book_service = book_service;
-    this.shared_service = shared_service;
-    this.subscribe();
+    this.book_service = book_service
+    this.shared_service = shared_service
+    this.subscribe()
   }
 
   ngOnInit(){
-    this.book_id = 0;
+    this.book_id = 0
     this.send_id_book_transaction(this.book_id)
     this.displayBooks()
   }
@@ -31,6 +34,7 @@ export class BookComponent implements OnInit {
     let books = this.book_service.getBooks()
     books.subscribe((books)=>{
       this.books = books
+      this.current_books = books
     }, this.logError)
   }
 
@@ -39,7 +43,7 @@ export class BookComponent implements OnInit {
       id:id,
       text: `Message ${id}`
     }
-    this.shared_service.broadcast('receiver', payload);
+    this.shared_service.broadcast('receiver', payload)
   }
 
   selectBookID(event){
@@ -61,16 +65,20 @@ export class BookComponent implements OnInit {
   }
 
   sendBookID(id){
-    this.book_id = parseInt(id);
+    this.book_id = parseInt(id)
     this.send_id_book_transaction(this.book_id)
   }
+
+  // returnBooks(){
+  //   return this.books
+  // }
 
   unSelectBooks(books){
     if(books){
       books = [].slice.call(books)
       let promise = new Promise((r,e)=>{
         books.forEach((book)=>{
-          if (book.classList.contains('selectedBook')) {
+          if (book.classList.contains('selectedBook')){
             book.classList.remove('selectedBook')
           }
         })
@@ -81,16 +89,33 @@ export class BookComponent implements OnInit {
       this.all_books = [].slice.call(this.all_books)
       this.all_books.forEach((book)=>{
         if(book.classList.contains('selectedBook')){
-          book.classList.remove('selectedBook')
-          this.book_id = 0
-          this.send_id_book_transaction(this.book_id)
+            book.classList.remove('selectedBook')
+            this.resetBookID()
         }
       })
     }
   }
 
-  paginateBooks(){
-    console.log(this.books);
+  paginateBooks(n){
+    // if(n=='previous'){
+    //   console.log('previous');
+    //   this.book_index -= 10
+    //   if(this.book_index <= 0 ){
+    //     console.log('you can go to last one');
+    //     this.current_books = this.books.slice(this.book_index)
+    //   }
+    //   else {
+    //     console.log('this.book_index cant be less than 0');
+    //   }
+    // }
+    // if(n=="next"){
+    //   this.book_index+=10
+    //   // console.log(this.current_books.length);
+    //   // this.current_books.slice(this.book_index,this.book_index+10)
+    //   // console.log(this.current_books.length);
+    //   this.current_books = this.current_books.slice(this.book_index,this.book_index+10)
+    //   console.log('next');
+    // }
   }
 
   subscribe(){
@@ -100,6 +125,6 @@ export class BookComponent implements OnInit {
     }
 
   logError(error){
-    console.log("error: ", error);
+    console.log("error: ", error)
   }
 }

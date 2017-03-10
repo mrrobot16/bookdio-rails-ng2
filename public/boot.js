@@ -199,7 +199,9 @@ webpackJsonp([0],{
 	    _classCallCheck(this, BookComponent);
 
 	    this.books = [];
-	    this.all_books = this.all_books;
+	    this.current_books = [];
+	    this.book_index = 0;
+	    this.all_books = [];
 	    this.book_ids = [];
 	    this.subscription = _Subscription.Subscription;
 
@@ -223,6 +225,7 @@ webpackJsonp([0],{
 	      var books = this.book_service.getBooks();
 	      books.subscribe(function (books) {
 	        _this.books = books;
+	        _this.current_books = books;
 	      }, this.logError);
 	    }
 	  }, {
@@ -259,6 +262,11 @@ webpackJsonp([0],{
 	      this.book_id = parseInt(id);
 	      this.send_id_book_transaction(this.book_id);
 	    }
+
+	    // returnBooks(){
+	    //   return this.books
+	    // }
+
 	  }, {
 	    key: 'unSelectBooks',
 	    value: function unSelectBooks(books) {
@@ -279,16 +287,33 @@ webpackJsonp([0],{
 	        this.all_books.forEach(function (book) {
 	          if (book.classList.contains('selectedBook')) {
 	            book.classList.remove('selectedBook');
-	            _this2.book_id = 0;
-	            _this2.send_id_book_transaction(_this2.book_id);
+	            _this2.resetBookID();
 	          }
 	        });
 	      }
 	    }
 	  }, {
 	    key: 'paginateBooks',
-	    value: function paginateBooks() {
-	      console.log(this.books);
+	    value: function paginateBooks(n) {
+	      // if(n=='previous'){
+	      //   console.log('previous');
+	      //   this.book_index -= 10
+	      //   if(this.book_index <= 0 ){
+	      //     console.log('you can go to last one');
+	      //     this.current_books = this.books.slice(this.book_index)
+	      //   }
+	      //   else {
+	      //     console.log('this.book_index cant be less than 0');
+	      //   }
+	      // }
+	      // if(n=="next"){
+	      //   this.book_index+=10
+	      //   // console.log(this.current_books.length);
+	      //   // this.current_books.slice(this.book_index,this.book_index+10)
+	      //   // console.log(this.current_books.length);
+	      //   this.current_books = this.current_books.slice(this.book_index,this.book_index+10)
+	      //   console.log('next');
+	      // }
 	    }
 	  }, {
 	    key: 'subscribe',
@@ -957,7 +982,7 @@ webpackJsonp([0],{
 /***/ 75:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table width=\"400\" height=\"5\">\n            <thead>\n              <tr>\n                <th>Book Name</th>\n                <th>Author</th>\n                <th>ISBN</th>\n                <th>Book Quantity</th>\n                <th>Published Date</th>\n                <th>Book Category</th>\n                <th>Books Issued</th>\n              </tr>\n            </thead>\n            <tbody>\n                  <tr [myHighlight]=\"blue\" id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of books\" (click)=\"selectBookID($event)\">\n                    <td>{{book.book_name }}</td>\n                    <td>{{book.author_name}}</td>\n                    <td>{{book.isbn_code}}</td>\n                    <td>{{book.book_quantity}}</td>\n                    <td>{{book.published_date | date | returnMonthYear }}</td>\n                    <td>{{book.book_category}}</td>\n                    <td>{{book.book_issued}}</td>\n                  </tr>\n            </tbody>\n\n          </table>\n          <div class=\"flex-center container paginateBook\">\n            <button class=\"left-arrow\" type=\"button\" name=\"button\" (click)=\"showForm()\"></button>\n            <!-- <div class=\"ar5 J-J5-Ji\"> -->\n              <!-- <span class=\"Di\"> -->\n                <!-- <div>\n                    <span>1</span>–\n                    <span>50</span> of\n                    <span>242</span>\n                </div> -->\n                      <!-- </span> -->\n                <!-- <div id=\":h6\" class=\"T-I J-J5-Ji amD T-I-awG amE T-I-ax7 T-I-Js-IF T-I-JE L3\" role=\"button\" aria-disabled=\"true\" data-tooltip=\"Newer\" aria-label=\"Newer\" style=\"user-select: none;\">\n                  <span class=\"amF\" aria-hidden=\"true\">&nbsp;</span>\n                  <img class=\"arrow-left\">\n                </div> -->\n                <!-- <div id=\":h7\" class=\"T-I J-J5-Ji amD T-I-awG T-I-ax7 T-I-Js-Gs L3\" role=\"button\" tabindex=\"0\" data-tooltip=\"Older\" aria-label=\"Older\" style=\"user-select: none;\">\n                  <span class=\"amF\" aria-hidden=\"true\">&nbsp;</span>\n                  <img class=\"amJ T-I-J3\" src=\"http://i.imgur.com/6FoJCbD.png\" alt=\"\">\n                </div> -->\n\n            <!-- </div> -->\n            <!-- <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"editBook()\">Edit</button> -->\n            <!-- <button class=\"btn-success\" type=\"button\" name=\"button\" (click)=\"issueBook()\">Issue Book</button> -->\n            <button class=\"right-arrow\" type=\"button\" name=\"button\" (click)=\"deleteBook()\"></button>\n          </div>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' (deSelect)=(unSelectBooks()) [all_books]=\"books\" [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Number of books {{books.length}}</p>\n        <div class=\"books\">\n          <table width=\"400\" height=\"5\">\n            <thead>\n              <tr>\n                <th>Book Name</th>\n                <th>Author</th>\n                <th>ISBN</th>\n                <th>Book Quantity</th>\n                <th>Published Date</th>\n                <th>Book Category</th>\n                <th>Books Issued</th>\n              </tr>\n            </thead>\n            <tbody>\n                  <tr [myHighlight]=\"blue\" id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of current_books\" (click)=\"selectBookID($event)\">\n                    <td>{{book.book_name }}</td>\n                    <td>{{book.author_name}}</td>\n                    <td>{{book.isbn_code}}</td>\n                    <td>{{book.book_quantity}}</td>\n                    <td>{{book.published_date | date | returnMonthYear }}</td>\n                    <td>{{book.book_category}}</td>\n                    <td>{{book.book_issued}}</td>\n                  </tr>\n            </tbody>\n\n          </table>\n          <div class=\"flex-center container paginateBook\">\n            <button class=\"left-arrow\" type=\"button\" name=\"button\" (click)=\"paginateBooks('previous')\"></button>\n              <span>\n                <div>\n                    <span>1</span>–\n                    <span>10</span> of\n                    <span>{{books.length}}</span>\n                </div>\n              </span>\n            <button class=\"right-arrow\" type=\"button\" name=\"button\" (click)=\"paginateBooks('next')\"></button>\n          </div>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' (deSelect)=(unSelectBooks()) [all_books]=\"books\" [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 
