@@ -61,11 +61,15 @@ table#book_transactions > tbody > tr > button {
 }
 
 .left-arrow {
+  margin: 1em !important;
   width: 2em;
   height: 2em;
   background: url(http://i.imgur.com/6FoJCbD.png) -20px -19px no-repeat;
 }
 
 .right-arrow {
-  background: url(http://i.imgur.com/6FoJCbD.png) -42px -21px no-repeat;
+  margin: 1em !important;
+  width: 2em;
+  height: 2em;
+  background: url(http://i.imgur.com/6FoJCbD.png) -40px -19px no-repeat;
 }

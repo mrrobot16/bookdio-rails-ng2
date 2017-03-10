@@ -59,3 +59,17 @@ table#book_transactions > tbody > tr > button {
   display: flex;
   justify-content: center;
 }
+
+.left-arrow {
+  margin: 1em !important;
+  width: 2em;
+  height: 2em;
+  background: url(http://i.imgur.com/6FoJCbD.png) -20px -19px no-repeat;
+}
+
+.right-arrow {
+  margin: 1em !important;
+  width: 2em;
+  height: 2em;
+  background: url(http://i.imgur.com/6FoJCbD.png) -40px -19px no-repeat;
+}
