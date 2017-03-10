@@ -21,12 +21,12 @@ export class AppComponent {
   constructor(router: Router) {
     this.router = router
   }
+
   viewBooks(){
     this.router.navigate(['books'])
   }
+
   viewBookTransactions(){
     this.router.navigate(['book_transactions'])
   }
-
-
 }

@@ -42,7 +42,6 @@ export class BookComponent implements OnInit {
     this.shared_service.broadcast('receiver', payload);
   }
 
-
   selectBookID(event){
     this.all_books = event.target.parentElement.parentElement.children
     if(event.target.parentElement.classList.contains('selectedBook')){

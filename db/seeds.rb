@@ -20,18 +20,16 @@ books = [{book_name:"Start With Why",
           book_quantity:10,
           published_date:Date.new(2014,03),
           book_category:"Entreprenuership",
-         }]
-=begin
-// this.book = {
-//   book_name:'How To Win Friends & Influence People',
-//   author_name:"Dale Carnegie",
-//   isbn_code:"978-1-59184-644-1",
-//   published_date:"1930-06-16".slice(0, -3),
-//   book_category:"Salesmanship",
-//   book_quantity:'15'
-// }
-=end
-
+         },
+         {
+           book_name:'How To Win Friends & Influence People',
+           author_name:"Dale Carnegie",
+           isbn_code:"978-1-59184-644-1",
+           published_date:Date.new(1936, 10),
+           book_category:"Salesmanship",
+           book_quantity:'15'
+         }
+       ]
 books.each do |book|
   Book.create(book)
 end
