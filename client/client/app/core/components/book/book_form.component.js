@@ -26,14 +26,7 @@ export class BookFormComponent implements OnInit {
     this.now = new Date()
     this.property_names = ["book_name", "author_name", "isbn_code",
     "published_date", "book_category", "book_quantity"]
-    // this.book = {
-    //   book_name:'How To Win Friends & Influence People',
-    //   author_name:"Dale Carnegie",
-    //   isbn_code:"978-1-59184-644-1",
-    //   published_date:"1930-06-16".slice(0, -3),
-    //   book_category:"Salesmanship",
-    //   book_quantity:'15'
-    // }
+
     this.editMode = false;
     this.toggleShow = 'hide';
     this.toggleMessage = 'hideMessage'
@@ -99,7 +92,6 @@ export class BookFormComponent implements OnInit {
    checkBookDuplicates(){
      this.bookForm.get('isbn_code').valueChanges.subscribe((res)=>{
        this.isbn_code = res
-       return new Promise((resolve,reject)=>{
          let book = this.all_books.filter((book)=>{
          return book.isbn_code == this.isbn_code
         })
@@ -111,7 +103,6 @@ export class BookFormComponent implements OnInit {
           this.duplicate_isbn = false
           this.toggleMessage = 'hideMessage'
         }
-      })
     })
    }
 

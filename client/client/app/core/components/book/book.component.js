@@ -44,27 +44,34 @@ export class BookComponent implements OnInit {
 
   selectBookID(event){
     let all_books = event.target.parentElement.parentElement.children
-    // all_books = [].slice.call(all_books);
-    // all_books.forEach((book)=>{
-    //
-    // })
-    for(var x=0; x>all_books.length;x++){
-      if(all_books[x].classList.contains('selectedBook') && all_books[x] != event.target.parentElement){
-        all_books[x].classList.remove('selectedBook')
-      }
-    }
     if(event.target.parentElement.classList.contains('selectedBook')){
       event.target.parentElement.classList.remove('selectedBook')
       this.book_id = 0
       this.send_id_book_transaction(this.book_id)
+      return
     }
     else {
+      this.unSelectBooks(all_books, event)
+      event.target.parentElement.classList.add('selectedBook')
       this.book_id = parseInt(event.target.parentNode.id)
       this.send_id_book_transaction(this.book_id)
-      event.target.parentElement.classList.toggle('selectedBook')
     }
+
   }
 
+  unSelectBooks(books, event){
+    books = [].slice.call(books)
+    let promise = new Promise((r,e)=>{
+      books.forEach((book)=>{
+        if (book.classList.contains('selectedBook')) {
+          book.classList.remove('selectedBook')
+        }
+        else {
+        }
+      })
+    }, this.logError)
+    return promise;
+  }
 
   subscribe() {
       this.subscription = this.shared_service.subscribe('sender', (payload) => {
