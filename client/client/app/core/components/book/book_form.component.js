@@ -14,6 +14,7 @@ export class BookFormComponent implements OnInit {
   @Input() book_id;
   @Input() all_books;
   @Output() getAllBooks = new EventEmitter()
+  @Output() deSelect = new EventEmitter()
   constructor(book_service: BookService, book_transaction_service: BookTransactionService,
     builder: FormBuilder, element: ElementRef){
     this.el = element;
@@ -211,6 +212,7 @@ export class BookFormComponent implements OnInit {
     }
   }
   cleanForm(){
+    this.deSelect.emit()
     this.property_names.forEach((prop_name)=>{
       this.bookForm.get(prop_name).setValue(null)
     })

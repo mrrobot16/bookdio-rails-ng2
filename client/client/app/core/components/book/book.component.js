@@ -12,6 +12,7 @@ import template from './book.component.html';
 })
 export class BookComponent implements OnInit {
   books = [];
+  all_books
   book_ids = [];
   subscription = Subscription;
   constructor(book_service: BookService, shared_service: SharedService){
@@ -43,39 +44,55 @@ export class BookComponent implements OnInit {
 
 
   selectBookID(event){
-    let all_books = event.target.parentElement.parentElement.children
+    this.all_books = event.target.parentElement.parentElement.children
     if(event.target.parentElement.classList.contains('selectedBook')){
       event.target.parentElement.classList.remove('selectedBook')
-      this.book_id = 0
-      this.send_id_book_transaction(this.book_id)
-      return
+      this.resetBookID()
     }
     else {
-      this.unSelectBooks(all_books, event)
+      this.unSelectBooks(this.all_books)
       event.target.parentElement.classList.add('selectedBook')
-      this.book_id = parseInt(event.target.parentNode.id)
-      this.send_id_book_transaction(this.book_id)
+      this.sendBookID(event.target.parentNode.id)
     }
-
   }
 
-  unSelectBooks(books, event){
-    books = [].slice.call(books)
-    let promise = new Promise((r,e)=>{
-      books.forEach((book)=>{
-        if (book.classList.contains('selectedBook')) {
+  resetBookID(){
+    this.book_id = 0
+    this.send_id_book_transaction(this.book_id)
+  }
+
+  sendBookID(id){
+    this.book_id = parseInt(id);
+    this.send_id_book_transaction(this.book_id)
+  }
+
+  unSelectBooks(books){
+    if(books){
+      books = [].slice.call(books)
+      let promise = new Promise((r,e)=>{
+        books.forEach((book)=>{
+          if (book.classList.contains('selectedBook')) {
+            book.classList.remove('selectedBook')
+          }
+        })
+      }, this.logError)
+      return promise;
+    }
+    else {
+      this.all_books = [].slice.call(this.all_books)
+      this.all_books.forEach((book)=>{
+        if(book.classList.contains('selectedBook')){
           book.classList.remove('selectedBook')
-        }
-        else {
+          this.book_id = 0
+          this.send_id_book_transaction(this.book_id)
         }
       })
-    }, this.logError)
-    return promise;
+    }
   }
 
-  subscribe() {
+  subscribe(){
       this.subscription = this.shared_service.subscribe('sender', (payload) => {
-        this.book_ids.push(payload);
+        // this.book_ids.push(payload);
       })
     }
 

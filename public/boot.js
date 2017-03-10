@@ -138,19 +138,16 @@ webpackJsonp([0],{
 	    _classCallCheck(this, AppComponent);
 
 	    this.router = router;
-	    console.log("fillForm");
 	  }
 
 	  _createClass(AppComponent, [{
 	    key: 'viewBooks',
 	    value: function viewBooks() {
-	      console.log(this.router);
 	      this.router.navigate(['books']);
 	    }
 	  }, {
 	    key: 'viewBookTransactions',
 	    value: function viewBookTransactions() {
-	      // console.log(this.router);
 	      this.router.navigate(['book_transactions']);
 	    }
 	  }]);
@@ -202,6 +199,7 @@ webpackJsonp([0],{
 	    _classCallCheck(this, BookComponent);
 
 	    this.books = [];
+	    this.all_books = this.all_books;
 	    this.book_ids = [];
 	    this.subscription = _Subscription.Subscription;
 
@@ -239,33 +237,59 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'selectBookID',
 	    value: function selectBookID(event) {
-	      var all_books = event.target.parentElement.parentElement.children;
-	      // all_books = [].slice.call(all_books);
-	      // all_books.forEach((book)=>{
-	      //
-	      // })
-	      for (var x = 0; x > all_books.length; x++) {
-	        if (all_books[x].classList.contains('selectedBook') && all_books[x] != event.target.parentElement) {
-	          all_books[x].classList.remove('selectedBook');
-	        }
-	      }
+	      this.all_books = event.target.parentElement.parentElement.children;
 	      if (event.target.parentElement.classList.contains('selectedBook')) {
 	        event.target.parentElement.classList.remove('selectedBook');
-	        this.book_id = 0;
-	        this.send_id_book_transaction(this.book_id);
+	        this.resetBookID();
 	      } else {
-	        this.book_id = parseInt(event.target.parentNode.id);
-	        this.send_id_book_transaction(this.book_id);
-	        event.target.parentElement.classList.toggle('selectedBook');
+	        this.unSelectBooks(this.all_books);
+	        event.target.parentElement.classList.add('selectedBook');
+	        this.sendBookID(event.target.parentNode.id);
+	      }
+	    }
+	  }, {
+	    key: 'resetBookID',
+	    value: function resetBookID() {
+	      this.book_id = 0;
+	      this.send_id_book_transaction(this.book_id);
+	    }
+	  }, {
+	    key: 'sendBookID',
+	    value: function sendBookID(id) {
+	      this.book_id = parseInt(id);
+	      this.send_id_book_transaction(this.book_id);
+	    }
+	  }, {
+	    key: 'unSelectBooks',
+	    value: function unSelectBooks(books) {
+	      var _this2 = this;
+
+	      if (books) {
+	        books = [].slice.call(books);
+	        var promise = new Promise(function (r, e) {
+	          books.forEach(function (book) {
+	            if (book.classList.contains('selectedBook')) {
+	              book.classList.remove('selectedBook');
+	            }
+	          });
+	        }, this.logError);
+	        return promise;
+	      } else {
+	        this.all_books = [].slice.call(this.all_books);
+	        this.all_books.forEach(function (book) {
+	          if (book.classList.contains('selectedBook')) {
+	            book.classList.remove('selectedBook');
+	            _this2.book_id = 0;
+	            _this2.send_id_book_transaction(_this2.book_id);
+	          }
+	        });
 	      }
 	    }
 	  }, {
 	    key: 'subscribe',
 	    value: function subscribe() {
-	      var _this2 = this;
-
 	      this.subscription = this.shared_service.subscribe('sender', function (payload) {
-	        _this2.book_ids.push(payload);
+	        // this.book_ids.push(payload);
 	      });
 	    }
 	  }, {
@@ -293,7 +317,7 @@ webpackJsonp([0],{
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _dec, _dec2, _dec3, _dec4, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3;
+	var _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4;
 
 	var _core = __webpack_require__(23);
 
@@ -360,7 +384,7 @@ webpackJsonp([0],{
 	  selector: 'book-form',
 	  template: _book_formPartial2.default,
 	  styleUrls: ['./css/stylesheet.css']
-	}), _dec2 = (0, _core.Input)(), _dec3 = (0, _core.Input)(), _dec4 = (0, _core.Output)(), _dec(_class = (_class2 = function () {
+	}), _dec2 = (0, _core.Input)(), _dec3 = (0, _core.Input)(), _dec4 = (0, _core.Output)(), _dec5 = (0, _core.Output)(), _dec(_class = (_class2 = function () {
 	  function BookFormComponent(book_service, book_transaction_service, builder, element) {
 	    _classCallCheck(this, BookFormComponent);
 
@@ -369,6 +393,8 @@ webpackJsonp([0],{
 	    _initDefineProp(this, 'all_books', _descriptor2, this);
 
 	    _initDefineProp(this, 'getAllBooks', _descriptor3, this);
+
+	    _initDefineProp(this, 'deSelect', _descriptor4, this);
 
 	    this.el = element;
 	    this.book_service = book_service;
@@ -381,14 +407,7 @@ webpackJsonp([0],{
 	    value: function ngOnInit() {
 	      this.now = new Date();
 	      this.property_names = ["book_name", "author_name", "isbn_code", "published_date", "book_category", "book_quantity"];
-	      // this.book = {
-	      //   book_name:'How To Win Friends & Influence People',
-	      //   author_name:"Dale Carnegie",
-	      //   isbn_code:"978-1-59184-644-1",
-	      //   published_date:"1930-06-16".slice(0, -3),
-	      //   book_category:"Salesmanship",
-	      //   book_quantity:'15'
-	      // }
+
 	      this.editMode = false;
 	      this.toggleShow = 'hide';
 	      this.toggleMessage = 'hideMessage';
@@ -461,18 +480,16 @@ webpackJsonp([0],{
 
 	      this.bookForm.get('isbn_code').valueChanges.subscribe(function (res) {
 	        _this2.isbn_code = res;
-	        return new Promise(function (resolve, reject) {
-	          var book = _this2.all_books.filter(function (book) {
-	            return book.isbn_code == _this2.isbn_code;
-	          });
-	          if (book.length > 0) {
-	            _this2.duplicate_isbn = true;
-	            _this2.toggleMessage = 'showMessage';
-	          } else {
-	            _this2.duplicate_isbn = false;
-	            _this2.toggleMessage = 'hideMessage';
-	          }
+	        var book = _this2.all_books.filter(function (book) {
+	          return book.isbn_code == _this2.isbn_code;
 	        });
+	        if (book.length > 0) {
+	          _this2.duplicate_isbn = true;
+	          _this2.toggleMessage = 'showMessage';
+	        } else {
+	          _this2.duplicate_isbn = false;
+	          _this2.toggleMessage = 'hideMessage';
+	        }
 	      });
 	    }
 	  }, {
@@ -593,6 +610,7 @@ webpackJsonp([0],{
 	    value: function cleanForm() {
 	      var _this7 = this;
 
+	      this.deSelect.emit();
 	      this.property_names.forEach(function (prop_name) {
 	        _this7.bookForm.get(prop_name).setValue(null);
 	      });
@@ -631,6 +649,11 @@ webpackJsonp([0],{
 	    return this.all_books;
 	  }
 	}), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'getAllBooks', [_dec4], {
+	  enumerable: true,
+	  initializer: function initializer() {
+	    return new _core.EventEmitter();
+	  }
+	}), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'deSelect', [_dec5], {
 	  enumerable: true,
 	  initializer: function initializer() {
 	    return new _core.EventEmitter();
@@ -929,7 +952,7 @@ webpackJsonp([0],{
 /***/ 75:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table width=\"400\" height=\"5\">\n            <thead>\n              <tr>\n                <th>Book Name</th>\n                <th>Author</th>\n                <th>ISBN</th>\n                <th>Book Quantity</th>\n                <th>Published Date</th>\n                <th>Book Category</th>\n                <th>Books Issued</th>\n              </tr>\n            </thead>\n            <tbody>\n                  <tr [myHighlight]=\"blue\" id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of books\" (click)=\"selectBookID($event)\">\n                    <td>{{book.book_name }}</td>\n                    <td>{{book.author_name}}</td>\n                    <td>{{book.isbn_code}}</td>\n                    <td>{{book.book_quantity}}</td>\n                    <td>{{book.published_date | date | returnMonthYear }}</td>\n                    <td>{{book.book_category}}</td>\n                    <td>{{book.book_issued}}</td>\n                  </tr>\n            </tbody>\n\n          </table>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' [all_books]='books' [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Our Favorite books</p>\n        <div class=\"books\">\n          <table width=\"400\" height=\"5\">\n            <thead>\n              <tr>\n                <th>Book Name</th>\n                <th>Author</th>\n                <th>ISBN</th>\n                <th>Book Quantity</th>\n                <th>Published Date</th>\n                <th>Book Category</th>\n                <th>Books Issued</th>\n              </tr>\n            </thead>\n            <tbody>\n                  <tr [myHighlight]=\"blue\" id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of books\" (click)=\"selectBookID($event)\">\n                    <td>{{book.book_name }}</td>\n                    <td>{{book.author_name}}</td>\n                    <td>{{book.isbn_code}}</td>\n                    <td>{{book.book_quantity}}</td>\n                    <td>{{book.published_date | date | returnMonthYear }}</td>\n                    <td>{{book.book_category}}</td>\n                    <td>{{book.book_issued}}</td>\n                  </tr>\n            </tbody>\n\n          </table>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' (deSelect)=(unSelectBooks()) [all_books]='books' [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 
@@ -1010,16 +1033,9 @@ webpackJsonp([0],{
 	          return;
 	        }, this.logError);
 	      } else {
-	        console.log('no id in getBookTransactions');
 	        return;
 	      }
 	    }
-	    // sortByStatus(book_transactions){
-	    //   this.book_transactions = book_transactions.sort((a,b)=>{
-	    //     return (a === b)? 0 : a? -1 : 1;
-	    //   }
-	    // }
-
 	  }, {
 	    key: 'returnBookIssue',
 	    value: function returnBookIssue(book_transaction) {
