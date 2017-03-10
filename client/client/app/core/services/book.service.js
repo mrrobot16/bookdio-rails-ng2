@@ -16,6 +16,13 @@ export class BookService {
     return all_books
   }
 
+  getBook(id){
+    let book = this.http.get(this.books_endpoint+'/'+id, {headers: new Headers({ 'Content-Type' : 'application/json; charset=utf-8'})}).map((res)=>{
+      return res.json()
+    });
+    return book
+  }
+
   postBook(book){
     let book_params = {
       book: {
@@ -65,7 +72,7 @@ export class BookService {
       }),
       body:JSON.stringify(book_params)
     })
-    return fetch(request).then((res)=>{ console.log('res: ', res)}, (error)=>{console.log("error: ", error)})
+    return fetch(request).then((res)=>{ }, (error)=>{console.log("error: ", error)})
   }
 
 }

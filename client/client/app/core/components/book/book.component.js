@@ -13,7 +13,7 @@ import template from './book.component.html';
 export class BookComponent implements OnInit {
   books = []
   current_books = []
-  book_index = 0
+  page_number = 1
   all_books = []
   book_ids = []
   subscription = Subscription;
@@ -35,6 +35,7 @@ export class BookComponent implements OnInit {
     books.subscribe((books)=>{
       this.books = books
       this.current_books = books
+      this.setBookPage(this.page_number)
     }, this.logError)
   }
 
@@ -69,9 +70,6 @@ export class BookComponent implements OnInit {
     this.send_id_book_transaction(this.book_id)
   }
 
-  // returnBooks(){
-  //   return this.books
-  // }
 
   unSelectBooks(books){
     if(books){
@@ -96,31 +94,37 @@ export class BookComponent implements OnInit {
     }
   }
 
-  paginateBooks(n){
-    // if(n=='previous'){
-    //   console.log('previous');
-    //   this.book_index -= 10
-    //   if(this.book_index <= 0 ){
-    //     console.log('you can go to last one');
-    //     this.current_books = this.books.slice(this.book_index)
-    //   }
-    //   else {
-    //     console.log('this.book_index cant be less than 0');
-    //   }
-    // }
-    // if(n=="next"){
-    //   this.book_index+=10
-    //   // console.log(this.current_books.length);
-    //   // this.current_books.slice(this.book_index,this.book_index+10)
-    //   // console.log(this.current_books.length);
-    //   this.current_books = this.current_books.slice(this.book_index,this.book_index+10)
-    //   console.log('next');
-    // }
+  setBookPage(page_number){
+    if(page_number === 1){
+      this.page_number = 1
+      this.current_books = this.books.slice(0,10)
+    }
+    else {
+      this.page_number = page_number
+      this.current_books = this.books.slice((page_number-1)*10, page_number*10)
+    }
+  }
+
+  paginateBooks(state){
+    if(state=='previous'){
+      if(this.page_number < 2){
+        this.page_number = 1
+        return
+      }
+      this.setBookPage(this.page_number-1)
+    }
+    if(state=="next"){
+      if(this.current_books.length < 9){
+        return;
+      }
+      else {
+        this.setBookPage(this.page_number+1)
+      }
+    }
   }
 
   subscribe(){
       this.subscription = this.shared_service.subscribe('sender', (payload) => {
-        // this.book_ids.push(payload);
       })
     }
 

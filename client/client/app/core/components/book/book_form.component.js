@@ -13,6 +13,7 @@ import template from './book_form.partial.html';
 export class BookFormComponent implements OnInit {
   @Input() book_id;
   @Input() all_books;
+  @Input() page_number
   @Output() getAllBooks = new EventEmitter()
   @Output() deSelect = new EventEmitter()
   constructor(book_service: BookService, book_transaction_service: BookTransactionService,
@@ -68,7 +69,7 @@ export class BookFormComponent implements OnInit {
       }
       console.log("book.book_quantity < 1 is true");
       return this.book_transaction_service.postBookTransaction(book).then(()=>{
-        this.getAllBooks.emit();
+        this.getAllBooks.emit(this.page_number);
         this.book_id = 0
         });
       }
@@ -118,7 +119,7 @@ export class BookFormComponent implements OnInit {
      event.preventDefault();
      if(this.editMode && this.book_id){
        return this.book_service.updateBook(this.book_id, bookForm.book_quantity).then(()=>{
-         this.getAllBooks.emit()
+         this.getAllBooks.emit(page_number)
        })
      }
      else if (this.duplicate_isbn && !this.editMode) {
