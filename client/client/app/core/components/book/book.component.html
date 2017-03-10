@@ -27,6 +27,30 @@
             </tbody>
 
           </table>
+          <div class="flex-center container paginateBook">
+            <button class="left-arrow" type="button" name="button" (click)="showForm()"></button>
+            <!-- <div class="ar5 J-J5-Ji"> -->
+              <!-- <span class="Di"> -->
+                <!-- <div>
+                    <span>1</span>–
+                    <span>50</span> of
+                    <span>242</span>
+                </div> -->
+                      <!-- </span> -->
+                <!-- <div id=":h6" class="T-I J-J5-Ji amD T-I-awG amE T-I-ax7 T-I-Js-IF T-I-JE L3" role="button" aria-disabled="true" data-tooltip="Newer" aria-label="Newer" style="user-select: none;">
+                  <span class="amF" aria-hidden="true">&nbsp;</span>
+                  <img class="arrow-left">
+                </div> -->
+                <!-- <div id=":h7" class="T-I J-J5-Ji amD T-I-awG T-I-ax7 T-I-Js-Gs L3" role="button" tabindex="0" data-tooltip="Older" aria-label="Older" style="user-select: none;">
+                  <span class="amF" aria-hidden="true">&nbsp;</span>
+                  <img class="amJ T-I-J3" src="http://i.imgur.com/6FoJCbD.png" alt="">
+                </div> -->
+
+            <!-- </div> -->
+            <!-- <button class="btn-success" type="button" name="button" (click)="editBook()">Edit</button> -->
+            <!-- <button class="btn-success" type="button" name="button" (click)="issueBook()">Issue Book</button> -->
+            <button class="right-arrow" type="button" name="button" (click)="deleteBook()"></button>
+          </div>
           <div class="book-form">
             <book-form (getAllBooks)='displayBooks()' (deSelect)=(unSelectBooks()) [all_books]="books" [book_id]="book_id"></book-form>
           </div>

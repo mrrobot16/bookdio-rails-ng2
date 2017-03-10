@@ -89,6 +89,10 @@ export class BookComponent implements OnInit {
     }
   }
 
+  paginateBooks(){
+    console.log(this.books);
+  }
+
   subscribe(){
       this.subscription = this.shared_service.subscribe('sender', (payload) => {
         // this.book_ids.push(payload);
