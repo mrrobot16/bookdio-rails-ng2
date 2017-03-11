@@ -33,7 +33,9 @@ export class BookComponent implements OnInit {
   displayBooks(){
     let books = this.book_service.getBooks()
     books.subscribe((books)=>{
-      this.books = books
+      this.books = books.sort((a,b)=>{
+        return b.book_issued - a.book_issued
+      })
       this.current_books = books
       this.setBookPage(this.page_number)
     }, this.logError)

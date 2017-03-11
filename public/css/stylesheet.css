@@ -4,6 +4,7 @@
 table {
   width: 100%;
   border-collapse: collapse;
+  border-color: grey;
 }
 
 td, th {
@@ -63,7 +64,12 @@ table#book_transactions > tbody > tr > button {
 }
 
 .book_transactions > button {
-  background: transparent;
+
+}
+
+.background-top {
+  background-color: crimson;
+  color: orange;
 }
 
 .flex-center {
