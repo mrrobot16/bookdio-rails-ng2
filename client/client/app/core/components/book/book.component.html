@@ -1,7 +1,7 @@
 <div class="row container">
     <div class="col-sm-12">
       <p class="lead underlined">Number of books {{books.length}}</p>
-        <div class="books">
+        <div class="books" *ngIf="books.length > 0">
           <table width="400" height="5">
             <thead>
               <tr>
