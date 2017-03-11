@@ -475,23 +475,18 @@ webpackJsonp([0],{
 	      // books that need reclick so it marks as selected
 	      // console.log(this.el.nativeElement.parentElement.parentElement.children[3].children["0"].children[1].children);
 	      if (this.book_id) {
-	        console.log(this.all_books);
 	        var book = this.filterBookByID(this.all_books, this.book_id);
-	        console.log(book);
 	        if (book.book_quantity > 0) {
 	          book = {
 	            book: {
 	              id: this.book_id
 	            }
 	          };
-	          console.log("book.book_quantity < 1 is true");
 	          return this.book_transaction_service.postBookTransaction(book).then(function () {
 	            _this.getAllBooks.emit(_this.page_number);
 	            _this.book_id = 0;
 	          });
-	        } else {
-	          console.log("Cant ISSUE Because no stock");
-	        }
+	        } else {}
 	      }
 	    }
 	  }, {
@@ -621,7 +616,6 @@ webpackJsonp([0],{
 	        }
 	      } else {
 	        this.toggleEditError = 'showMessage';
-	        console.log("no this.book_id");
 	      }
 	      this.toggleMessage = 'hideMessage';
 	    }
@@ -662,12 +656,8 @@ webpackJsonp([0],{
 	          return this.book_service.deleteBook(this.book_id).then(function () {
 	            _this8.getAllBooks.emit();
 	          });
-	        } else {
-	          console.log("book[0].book_issued is not < 1");
-	        }
-	      } else {
-	        console.log("no book ID found");
-	      }
+	        } else {}
+	      } else {}
 	    }
 	  }]);
 

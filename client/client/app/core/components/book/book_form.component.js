@@ -58,23 +58,19 @@ export class BookFormComponent implements OnInit {
     // books that need reclick so it marks as selected
     // console.log(this.el.nativeElement.parentElement.parentElement.children[3].children["0"].children[1].children);
     if(this.book_id){
-      console.log(this.all_books);
       let book = this.filterBookByID(this.all_books, this.book_id)
-      console.log(book);
       if(book.book_quantity > 0){
         book = {
           book: {
             id:this.book_id
           }
       }
-      console.log("book.book_quantity < 1 is true");
       return this.book_transaction_service.postBookTransaction(book).then(()=>{
         this.getAllBooks.emit(this.page_number);
         this.book_id = 0
         });
       }
       else {
-        console.log("Cant ISSUE Because no stock");
       }
     }
   }
@@ -199,7 +195,7 @@ export class BookFormComponent implements OnInit {
     }
     else {
       this.toggleEditError = 'showMessage'
-    console.log("no this.book_id");
+
     }
     this.toggleMessage = 'hideMessage'
   }
@@ -230,11 +226,11 @@ export class BookFormComponent implements OnInit {
         })
       }
       else {
-        console.log("book[0].book_issued is not < 1");
+
       }
     }
     else {
-      console.log("no book ID found");
+
     }
   }
 
