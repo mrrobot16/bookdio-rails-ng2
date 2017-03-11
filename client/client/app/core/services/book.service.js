@@ -54,7 +54,7 @@ export class BookService {
       }),
       body:JSON.stringify(book_params)
     })
-    return fetch(request).then((res)=>{ console.log("res: "); }, (error)=>{console.log("error message: ", error)});
+    return fetch(request).then((res)=>{ }, (error)=>{console.log("error message: ", error)});
   }
 
   deleteBook(id){

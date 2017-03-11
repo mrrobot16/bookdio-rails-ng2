@@ -15,6 +15,7 @@ export class BookFormComponent implements OnInit {
   @Input() book_id;
   @Input() all_books;
   @Input() page_number
+  @Input() editModeForm;
   @Output() getAllBooks = new EventEmitter()
   @Output() deSelect = new EventEmitter()
   constructor(book_service: BookService, book_transaction_service: BookTransactionService,
@@ -24,8 +25,6 @@ export class BookFormComponent implements OnInit {
     this.book_transaction_service = book_transaction_service;
     this.shared_service = shared_service;
     this.builder = builder;
-    this.button_disable = true
-    this.button_issue_disable = true
   }
 
   ngOnInit(){
@@ -37,29 +36,33 @@ export class BookFormComponent implements OnInit {
     this.toggleMessage = 'hideMessage'
     this.toggleEditError = 'hideMessage'
     this.duplicate_isbn = null
+    this.button_disable = true
+    this.button_issue_disable = true
+    this.button_edit_disable = true
     this.disableButton()
     this.createForm()
   }
 
   disableButton(){
     this.shared_service.selectBookEmitted.subscribe((book_id)=>{
-      console.log(book_id);
+      this.book_id = book_id
       if(book_id){
+        this.button_edit_disable = false
         var book = this.all_books.filter((book)=>{
           return book.id === book_id
         })[0]
-        // console.log(book);
+        this.editBook()
       }
       if(book_id && book.book_quantity >=1){
         this.button_issue_disable = false
-      }
-      else {
-        this.button_issue_disable = true
       }
       if(book_id && book.book_issued < 1){
         this.button_disable = false
       }
       if(book_id === 0) {
+        this.button_edit_disable = true
+        this.cleanForm()
+        this.toggleDisabled("on")
         this.button_disable = true
         this.button_issue_disable =true
       }
@@ -141,7 +144,7 @@ export class BookFormComponent implements OnInit {
      event.preventDefault();
      if(this.editMode && this.book_id){
        return this.book_service.updateBook(this.book_id, bookForm.book_quantity).then(()=>{
-         this.getAllBooks.emit(page_number)
+         this.getAllBooks.emit(this.page_number)
        })
      }
      else if (this.duplicate_isbn && !this.editMode) {
@@ -180,7 +183,6 @@ export class BookFormComponent implements OnInit {
     this.cleanForm()
     this.toggleEditError = 'hideMessage'
     let book_id = 0
-    // console.log(book_id);
     if(this.editMode){
       this.editMode = false;
       this.toggleDisabled("on")
@@ -251,12 +253,6 @@ export class BookFormComponent implements OnInit {
           this.getAllBooks.emit();
         })
       }
-      else {
-
-      }
-    }
-    else {
-
     }
   }
 
