@@ -31,16 +31,20 @@ export class BookFormComponent implements OnInit {
     this.now = new Date()
     this.property_names = ["book_name", "author_name", "isbn_code",
     "published_date", "book_category", "book_quantity"]
+    this.duplicate_isbn = null
+    this.setToggleMode()
+    this.disableButton()
+    this.createForm()
+  }
+
+  setToggleMode(){
     this.editMode = false;
     this.toggleShow = 'hide';
     this.toggleMessage = 'hideMessage'
     this.toggleEditError = 'hideMessage'
-    this.duplicate_isbn = null
     this.button_disable = true
     this.button_issue_disable = true
     this.button_edit_disable = true
-    this.disableButton()
-    this.createForm()
   }
 
   disableButton(){
@@ -53,12 +57,8 @@ export class BookFormComponent implements OnInit {
         })[0]
         this.editBook()
       }
-      if(book_id && book.book_quantity >=1){
-        this.button_issue_disable = false
-      }
-      if(book_id && book.book_issued < 1){
-        this.button_disable = false
-      }
+      (book_id && book.book_quantity >=1) ? this.button_issue_disable = false : this.returnNone;
+      (book_id && book.book_issued) < 1 ? this.button_disable = false : this.returnNone;
       if(book_id === 0) {
         this.button_edit_disable = true
         this.cleanForm()
@@ -68,15 +68,13 @@ export class BookFormComponent implements OnInit {
       }
     })
   }
+  returnNone(){
+    return;
+  }
 
   toggleEditMessage(){
     this.toggleEditError = 'showMessage'
-    if(this.toggleEditError == 'showMessage'){
-      this.toggleEditError = 'hideMessage'
-    }
-    else {
-      this.toggleEditError == 'showMessage'
-    }
+    this.toggleEditError == 'showMessage' ? this.toggleEditError = 'hideMessage' : this.toggleEditError = 'showMessage';
   }
 
   filterBookByID(books, book_id){
@@ -253,7 +251,7 @@ export class BookFormComponent implements OnInit {
           this.getAllBooks.emit();
         })
       }
-    }
   }
+}
 
 }

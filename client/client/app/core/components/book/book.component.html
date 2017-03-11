@@ -31,7 +31,7 @@
             <button class="left-arrow" type="button" name="button" (click)="paginateBooks('previous')"></button>
               <span>
                 <div>
-                    <span>Showing</span>
+                    <span>Showing from</span>
                     <span>{{1+(page_number-1)*10}}</span>–
                     <span>{{page_number*10 > books.length ? books.length : page_number*10  }}</span> of
                     <span>{{books.length}}</span>
