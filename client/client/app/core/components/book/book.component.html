@@ -1,10 +1,10 @@
 <div class="row container">
     <div class="col-sm-12">
       <p class="lead underlined">Number of books {{books.length}}</p>
-        <div class="books" *ngIf="books.length > 0">
-          <table class="table-responsive" width="400" height="5">
+        <div class="books table-responsive" *ngIf="books.length > 0">
+          <table class="table" width="400" height="5">
             <thead>
-              <tr>
+              <tr class="background-top">
                 <th>Book Name</th>
                 <th>Author</th>
                 <th>ISBN</th>
