@@ -125,19 +125,33 @@ webpackJsonp([0],{
 
 	var _core = __webpack_require__(23);
 
+	var _shared = __webpack_require__(73);
+
 	var _router = __webpack_require__(30);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var AppComponent = exports.AppComponent = (_dec = (0, _core.Component)({
 	  selector: 'my-app',
-	  template: '\n  <div class="container body-container">\n    <div>\n    <h1>Welcome to our Book Recommendations</h1>\n    <div class="flex-center">\n      <button class="btn-primary" type="button" name="button" (click)="viewBooks()">View Books</button>\n      <button class="btn-success" type="button" name="button" (click)="viewBookTransactions()">View Book Transactions</button>\n    </div>\n    </div>\n    <router-outlet></router-outlet>\n  </div>\n  ',
+	  template: '\n  <div class="container body-container">\n    <div>\n    <h1>Welcome to our Book Recommendations</h1>\n    <div class="flex-center">\n      <button class="btn-primary" type="button" name="button" (click)="viewBooks()">View Books</button>\n      <button class="btn btn-warning" [disabled]=\'button_disable\' type="button" name="button" (click)="viewBookTransactions()">View Book Transactions</button>\n    </div>\n    </div>\n    <router-outlet></router-outlet>\n  </div>\n  ',
 	  styleUrls: ['./css/stylesheet.css']
 	}), _dec(_class = function () {
-	  function AppComponent(router) {
+	  function AppComponent(router, shared_service) {
+	    var _this = this;
+
 	    _classCallCheck(this, AppComponent);
 
+	    this.button_disable = true;
+
+	    this.shared_service = shared_service;
 	    this.router = router;
+	    this.shared_service.selectBookEmitted.subscribe(function (book_id) {
+	      if (book_id) {
+	        _this.button_disable = false;
+	      } else {
+	        _this.button_disable = true;
+	      }
+	    });
 	  }
 
 	  _createClass(AppComponent, [{
@@ -154,7 +168,7 @@ webpackJsonp([0],{
 
 	  return AppComponent;
 	}()) || _class);
-	Reflect.defineMetadata('design:paramtypes', [_router.Router], AppComponent);
+	Reflect.defineMetadata('design:paramtypes', [_router.Router, _shared.SharedService], AppComponent);
 
 /***/ },
 
@@ -257,12 +271,14 @@ webpackJsonp([0],{
 	    key: 'resetBookID',
 	    value: function resetBookID() {
 	      this.book_id = 0;
+	      this.shared_service.emitSelectChange(this.book_id);
 	      this.send_id_book_transaction(this.book_id);
 	    }
 	  }, {
 	    key: 'sendBookID',
 	    value: function sendBookID(id) {
 	      this.book_id = parseInt(id);
+	      this.shared_service.emitSelectChange(this.book_id);
 	      this.send_id_book_transaction(this.book_id);
 	    }
 	  }, {
@@ -935,10 +951,18 @@ webpackJsonp([0],{
 	    _classCallCheck(this, SharedService);
 
 	    this.handler = new _Subject.Subject();
+	    this.emitSelectBook = new _Subject.Subject();
 	    this.book_id = 0;
+
+	    this.selectBookEmitted = this.emitSelectBook.asObservable();
 	  }
 
 	  _createClass(SharedService, [{
+	    key: 'emitSelectChange',
+	    value: function emitSelectChange(change) {
+	      this.emitSelectBook.next(change);
+	    }
+	  }, {
 	    key: 'broadcast',
 	    value: function broadcast(type, payload) {
 	      this.handler.next({ type: type, payload: payload });
