@@ -11,11 +11,17 @@ td, th {
   padding: 8px;
   text-align: left;
   white-space: nowrap;
+
 }
 
-/*tr:nth-child(even) {*/
-  /*background-color: #dddddd;*/
-/*}*/
+tbody > tr:nth-child(odd) {
+  /*background-color: #7be7ff;*/
+  color:red;
+}
+
+tbody > tr:nth-child(even){
+  color:#006a82;
+}
 
 .flex-center button {
   margin: 1.5em;
@@ -45,14 +51,19 @@ form > div:nth-child(3) > div > button {
 
 
 .selectedBook {
-  background-color: red;
-  color: white;
+  background-color: red !important;
+  /*color: white !important;*/
+  color: #00ff2b !important;
 }
 
 table#book_transactions > tbody > tr > button {
   margin-left: 1em;
   margin-top: 8px;
   height: 1.8em;
+}
+
+.book_transactions > button {
+  background: transparent;
 }
 
 .flex-center {
@@ -64,6 +75,7 @@ table#book_transactions > tbody > tr > button {
   margin: 1em !important;
   width: 2em;
   height: 2em;
+  background-color: #efff00 !important;
   background: url(http://i.imgur.com/6FoJCbD.png) -20px -19px no-repeat;
 }
 
@@ -71,5 +83,6 @@ table#book_transactions > tbody > tr > button {
   margin: 1em !important;
   width: 2em;
   height: 2em;
+  background-color: #9dff00 !important;
   background: url(http://i.imgur.com/6FoJCbD.png) -40px -19px no-repeat;
 }

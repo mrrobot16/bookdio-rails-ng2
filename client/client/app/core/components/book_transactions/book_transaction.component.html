@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let book_transaction of book_transactions">
+      <tr class="book_transactions" *ngFor="let book_transaction of book_transactions">
         <td>{{book_transaction.created_at | date }}</td>
         <td>{{book_transaction.transaction_type | uppercase}}</td>
         <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>
