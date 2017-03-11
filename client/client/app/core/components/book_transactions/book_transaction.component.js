@@ -36,18 +36,16 @@ export class BookTransactionComponent implements OnInit {
       let book = this.book_service.getBook(id)
       book.subscribe((book)=>{
         this.book = book;
-        console.log(this.book);
       })
     }
   }
-  
+
   subscribe() {
     this.subscription = this.shared_service.subscribe('receiver', (payload) => {
     })
   }
 
   getBookTransactions(id){
-    console.log('getBTRams');
     if(id){
       let book_transactions = this.book_transaction_service.getBookTransactions(id)
       book_transactions.subscribe((book_transactions)=>{

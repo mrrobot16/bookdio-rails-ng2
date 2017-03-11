@@ -15,6 +15,8 @@ export class SharedService {
     this.emitSelectBook.next(change)
   }
 
+
+
   broadcast(type, payload){
     this.handler.next({ type, payload });
     this.book_id = payload.id

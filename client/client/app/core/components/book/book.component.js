@@ -64,16 +64,19 @@ export class BookComponent implements OnInit {
 
   resetBookID(){
     this.book_id = 0
-    this.shared_service.emitSelectChange(this.book_id)
+    this.emitBookChange(this.book_id)
     this.send_id_book_transaction(this.book_id)
   }
 
   sendBookID(id){
     this.book_id = parseInt(id)
-    this.shared_service.emitSelectChange(this.book_id)
+    this.emitBookChange(this.book_id)
     this.send_id_book_transaction(this.book_id)
   }
 
+  emitBookChange(id){
+    this.shared_service.emitSelectChange(id)
+  }
 
   unSelectBooks(books){
     if(books){

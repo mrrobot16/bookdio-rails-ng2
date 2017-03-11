@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, ElementRef } from '@ang
 import {FormBuilder} from '@angular/forms';
 import { BookService } from '../../services/book.service';
 import { BookTransactionService } from '../../services/book_transaction.service';
+import { SharedService} from '../../services/shared.service';
 import 'rxjs/add/operator/toPromise';
 import template from './book_form.partial.html';
 
@@ -17,24 +18,52 @@ export class BookFormComponent implements OnInit {
   @Output() getAllBooks = new EventEmitter()
   @Output() deSelect = new EventEmitter()
   constructor(book_service: BookService, book_transaction_service: BookTransactionService,
-    builder: FormBuilder, element: ElementRef){
+    shared_service: SharedService, builder: FormBuilder, element: ElementRef){
     this.el = element;
     this.book_service = book_service;
     this.book_transaction_service = book_transaction_service;
+    this.shared_service = shared_service;
     this.builder = builder;
+    this.button_disable = true
+    this.button_issue_disable = true
   }
 
   ngOnInit(){
     this.now = new Date()
     this.property_names = ["book_name", "author_name", "isbn_code",
     "published_date", "book_category", "book_quantity"]
-
     this.editMode = false;
     this.toggleShow = 'hide';
     this.toggleMessage = 'hideMessage'
     this.toggleEditError = 'hideMessage'
     this.duplicate_isbn = null
+    this.disableButton()
     this.createForm()
+  }
+
+  disableButton(){
+    this.shared_service.selectBookEmitted.subscribe((book_id)=>{
+      console.log(book_id);
+      if(book_id){
+        var book = this.all_books.filter((book)=>{
+          return book.id === book_id
+        })[0]
+        // console.log(book);
+      }
+      if(book_id && book.book_quantity >=1){
+        this.button_issue_disable = false
+      }
+      else {
+        this.button_issue_disable = true
+      }
+      if(book_id && book.book_issued < 1){
+        this.button_disable = false
+      }
+      if(book_id === 0) {
+        this.button_disable = true
+        this.button_issue_disable =true
+      }
+    })
   }
 
   toggleEditMessage(){
@@ -55,8 +84,6 @@ export class BookFormComponent implements OnInit {
   }
 
   issueBook(){
-    // books that need reclick so it marks as selected
-    // console.log(this.el.nativeElement.parentElement.parentElement.children[3].children["0"].children[1].children);
     if(this.book_id){
       let book = this.filterBookByID(this.all_books, this.book_id)
       if(book.book_quantity > 0){
@@ -67,10 +94,9 @@ export class BookFormComponent implements OnInit {
       }
       return this.book_transaction_service.postBookTransaction(book).then(()=>{
         this.getAllBooks.emit(this.page_number);
+        this.deSelect.emit()
         this.book_id = 0
         });
-      }
-      else {
       }
     }
   }
