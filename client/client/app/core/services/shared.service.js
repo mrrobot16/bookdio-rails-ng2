@@ -12,17 +12,14 @@ export class SharedService {
   }
 
   emitSelectChange(change){
+    console.log('emitSelectBook (change): ', change);
     this.emitSelectBook.next(change)
   }
-
-
 
   broadcast(type, payload){
     this.handler.next({ type, payload });
     this.book_id = payload.id
   }
-
-
 
   getBookID(){
     if (this.book_id) {
@@ -34,9 +31,11 @@ export class SharedService {
   }
 
   subscribe(type, callback){
+    // console.log('subscribe in shared_service');
     return this.handler
     .filter(message => message.type === type)
     .map((message) => {
+      // console.log('subscribe in shared_service');
       message.payload
     })
     .subscribe(callback);

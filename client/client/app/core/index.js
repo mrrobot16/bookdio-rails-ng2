@@ -1,5 +1,6 @@
 // Components
 import { AppComponent } from './components/app/app.component';
+import {TopNavBar} from './components/nav-bar/top-bar.component';
 import { BookComponent} from './components/book/book.component';
 import { BookFormComponent} from './components/book/book_form.component';
 import { BookTransactionComponent } from './components/book_transactions/book_transaction.component';
@@ -15,5 +16,5 @@ import { ReturnMonthYearPipe } from './pipes/return_month.pipe';
 import { HighlightDirective } from './directives/highlight.directive';
 // Export all
 export const CORE_PROVIDERS = [BookService, BookTransactionService, SharedService];
-export const CORE_DECLARATIONS = [AppComponent, BookComponent, BookFormComponent, BookTransactionComponent, HighlightDirective, ReturnMonthYearPipe];
-export { AppComponent, BookComponent, BookTransactionComponent, BookService, SharedService, BookTransactionService, HighlightDirective };
+export const CORE_DECLARATIONS = [AppComponent, TopNavBar, BookComponent, BookFormComponent, BookTransactionComponent, HighlightDirective, ReturnMonthYearPipe];
+export { AppComponent, TopNavBar,BookComponent, BookTransactionComponent, BookService, SharedService, BookTransactionService, HighlightDirective };

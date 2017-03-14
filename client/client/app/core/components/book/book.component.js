@@ -130,12 +130,12 @@ export class BookComponent implements OnInit {
     }
   }
 
-  subscribe(){
+   subscribe(){
       this.subscription = this.shared_service.subscribe('sender', (payload) => {
       })
-    }
+   }
 
-  logError(error){
+   logError(error){
     console.log("error: ", error)
-  }
+   }
 }
