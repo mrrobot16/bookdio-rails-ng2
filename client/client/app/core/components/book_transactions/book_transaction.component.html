@@ -1,6 +1,6 @@
 <div class="container">
 
-  <table *ngIf="shared_service.getBookID()" width="400" height="5" id="book_transactions">
+  <table *ngIf="book_id" width="400" height="5" id="book_transactions">
     <thead *ngIf='!zero_transaction_message'>
       <h3>Book Transactions for {{book.book_name}}</h3>
       <tr>
@@ -20,9 +20,9 @@
       </tr>
     </tbody>
   </table>
-  <p class="flex-center" *ngIf='zero_transaction_message'>No book transactions for this book</p>
+  <p class="flex-center" *ngIf='zero_transaction_message'>No book transactions for <br><strong>{{book.book_name}} </strong></p>
 
-  <div *ngIf='!shared_service.getBookID()' class="flex-center">
+  <div *ngIf='!book_id' class="flex-center">
     <h3>No book selected go to <a href="#/books">books</a> and select a book to view transactions</h3>
   </div>
 </div>

@@ -21,7 +21,7 @@ export class BookComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.book_id = 0
+    this.resetBookID()
     this.send_id_book_transaction(this.book_id)
     this.displayBooks()
   }
