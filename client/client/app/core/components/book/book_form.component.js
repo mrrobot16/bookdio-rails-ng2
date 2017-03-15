@@ -1,14 +1,12 @@
 import { Component, Input, Output, EventEmitter, OnInit, ElementRef } from '@angular/core';
-
 // Form Objects
 import {FormBuilder} from '@angular/forms';
-
 // Services
 import { BookService } from '../../services/book.service';
 import { BookTransactionService } from '../../services/book_transaction.service';
 import { SharedService} from '../../services/shared.service';
-
-import template from './book_form.partial.html';
+// View
+import template from './book_form.component.html';
 
 @Component({
   selector: 'book-form',
@@ -54,6 +52,7 @@ export class BookFormComponent implements OnInit {
     this.shared_service.pushedBookID.subscribe(
       (book_id) => {
         this.book_id = book_id
+        // console.log("book_id:",this.book_id);
         if(this.book_id){
           this.button_edit_disable = false
           var book = this.all_books.filter((book)=>{

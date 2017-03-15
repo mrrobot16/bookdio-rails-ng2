@@ -38,7 +38,10 @@ export class BookComponent implements OnInit {
   }
 
   selectBookID(event){
-    this.all_books = event.target.parentElement.parentElement.children
+    this.all_books = [].slice.call(event.target.parentElement.parentElement.children)
+    this.all_books.forEach((book)=>{
+      book.classList.contains('selectedBook') && book != event.target.parentElement ? this.setBookID(0) : this.returnNone;
+    })
     if(event.target.parentElement.classList.contains('selectedBook')){
       event.target.parentElement.classList.remove('selectedBook')
       this.setBookID(0)
@@ -46,7 +49,6 @@ export class BookComponent implements OnInit {
     else {
       this.unSelectBooks(this.all_books)
       event.target.parentElement.classList.add('selectedBook')
-      // this.sendBookID(event.target.parentNode.id)
       this.setBookID(event.target.parentNode.id)
     }
   }
@@ -86,7 +88,6 @@ export class BookComponent implements OnInit {
 
   unSelectBooks(books){
     if(books){
-      books = [].slice.call(books)
       let promise = new Promise((r,e)=>{
         books.forEach((book)=>{
           if (book.classList.contains('selectedBook')){
@@ -97,7 +98,6 @@ export class BookComponent implements OnInit {
       return promise;
     }
     else {
-      this.all_books = [].slice.call(this.all_books)
       this.all_books.forEach((book)=>{
         if(book.classList.contains('selectedBook')){
             book.classList.remove('selectedBook')
@@ -138,5 +138,9 @@ export class BookComponent implements OnInit {
 
    logError(error){
     console.log("error: ", error)
+   }
+
+   returnNone(){
+     return false;
    }
 }

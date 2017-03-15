@@ -343,14 +343,18 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'selectBookID',
 	    value: function selectBookID(event) {
-	      this.all_books = event.target.parentElement.parentElement.children;
+	      var _this2 = this;
+
+	      this.all_books = [].slice.call(event.target.parentElement.parentElement.children);
+	      this.all_books.forEach(function (book) {
+	        book.classList.contains('selectedBook') && book != event.target.parentElement ? _this2.setBookID(0) : _this2.returnNone;
+	      });
 	      if (event.target.parentElement.classList.contains('selectedBook')) {
 	        event.target.parentElement.classList.remove('selectedBook');
 	        this.setBookID(0);
 	      } else {
 	        this.unSelectBooks(this.all_books);
 	        event.target.parentElement.classList.add('selectedBook');
-	        // this.sendBookID(event.target.parentNode.id)
 	        this.setBookID(event.target.parentNode.id);
 	      }
 	    }
@@ -394,10 +398,9 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'unSelectBooks',
 	    value: function unSelectBooks(books) {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      if (books) {
-	        books = [].slice.call(books);
 	        var promise = new Promise(function (r, e) {
 	          books.forEach(function (book) {
 	            if (book.classList.contains('selectedBook')) {
@@ -407,11 +410,10 @@ webpackJsonp([0],{
 	        }, this.logError);
 	        return promise;
 	      } else {
-	        this.all_books = [].slice.call(this.all_books);
 	        this.all_books.forEach(function (book) {
 	          if (book.classList.contains('selectedBook')) {
 	            book.classList.remove('selectedBook');
-	            _this2.resetBookID();
+	            _this3.resetBookID();
 	          }
 	        });
 	      }
@@ -450,6 +452,11 @@ webpackJsonp([0],{
 	    value: function logError(error) {
 	      console.log("error: ", error);
 	    }
+	  }, {
+	    key: 'returnNone',
+	    value: function returnNone() {
+	      return false;
+	    }
 	  }]);
 
 	  return BookComponent;
@@ -471,11 +478,11 @@ webpackJsonp([0],{
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
-
 	// Form Objects
 
-
 	// Services
+
+	// View
 
 
 	var _core = __webpack_require__(23);
@@ -488,9 +495,9 @@ webpackJsonp([0],{
 
 	var _shared = __webpack_require__(67);
 
-	var _book_formPartial = __webpack_require__(74);
+	var _book_formComponent = __webpack_require__(74);
 
-	var _book_formPartial2 = _interopRequireDefault(_book_formPartial);
+	var _book_formComponent2 = _interopRequireDefault(_book_formComponent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -541,7 +548,7 @@ webpackJsonp([0],{
 
 	var BookFormComponent = exports.BookFormComponent = (_dec = (0, _core.Component)({
 	  selector: 'book-form',
-	  template: _book_formPartial2.default,
+	  template: _book_formComponent2.default,
 	  styleUrls: ['./css/stylesheet.css']
 	}), _dec2 = (0, _core.Input)(), _dec3 = (0, _core.Input)(), _dec4 = (0, _core.Input)(), _dec5 = (0, _core.Output)(), _dec6 = (0, _core.Output)(), _dec(_class = (_class2 = function () {
 	  function BookFormComponent(book_service, book_transaction_service, shared_service, builder, element) {
@@ -592,6 +599,7 @@ webpackJsonp([0],{
 
 	      this.shared_service.pushedBookID.subscribe(function (book_id) {
 	        _this.book_id = book_id;
+	        // console.log("book_id:",this.book_id);
 	        if (_this.book_id) {
 	          _this.button_edit_disable = false;
 	          var book = _this.all_books.filter(function (book) {
