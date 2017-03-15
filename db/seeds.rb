@@ -40,7 +40,7 @@ books = [
            book_quantity:4
         },
         {
-          book_name:"Lean Start",
+          book_name:"Lean Startup",
           author_name:"Eric Reis",
           isbn_code:"978-1-44379-234-9",
           book_quantity:3,

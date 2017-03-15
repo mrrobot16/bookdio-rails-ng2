@@ -57,7 +57,7 @@ webpackJsonp([0],{
 
 	var _index = __webpack_require__(65);
 
-	var routes = exports.routes = [{ path: '', component: _index.BookComponent, pathMatch: 'full' }, { path: 'books', component: _index.BookComponent }, { path: 'book_transactions', component: _index.BookTransactionComponent }];
+	var routes = exports.routes = [{ path: '', component: _index.BookComponent, pathMatch: 'full' }, { path: 'books', component: _index.BookComponent }, { path: 'book/:id/book_transactions', component: _index.BookTransactionComponent }];
 
 /***/ },
 
@@ -235,10 +235,9 @@ webpackJsonp([0],{
 	  function TopNavBar(shared_service, router) {
 	    _classCallCheck(this, TopNavBar);
 
-	    this.button_disable = true;
-
 	    this.router = router;
 	    this.shared_service = shared_service;
+	    this.hash = this.router.location._platformStrategy._platformLocation.location.hash;
 	    this.enableBookTransactions();
 	  }
 
@@ -248,6 +247,7 @@ webpackJsonp([0],{
 	      var _this = this;
 
 	      this.shared_service.pushedBookID.subscribe(function (book_id) {
+	        _this.button_disable = true;
 	        _this.book_id = book_id;
 	        _this.book_id ? _this.button_disable = false : _this.button_disable = true;
 	      });
@@ -260,7 +260,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'viewBookTransactions',
 	    value: function viewBookTransactions() {
-	      this.router.navigate(['book_transactions']);
+	      this.router.navigate(['book/' + this.book_id + '/book_transactions']);
 	    }
 	  }]);
 
@@ -322,7 +322,7 @@ webpackJsonp([0],{
 	  _createClass(BookComponent, [{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
-	      this.book_id = 0;
+	      this.resetBookID();
 	      this.send_id_book_transaction(this.book_id);
 	      this.displayBooks();
 	    }
@@ -346,11 +346,12 @@ webpackJsonp([0],{
 	      this.all_books = event.target.parentElement.parentElement.children;
 	      if (event.target.parentElement.classList.contains('selectedBook')) {
 	        event.target.parentElement.classList.remove('selectedBook');
-	        this.resetBookID();
+	        this.setBookID(0);
 	      } else {
 	        this.unSelectBooks(this.all_books);
 	        event.target.parentElement.classList.add('selectedBook');
-	        this.sendBookID(event.target.parentNode.id);
+	        // this.sendBookID(event.target.parentNode.id)
+	        this.setBookID(event.target.parentNode.id);
 	      }
 	    }
 	  }, {
@@ -374,7 +375,17 @@ webpackJsonp([0],{
 	    }
 	  }, {
 	    key: 'setBookID',
-	    value: function setBookID() {}
+	    value: function setBookID(id) {
+	      if (id) {
+	        this.book_id = parseInt(id);
+	        this.emitBookChange(this.book_id);
+	        this.send_id_book_transaction(this.book_id);
+	      } else {
+	        this.book_id = id;
+	        this.emitBookChange(this.book_id);
+	        this.send_id_book_transaction(this.book_id);
+	      }
+	    }
 	  }, {
 	    key: 'emitBookChange',
 	    value: function emitBookChange(id) {
@@ -804,6 +815,8 @@ webpackJsonp([0],{
 	        if (book[0].book_issued < 1) {
 	          return this.book_service.deleteBook(this.book_id).then(function () {
 	            _this9.getAllBooks.emit();
+	          }).then(function () {
+	            _this9.cleanForm();
 	          });
 	        }
 	      }
@@ -905,7 +918,7 @@ webpackJsonp([0],{
 	      return fetch(request).then(function (res) {
 	        return res.json();
 	      }).then(function (res) {
-	        res.json();
+	        res;
 	      }, function (error) {
 	        console.log("Error occurred: ", error);
 	      });
@@ -1008,7 +1021,7 @@ webpackJsonp([0],{
 	      return fetch(request).then(function (res) {
 	        return res.json();
 	      }).then(function (res) {
-	        res.json();
+	        res;
 	      }, function (error) {
 	        console.log("Error occurred: ", error);
 	      });
@@ -1026,7 +1039,7 @@ webpackJsonp([0],{
 	      return fetch(request).then(function (res) {
 	        return res.json();
 	      }).then(function (res) {
-	        res.json();
+	        res;
 	      }, function (error) {
 	        console.log("Error occurred: ", error);
 	      });
@@ -1069,6 +1082,8 @@ webpackJsonp([0],{
 
 	var _core = __webpack_require__(23);
 
+	var _router = __webpack_require__(30);
+
 	var _book_transaction = __webpack_require__(73);
 
 	var _book = __webpack_require__(72);
@@ -1088,7 +1103,7 @@ webpackJsonp([0],{
 	  template: _book_transactionComponent2.default,
 	  styleUrls: ['./css/stylesheet.css']
 	}), _dec(_class = function () {
-	  function BookTransactionComponent(book_service, book_transaction_service, shared_service) {
+	  function BookTransactionComponent(book_service, book_transaction_service, shared_service, router) {
 	    _classCallCheck(this, BookTransactionComponent);
 
 	    this.book = {};
@@ -1096,20 +1111,16 @@ webpackJsonp([0],{
 	    this.book_transaction_service = book_transaction_service;
 	    this.book_service = book_service;
 	    this.shared_service = shared_service;
+	    this.router = router;
 	  }
 
 	  _createClass(BookTransactionComponent, [{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
-	      this.book_id = this.shared_service.getBookID();
+	      this.book_id = parseInt(this.router.snapshot.params.id);
 	      this.getBook(this.book_id);
 	      this.getBookTransactions(this.book_id);
 	      this.zero_transaction_message = false;
-	    }
-	  }, {
-	    key: 'getBookID',
-	    value: function getBookID() {
-	      return this.shared_service.getBookID();
 	    }
 	  }, {
 	    key: 'getBook',
@@ -1137,8 +1148,6 @@ webpackJsonp([0],{
 	          }
 	          return;
 	        }, this.logError);
-	      } else {
-	        return;
 	      }
 	    }
 	  }, {
@@ -1147,7 +1156,7 @@ webpackJsonp([0],{
 	      var _this3 = this;
 
 	      this.book_transaction_service.updateBookTransaction(book_transaction).then(function () {
-	        _this3.getBookTransactions(_this3.shared_service.getBookID());
+	        _this3.getBookTransactions(_this3.book_id);
 	      });
 	    }
 	  }, {
@@ -1159,14 +1168,14 @@ webpackJsonp([0],{
 
 	  return BookTransactionComponent;
 	}()) || _class);
-	Reflect.defineMetadata('design:paramtypes', [_book.BookService, _book_transaction.BookTransactionService, _shared.SharedService], BookTransactionComponent);
+	Reflect.defineMetadata('design:paramtypes', [_book.BookService, _book_transaction.BookTransactionService, _shared.SharedService, _router.ActivatedRoute], BookTransactionComponent);
 
 /***/ },
 
 /***/ 77:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container\">\n\n  <table *ngIf=\"shared_service.getBookID()\" width=\"400\" height=\"5\" id=\"book_transactions\">\n    <thead *ngIf='!zero_transaction_message'>\n      <h3>Book Transactions for {{book.book_name}}</h3>\n      <tr>\n        <th>Transaction Date</th>\n        <th>Transaction Type</th>\n        <th>Transaction Status</th>\n        <th>Returned Date </th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr class=\"book_transactions\" *ngFor=\"let book_transaction of book_transactions\">\n        <td>{{book_transaction.created_at | date }}</td>\n        <td>{{book_transaction.transaction_type | uppercase}}</td>\n        <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n        <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n        <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n      </tr>\n    </tbody>\n  </table>\n  <p class=\"flex-center\" *ngIf='zero_transaction_message'>No book transactions for this book</p>\n\n  <div *ngIf='!shared_service.getBookID()' class=\"flex-center\">\n    <h3>No book selected go to <a href=\"#/books\">books</a> and select a book to view transactions</h3>\n  </div>\n</div>\n"
+	module.exports = "<div class=\"container\">\n\n  <table *ngIf=\"book_id\" width=\"400\" height=\"5\" id=\"book_transactions\">\n    <thead *ngIf='!zero_transaction_message'>\n      <h3>Book Transactions for {{book.book_name}}</h3>\n      <tr>\n        <th>Transaction Date</th>\n        <th>Transaction Type</th>\n        <th>Transaction Status</th>\n        <th>Returned Date </th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr class=\"book_transactions\" *ngFor=\"let book_transaction of book_transactions\">\n        <td>{{book_transaction.created_at | date }}</td>\n        <td>{{book_transaction.transaction_type | uppercase}}</td>\n        <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n        <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n        <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n      </tr>\n    </tbody>\n  </table>\n  <p class=\"flex-center\" *ngIf='zero_transaction_message'>No book transactions for <br><strong>{{book.book_name}} </strong></p>\n\n  <div *ngIf='!book_id' class=\"flex-center\">\n    <h3>No book selected go to <a href=\"#/books\">books</a> and select a book to view transactions</h3>\n  </div>\n</div>\n"
 
 /***/ },
 
