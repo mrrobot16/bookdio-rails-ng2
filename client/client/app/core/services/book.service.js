@@ -35,7 +35,7 @@ export class BookService {
       }
     }
     let request = new Request(this.books_endpoint, {method:"POST", mode:"cors", headers: new Headers({"Content-Type":"application/json"}), body:JSON.stringify(book_params)});
-    return fetch(request).then((res)=>{return res.json()}).then((res)=> { console.log("res :", res)}, (error)=>{console.log("Error occurred: ", error)});
+    return fetch(request).then((res)=>{return res.json()}).then((res)=> { res.json() }, (error)=>{console.log("Error occurred: ", error)});
   }
 
   updateBook(id, quantity){

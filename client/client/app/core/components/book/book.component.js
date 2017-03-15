@@ -15,13 +15,9 @@ export class BookComponent implements OnInit {
   current_books = []
   page_number = 1
   all_books = []
-  book_ids = []
-  subscription = Subscription;
-
   constructor(book_service: BookService, shared_service: SharedService){
     this.book_service = book_service
     this.shared_service = shared_service
-    this.subscribe()
   }
 
   ngOnInit(){
@@ -39,14 +35,6 @@ export class BookComponent implements OnInit {
       this.current_books = books
       this.setBookPage(this.page_number)
     }, this.logError)
-  }
-
-  send_id_book_transaction(id) {
-    let payload = {
-      id:id,
-      text: `Message ${id}`
-    }
-    this.shared_service.broadcast('receiver', payload)
   }
 
   selectBookID(event){
@@ -74,8 +62,16 @@ export class BookComponent implements OnInit {
     this.send_id_book_transaction(this.book_id)
   }
 
+  send_id_book_transaction(id) {
+    this.shared_service.setBookID(id)
+  }
+
+  setBookID(){
+
+  }
+
   emitBookChange(id){
-    this.shared_service.emitSelectChange(id)
+    this.shared_service.pushBookID(id);
   }
 
   unSelectBooks(books){
@@ -129,11 +125,6 @@ export class BookComponent implements OnInit {
       }
     }
   }
-
-   subscribe(){
-      this.subscription = this.shared_service.subscribe('sender', (payload) => {
-      })
-   }
 
    logError(error){
     console.log("error: ", error)

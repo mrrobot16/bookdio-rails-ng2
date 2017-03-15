@@ -17,4 +17,4 @@ import { HighlightDirective } from './directives/highlight.directive';
 // Export all
 export const CORE_PROVIDERS = [BookService, BookTransactionService, SharedService];
 export const CORE_DECLARATIONS = [AppComponent, TopNavBar, BookComponent, BookFormComponent, BookTransactionComponent, HighlightDirective, ReturnMonthYearPipe];
-export { AppComponent, TopNavBar,BookComponent, BookTransactionComponent, BookService, SharedService, BookTransactionService, HighlightDirective };
+export { AppComponent, TopNavBar,BookComponent, BookTransactionComponent };

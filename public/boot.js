@@ -69,21 +69,23 @@ webpackJsonp([0],{
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.HighlightDirective = exports.BookTransactionService = exports.SharedService = exports.BookService = exports.BookTransactionComponent = exports.BookComponent = exports.AppComponent = exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = undefined;
+	exports.BookTransactionComponent = exports.BookComponent = exports.TopNavBar = exports.AppComponent = exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = undefined;
 
 	var _app = __webpack_require__(66);
 
-	var _book = __webpack_require__(69);
+	var _topBar = __webpack_require__(69);
 
-	var _book_form = __webpack_require__(70);
+	var _book = __webpack_require__(70);
+
+	var _book_form = __webpack_require__(71);
 
 	var _book_transaction = __webpack_require__(76);
 
-	var _book2 = __webpack_require__(71);
+	var _book2 = __webpack_require__(72);
 
 	var _shared = __webpack_require__(67);
 
-	var _book_transaction2 = __webpack_require__(72);
+	var _book_transaction2 = __webpack_require__(73);
 
 	var _return_month = __webpack_require__(78);
 
@@ -93,19 +95,16 @@ webpackJsonp([0],{
 
 
 	// Pipes
+	// Components
 	var CORE_PROVIDERS = exports.CORE_PROVIDERS = [_book2.BookService, _book_transaction2.BookTransactionService, _shared.SharedService];
 	// Directive
 
 	// Services
-	// Components
-	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_app.AppComponent, _book.BookComponent, _book_form.BookFormComponent, _book_transaction.BookTransactionComponent, _highlight.HighlightDirective, _return_month.ReturnMonthYearPipe];
+	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_app.AppComponent, _topBar.TopNavBar, _book.BookComponent, _book_form.BookFormComponent, _book_transaction.BookTransactionComponent, _highlight.HighlightDirective, _return_month.ReturnMonthYearPipe];
 	exports.AppComponent = _app.AppComponent;
+	exports.TopNavBar = _topBar.TopNavBar;
 	exports.BookComponent = _book.BookComponent;
 	exports.BookTransactionComponent = _book_transaction.BookTransactionComponent;
-	exports.BookService = _book2.BookService;
-	exports.SharedService = _shared.SharedService;
-	exports.BookTransactionService = _book_transaction2.BookTransactionService;
-	exports.HighlightDirective = _highlight.HighlightDirective;
 
 /***/ },
 
@@ -119,56 +118,21 @@ webpackJsonp([0],{
 	});
 	exports.AppComponent = undefined;
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _dec, _class;
 
 	var _core = __webpack_require__(23);
 
 	var _shared = __webpack_require__(67);
 
-	var _router = __webpack_require__(30);
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var AppComponent = exports.AppComponent = (_dec = (0, _core.Component)({
 	  selector: 'my-app',
-	  template: '\n  <div class="container body-container">\n    <div>\n    <h1>Welcome to our Book Recommendations</h1>\n    <div class="flex-center">\n      <button class="btn-primary" type="button" name="button" (click)="viewBooks()">View Books</button>\n      <button class="btn btn-warning" [disabled]=\'button_disable\' type="button" name="button" (click)="viewBookTransactions()">View Book Transactions</button>\n    </div>\n    </div>\n    <router-outlet></router-outlet>\n  </div>\n  ',
+	  template: '\n  <div class="container body-container">\n      <div>\n        <h1>Welcome to our Book Recommendations</h1>\n        <top-nav-bar></top-nav-bar>\n      </div>\n    <router-outlet></router-outlet>\n  </div>\n  ',
 	  styleUrls: ['./css/stylesheet.css']
-	}), _dec(_class = function () {
-	  function AppComponent(router, shared_service) {
-	    var _this = this;
-
-	    _classCallCheck(this, AppComponent);
-
-	    this.button_disable = true;
-
-	    this.shared_service = shared_service;
-	    this.router = router;
-	    this.shared_service.selectBookEmitted.subscribe(function (book_id) {
-	      if (book_id) {
-	        _this.button_disable = false;
-	      } else {
-	        _this.button_disable = true;
-	      }
-	    });
-	  }
-
-	  _createClass(AppComponent, [{
-	    key: 'viewBooks',
-	    value: function viewBooks() {
-	      this.router.navigate(['books']);
-	    }
-	  }, {
-	    key: 'viewBookTransactions',
-	    value: function viewBookTransactions() {
-	      this.router.navigate(['book_transactions']);
-	    }
-	  }]);
-
-	  return AppComponent;
-	}()) || _class);
-	Reflect.defineMetadata('design:paramtypes', [_router.Router, _shared.SharedService], AppComponent);
+	}), _dec(_class = function AppComponent() {
+	  _classCallCheck(this, AppComponent);
+	}) || _class);
 
 /***/ },
 
@@ -200,25 +164,11 @@ webpackJsonp([0],{
 	  function SharedService() {
 	    _classCallCheck(this, SharedService);
 
-	    this.handler = new _Subject.Subject();
-	    this.emitSelectBook = new _Subject.Subject();
+	    this.pushedBookID = new _core.EventEmitter();
 	    this.book_id = 0;
-
-	    this.selectBookEmitted = this.emitSelectBook.asObservable();
 	  }
 
 	  _createClass(SharedService, [{
-	    key: 'emitSelectChange',
-	    value: function emitSelectChange(change) {
-	      this.emitSelectBook.next(change);
-	    }
-	  }, {
-	    key: 'broadcast',
-	    value: function broadcast(type, payload) {
-	      this.handler.next({ type: type, payload: payload });
-	      this.book_id = payload.id;
-	    }
-	  }, {
 	    key: 'getBookID',
 	    value: function getBookID() {
 	      if (this.book_id) {
@@ -228,13 +178,14 @@ webpackJsonp([0],{
 	      }
 	    }
 	  }, {
-	    key: 'subscribe',
-	    value: function subscribe(type, callback) {
-	      return this.handler.filter(function (message) {
-	        return message.type === type;
-	      }).map(function (message) {
-	        message.payload;
-	      }).subscribe(callback);
+	    key: 'setBookID',
+	    value: function setBookID(id) {
+	      this.book_id = id;
+	    }
+	  }, {
+	    key: 'pushBookID',
+	    value: function pushBookID(id) {
+	      this.pushedBookID.emit(id);
 	    }
 	  }]);
 
@@ -262,6 +213,71 @@ webpackJsonp([0],{
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.TopNavBar = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _dec, _class;
+
+	var _core = __webpack_require__(23);
+
+	var _shared = __webpack_require__(67);
+
+	var _router = __webpack_require__(30);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var TopNavBar = exports.TopNavBar = (_dec = (0, _core.Component)({
+	  selector: 'top-nav-bar',
+	  template: '\n        <div class="top-nav flex-center container">\n          <button class="btn-primary" type="button" name="button" (click)="viewBooks()">View Books</button>\n          <button class="btn btn-warning" [disabled]=\'button_disable\' type="button" name="button" (click)="viewBookTransactions()">View Book Transactions</button>\n        </div>\n  ',
+	  styleUrls: ['./css/stylesheet.css']
+	}), _dec(_class = function () {
+	  function TopNavBar(shared_service, router) {
+	    _classCallCheck(this, TopNavBar);
+
+	    this.button_disable = true;
+
+	    this.router = router;
+	    this.shared_service = shared_service;
+	    this.enableBookTransactions();
+	  }
+
+	  _createClass(TopNavBar, [{
+	    key: 'enableBookTransactions',
+	    value: function enableBookTransactions() {
+	      var _this = this;
+
+	      this.shared_service.pushedBookID.subscribe(function (book_id) {
+	        _this.book_id = book_id;
+	        _this.book_id ? _this.button_disable = false : _this.button_disable = true;
+	      });
+	    }
+	  }, {
+	    key: 'viewBooks',
+	    value: function viewBooks() {
+	      this.router.navigate(['books']);
+	    }
+	  }, {
+	    key: 'viewBookTransactions',
+	    value: function viewBookTransactions() {
+	      this.router.navigate(['book_transactions']);
+	    }
+	  }]);
+
+	  return TopNavBar;
+	}()) || _class);
+	Reflect.defineMetadata('design:paramtypes', [_shared.SharedService, _router.Router], TopNavBar);
+
+/***/ },
+
+/***/ 70:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	exports.BookComponent = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -270,9 +286,9 @@ webpackJsonp([0],{
 
 	var _core = __webpack_require__(23);
 
-	var _book_form = __webpack_require__(70);
+	var _book_form = __webpack_require__(71);
 
-	var _book = __webpack_require__(71);
+	var _book = __webpack_require__(72);
 
 	var _shared = __webpack_require__(67);
 
@@ -298,12 +314,9 @@ webpackJsonp([0],{
 	    this.current_books = [];
 	    this.page_number = 1;
 	    this.all_books = [];
-	    this.book_ids = [];
-	    this.subscription = _Subscription.Subscription;
 
 	    this.book_service = book_service;
 	    this.shared_service = shared_service;
-	    this.subscribe();
 	  }
 
 	  _createClass(BookComponent, [{
@@ -326,15 +339,6 @@ webpackJsonp([0],{
 	        _this.current_books = books;
 	        _this.setBookPage(_this.page_number);
 	      }, this.logError);
-	    }
-	  }, {
-	    key: 'send_id_book_transaction',
-	    value: function send_id_book_transaction(id) {
-	      var payload = {
-	        id: id,
-	        text: 'Message ' + id
-	      };
-	      this.shared_service.broadcast('receiver', payload);
 	    }
 	  }, {
 	    key: 'selectBookID',
@@ -364,9 +368,17 @@ webpackJsonp([0],{
 	      this.send_id_book_transaction(this.book_id);
 	    }
 	  }, {
+	    key: 'send_id_book_transaction',
+	    value: function send_id_book_transaction(id) {
+	      this.shared_service.setBookID(id);
+	    }
+	  }, {
+	    key: 'setBookID',
+	    value: function setBookID() {}
+	  }, {
 	    key: 'emitBookChange',
 	    value: function emitBookChange(id) {
-	      this.shared_service.emitSelectChange(id);
+	      this.shared_service.pushBookID(id);
 	    }
 	  }, {
 	    key: 'unSelectBooks',
@@ -423,11 +435,6 @@ webpackJsonp([0],{
 	      }
 	    }
 	  }, {
-	    key: 'subscribe',
-	    value: function subscribe() {
-	      this.subscription = this.shared_service.subscribe('sender', function (payload) {});
-	    }
-	  }, {
 	    key: 'logError',
 	    value: function logError(error) {
 	      console.log("error: ", error);
@@ -440,7 +447,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 70:
+/***/ 71:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -452,19 +459,23 @@ webpackJsonp([0],{
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
+	var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
+
+	// Form Objects
+
+
+	// Services
+
 
 	var _core = __webpack_require__(23);
 
 	var _forms = __webpack_require__(62);
 
-	var _book = __webpack_require__(71);
+	var _book = __webpack_require__(72);
 
-	var _book_transaction = __webpack_require__(72);
+	var _book_transaction = __webpack_require__(73);
 
 	var _shared = __webpack_require__(67);
-
-	__webpack_require__(73);
 
 	var _book_formPartial = __webpack_require__(74);
 
@@ -521,7 +532,7 @@ webpackJsonp([0],{
 	  selector: 'book-form',
 	  template: _book_formPartial2.default,
 	  styleUrls: ['./css/stylesheet.css']
-	}), _dec2 = (0, _core.Input)(), _dec3 = (0, _core.Input)(), _dec4 = (0, _core.Input)(), _dec5 = (0, _core.Input)(), _dec6 = (0, _core.Output)(), _dec7 = (0, _core.Output)(), _dec(_class = (_class2 = function () {
+	}), _dec2 = (0, _core.Input)(), _dec3 = (0, _core.Input)(), _dec4 = (0, _core.Input)(), _dec5 = (0, _core.Output)(), _dec6 = (0, _core.Output)(), _dec(_class = (_class2 = function () {
 	  function BookFormComponent(book_service, book_transaction_service, shared_service, builder, element) {
 	    _classCallCheck(this, BookFormComponent);
 
@@ -531,11 +542,9 @@ webpackJsonp([0],{
 
 	    _initDefineProp(this, 'page_number', _descriptor3, this);
 
-	    _initDefineProp(this, 'editModeForm', _descriptor4, this);
+	    _initDefineProp(this, 'getAllBooks', _descriptor4, this);
 
-	    _initDefineProp(this, 'getAllBooks', _descriptor5, this);
-
-	    _initDefineProp(this, 'deSelect', _descriptor6, this);
+	    _initDefineProp(this, 'deSelect', _descriptor5, this);
 
 	    this.el = element;
 	    this.book_service = book_service;
@@ -570,9 +579,9 @@ webpackJsonp([0],{
 	    value: function disableButton() {
 	      var _this = this;
 
-	      this.shared_service.selectBookEmitted.subscribe(function (book_id) {
+	      this.shared_service.pushedBookID.subscribe(function (book_id) {
 	        _this.book_id = book_id;
-	        if (book_id) {
+	        if (_this.book_id) {
 	          _this.button_edit_disable = false;
 	          var book = _this.all_books.filter(function (book) {
 	            return book.id === book_id;
@@ -817,17 +826,12 @@ webpackJsonp([0],{
 	  initializer: function initializer() {
 	    return this.page_number;
 	  }
-	}), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'editModeForm', [_dec5], {
-	  enumerable: true,
-	  initializer: function initializer() {
-	    return this.editModeForm;
-	  }
-	}), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'getAllBooks', [_dec6], {
+	}), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'getAllBooks', [_dec5], {
 	  enumerable: true,
 	  initializer: function initializer() {
 	    return new _core.EventEmitter();
 	  }
-	}), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'deSelect', [_dec7], {
+	}), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'deSelect', [_dec6], {
 	  enumerable: true,
 	  initializer: function initializer() {
 	    return new _core.EventEmitter();
@@ -837,7 +841,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 71:
+/***/ 72:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -901,7 +905,7 @@ webpackJsonp([0],{
 	      return fetch(request).then(function (res) {
 	        return res.json();
 	      }).then(function (res) {
-	        console.log("res :", res);
+	        res.json();
 	      }, function (error) {
 	        console.log("Error occurred: ", error);
 	      });
@@ -957,7 +961,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 72:
+/***/ 73:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1003,7 +1007,9 @@ webpackJsonp([0],{
 	      var request = new Request('/books/' + book.book.id + '/book_transactions', { method: "POST", mode: "cors", headers: new Headers({ "Content-Type": "application/json" }), body: JSON.stringify(book) });
 	      return fetch(request).then(function (res) {
 	        return res.json();
-	      }).then(function (res) {}, function (error) {
+	      }).then(function (res) {
+	        res.json();
+	      }, function (error) {
 	        console.log("Error occurred: ", error);
 	      });
 	    }
@@ -1019,7 +1025,9 @@ webpackJsonp([0],{
 	      var request = new Request(endpoint, { method: "PUT", mode: "cors", headers: new Headers({ "Content-Type": "application/json" }), body: JSON.stringify(book) });
 	      return fetch(request).then(function (res) {
 	        return res.json();
-	      }).then(function (res) {}, function (error) {
+	      }).then(function (res) {
+	        res.json();
+	      }, function (error) {
 	        console.log("Error occurred: ", error);
 	      });
 	    }
@@ -1028,17 +1036,6 @@ webpackJsonp([0],{
 	  return BookTransactionService;
 	}()) || _class);
 	Reflect.defineMetadata('design:paramtypes', [_http.Http], BookTransactionService);
-
-/***/ },
-
-/***/ 73:
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(6);
-	var toPromise_1 = __webpack_require__(63);
-	Observable_1.Observable.prototype.toPromise = toPromise_1.toPromise;
-	//# sourceMappingURL=toPromise.js.map
 
 /***/ },
 
@@ -1072,13 +1069,11 @@ webpackJsonp([0],{
 
 	var _core = __webpack_require__(23);
 
-	var _book_transaction = __webpack_require__(72);
+	var _book_transaction = __webpack_require__(73);
 
-	var _book = __webpack_require__(71);
+	var _book = __webpack_require__(72);
 
 	var _shared = __webpack_require__(67);
-
-	var _Subscription = __webpack_require__(11);
 
 	var _book_transactionComponent = __webpack_require__(77);
 
@@ -1096,7 +1091,6 @@ webpackJsonp([0],{
 	  function BookTransactionComponent(book_service, book_transaction_service, shared_service) {
 	    _classCallCheck(this, BookTransactionComponent);
 
-	    this.subscription = _Subscription.Subscription;
 	    this.book = {};
 
 	    this.book_transaction_service = book_transaction_service;
@@ -1107,7 +1101,6 @@ webpackJsonp([0],{
 	  _createClass(BookTransactionComponent, [{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
-	      this.subscribe();
 	      this.book_id = this.shared_service.getBookID();
 	      this.getBook(this.book_id);
 	      this.getBookTransactions(this.book_id);
@@ -1129,11 +1122,6 @@ webpackJsonp([0],{
 	          _this.book = book;
 	        });
 	      }
-	    }
-	  }, {
-	    key: 'subscribe',
-	    value: function subscribe() {
-	      this.subscription = this.shared_service.subscribe('receiver', function (payload) {});
 	    }
 	  }, {
 	    key: 'getBookTransactions',

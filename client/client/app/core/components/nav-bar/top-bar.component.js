@@ -16,20 +16,19 @@ export class TopNavBar {
   constructor(shared_service: SharedService, router: Router) {
     this.router = router
     this.shared_service = shared_service
-    this.shared_service.selectBookEmitted.subscribe((book_id)=>{
-      if(book_id){
-        this.button_disable = false
-      }
-      else {
-        this.button_disable = true
-      }
-    })
+    this.enableBookTransactions()
   }
-
+  enableBookTransactions(){
+    this.shared_service.pushedBookID.subscribe(
+      (book_id) => {
+        this.book_id = book_id
+        this.book_id ? this.button_disable = false : this.button_disable = true
+      }
+    )
+  }
   viewBooks(){
     this.router.navigate(['books'])
   }
-
   viewBookTransactions(){
     this.router.navigate(['book_transactions'])
   }

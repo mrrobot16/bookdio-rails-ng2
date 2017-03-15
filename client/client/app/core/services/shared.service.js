@@ -1,24 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 @Injectable()
 export class SharedService {
-  handler = new Subject();
-  emitSelectBook = new Subject();
+  pushedBookID = new EventEmitter();
   book_id = 0;
   constructor(){
-    this.selectBookEmitted = this.emitSelectBook.asObservable();
-  }
 
-  emitSelectChange(change){
-    console.log('emitSelectBook (change): ', change);
-    this.emitSelectBook.next(change)
-  }
-
-  broadcast(type, payload){
-    this.handler.next({ type, payload });
-    this.book_id = payload.id
   }
 
   getBookID(){
@@ -30,15 +19,12 @@ export class SharedService {
     }
   }
 
-  subscribe(type, callback){
-    // console.log('subscribe in shared_service');
-    return this.handler
-    .filter(message => message.type === type)
-    .map((message) => {
-      // console.log('subscribe in shared_service');
-      message.payload
-    })
-    .subscribe(callback);
+  setBookID(id){
+    this.book_id = id
+  }
+
+  pushBookID(id) {
+      this.pushedBookID.emit(id);
   }
 
 }

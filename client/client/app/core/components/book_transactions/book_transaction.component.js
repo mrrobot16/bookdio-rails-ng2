@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { BookTransactionService } from '../../services/book_transaction.service';
 import { BookService } from '../../services/book.service';
 import { SharedService } from '../../services/shared.service';
-import {Subscription} from 'rxjs/Subscription';
 import template from './book_transaction.component.html';
 
 @Component({
@@ -11,7 +10,6 @@ import template from './book_transaction.component.html';
   styleUrls: ['./css/stylesheet.css']
 })
 export class BookTransactionComponent implements OnInit {
-  subscription = Subscription;
   book = {}
   constructor(book_service: BookService, book_transaction_service: BookTransactionService, shared_service: SharedService){
     this.book_transaction_service = book_transaction_service;
@@ -20,7 +18,6 @@ export class BookTransactionComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.subscribe()
     this.book_id = this.shared_service.getBookID()
     this.getBook(this.book_id)
     this.getBookTransactions(this.book_id)
@@ -38,11 +35,6 @@ export class BookTransactionComponent implements OnInit {
         this.book = book;
       })
     }
-  }
-
-  subscribe() {
-    this.subscription = this.shared_service.subscribe('receiver', (payload) => {
-    })
   }
 
   getBookTransactions(id){
