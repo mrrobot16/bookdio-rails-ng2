@@ -31,6 +31,6 @@ export class TopNavBar {
     this.router.navigate(['books'])
   }
   viewBookTransactions(){
-    this.router.navigate(['book_transactions'+'/'+this.book_id])
+    this.router.navigate(['book/'+this.book_id+'/book_transactions'])
   }
 }

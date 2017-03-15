@@ -19,7 +19,7 @@ export class BookTransactionService {
 
   postBookTransaction(book){
     let request = new Request('/books/'+book.book.id+'/book_transactions', {method:"POST", mode:"cors", headers: new Headers({"Content-Type":"application/json"}), body:JSON.stringify(book)});
-    return fetch(request).then((res)=>{return res.json()}).then((res)=> { res.json()}, (error)=>{console.log("Error occurred: ", error)});
+    return fetch(request).then((res)=>{return res.json()}).then((res)=> { res }, (error)=>{console.log("Error occurred: ", error)});
   }
 
   updateBookTransaction(book_transaction){
@@ -30,7 +30,7 @@ export class BookTransactionService {
     }
     let endpoint = '/books/'+book_transaction.book_id+'/book_transactions/'+book_transaction.id
     let request = new Request(endpoint, {method:"PUT", mode:"cors", headers: new Headers({"Content-Type":"application/json"}), body:JSON.stringify(book)})
-    return fetch(request).then((res)=>{return res.json()}).then((res)=> {res.json()}, (error)=>{console.log("Error occurred: ", error)});
+    return fetch(request).then((res)=>{return res.json()}).then((res)=> {res}, (error)=>{console.log("Error occurred: ", error)});
   }
 
 }

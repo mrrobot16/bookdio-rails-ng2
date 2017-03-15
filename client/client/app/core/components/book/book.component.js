@@ -41,12 +41,13 @@ export class BookComponent implements OnInit {
     this.all_books = event.target.parentElement.parentElement.children
     if(event.target.parentElement.classList.contains('selectedBook')){
       event.target.parentElement.classList.remove('selectedBook')
-      this.resetBookID()
+      this.setBookID(0)
     }
     else {
       this.unSelectBooks(this.all_books)
       event.target.parentElement.classList.add('selectedBook')
-      this.sendBookID(event.target.parentNode.id)
+      // this.sendBookID(event.target.parentNode.id)
+      this.setBookID(event.target.parentNode.id)
     }
   }
 
@@ -66,8 +67,17 @@ export class BookComponent implements OnInit {
     this.shared_service.setBookID(id)
   }
 
-  setBookID(){
-
+  setBookID(id){
+    if(id){
+      this.book_id = parseInt(id)
+      this.emitBookChange(this.book_id)
+      this.send_id_book_transaction(this.book_id)
+    }
+    else {
+      this.book_id = id
+      this.emitBookChange(this.book_id)
+      this.send_id_book_transaction(this.book_id)
+    }
   }
 
   emitBookChange(id){

@@ -255,6 +255,8 @@ export class BookFormComponent implements OnInit {
       if(book[0].book_issued < 1){
         return this.book_service.deleteBook(this.book_id).then(()=>{
           this.getAllBooks.emit();
+        }).then(()=>{
+          this.cleanForm()
         })
       }
   }
