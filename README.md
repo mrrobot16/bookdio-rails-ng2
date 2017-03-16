@@ -6,19 +6,19 @@ cd synechron-book
 bundle install
 rails db:create
 rails db:migrate
-
-Create Books
+rails server
+Add books to the database.
 rails db:seed
 ```
 
 ### Angular2 Start
+#### Open new tab in terminal and run the following commands to build your assets bundle.
 ```bash
 cd client
 npm install
 npm start
 
-Once all files bundle
-do
-cd .. && rails server
+Once all files bundle run outside of client folder
+rails server
 Open it in your browser (http://localhost:3000)
 ```
