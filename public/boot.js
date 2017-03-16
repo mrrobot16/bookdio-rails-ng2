@@ -69,7 +69,7 @@ webpackJsonp([0],{
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.BookTransactionComponent = exports.BookComponent = exports.TopNavBar = exports.AppComponent = exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = undefined;
+	exports.BookItem = exports.BookTransactionComponent = exports.BookComponent = exports.TopNavBar = exports.AppComponent = exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = undefined;
 
 	var _app = __webpack_require__(66);
 
@@ -77,9 +77,11 @@ webpackJsonp([0],{
 
 	var _book = __webpack_require__(70);
 
+	var _book_item = __webpack_require__(76);
+
 	var _book_form = __webpack_require__(71);
 
-	var _book_transaction = __webpack_require__(76);
+	var _book_transaction = __webpack_require__(77);
 
 	var _book2 = __webpack_require__(72);
 
@@ -87,24 +89,25 @@ webpackJsonp([0],{
 
 	var _book_transaction2 = __webpack_require__(73);
 
-	var _return_month = __webpack_require__(78);
+	var _return_month = __webpack_require__(79);
 
-	var _highlight = __webpack_require__(79);
+	var _highlight = __webpack_require__(80);
 
 	// Export all
 
 
 	// Pipes
-	// Components
 	var CORE_PROVIDERS = exports.CORE_PROVIDERS = [_book2.BookService, _book_transaction2.BookTransactionService, _shared.SharedService];
 	// Directive
 
 	// Services
-	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_app.AppComponent, _topBar.TopNavBar, _book.BookComponent, _book_form.BookFormComponent, _book_transaction.BookTransactionComponent, _highlight.HighlightDirective, _return_month.ReturnMonthYearPipe];
+	// Components
+	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_app.AppComponent, _topBar.TopNavBar, _book.BookComponent, _book_item.BookItem, _book_form.BookFormComponent, _book_transaction.BookTransactionComponent, _highlight.HighlightDirective, _return_month.ReturnMonthYearPipe];
 	exports.AppComponent = _app.AppComponent;
 	exports.TopNavBar = _topBar.TopNavBar;
 	exports.BookComponent = _book.BookComponent;
 	exports.BookTransactionComponent = _book_transaction.BookTransactionComponent;
+	exports.BookItem = _book_item.BookItem;
 
 /***/ },
 
@@ -1070,11 +1073,110 @@ webpackJsonp([0],{
 /***/ 75:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Number of books {{books.length}}</p>\n        <div class=\"books table-responsive\" *ngIf=\"books.length > 0\">\n          <table class=\"table\" width=\"400\" height=\"5\">\n            <thead>\n              <tr class=\"background-top\">\n                <th>Book Name</th>\n                <th>Author</th>\n                <th>ISBN</th>\n                <th>Book Quantity</th>\n                <th>Published Date</th>\n                <th>Book Category</th>\n                <th>Books Issued</th>\n              </tr>\n            </thead>\n            <tbody>\n                  <tr [myHighlight]=\"blue\" id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of current_books\" (click)=\"selectBookID($event)\">\n                    <td>{{book.book_name }}</td>\n                    <td>{{book.author_name}}</td>\n                    <td>{{book.isbn_code}}</td>\n                    <td>{{book.book_quantity}}</td>\n                    <td>{{book.published_date | date | returnMonthYear }}</td>\n                    <td>{{book.book_category}}</td>\n                    <td>{{book.book_issued}}</td>\n                  </tr>\n            </tbody>\n\n          </table>\n          <div class=\"flex-center container paginateBook\">\n            <button class=\"left-arrow\" type=\"button\" name=\"button\" (click)=\"paginateBooks('previous')\"></button>\n              <span>\n                <div>\n                    <span>Showing from</span>\n                    <span>{{1+(page_number-1)*10}}</span>–\n                    <span>{{page_number*10 > books.length ? books.length : page_number*10  }}</span> of\n                    <span>{{books.length}}</span>\n                </div>\n              </span>\n            <button class=\"right-arrow\" type=\"button\" name=\"button\" (click)=\"paginateBooks('next')\"></button>\n          </div>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' (deSelect)=\"unSelectBooks()\" [all_books]=\"books\" [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Number of books {{books.length}}</p>\n        <div class=\"books table-responsive\" *ngIf=\"books.length > 0\">\n          <book-item (selectBook)=\"selectBookID($event)\" [current_books]='current_books'></book-item>\n          <div class=\"flex-center container paginateBook\">\n            <button class=\"left-arrow\" type=\"button\" name=\"button\" (click)=\"paginateBooks('previous')\"></button>\n              <span>\n                <div>\n                    <span>Showing from</span>\n                    <span>{{1+(page_number-1)*10}}</span>–\n                    <span>{{page_number*10 > books.length ? books.length : page_number*10  }}</span> of\n                    <span>{{books.length}}</span>\n                </div>\n              </span>\n            <button class=\"right-arrow\" type=\"button\" name=\"button\" (click)=\"paginateBooks('next')\"></button>\n          </div>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' (deSelect)=\"unSelectBooks()\" [all_books]=\"books\" [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 
 /***/ 76:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.BookItem = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2;
+
+	var _core = __webpack_require__(23);
+
+	function _initDefineProp(target, property, descriptor, context) {
+	  if (!descriptor) return;
+	  Object.defineProperty(target, property, {
+	    enumerable: descriptor.enumerable,
+	    configurable: descriptor.configurable,
+	    writable: descriptor.writable,
+	    value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
+	  });
+	}
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+	  var desc = {};
+	  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+	    desc[key] = descriptor[key];
+	  });
+	  desc.enumerable = !!desc.enumerable;
+	  desc.configurable = !!desc.configurable;
+
+	  if ('value' in desc || desc.initializer) {
+	    desc.writable = true;
+	  }
+
+	  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+	    return decorator(target, property, desc) || desc;
+	  }, desc);
+
+	  if (context && desc.initializer !== void 0) {
+	    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+	    desc.initializer = undefined;
+	  }
+
+	  if (desc.initializer === void 0) {
+	    Object['define' + 'Property'](target, property, desc);
+	    desc = null;
+	  }
+
+	  return desc;
+	}
+
+	function _initializerWarningHelper(descriptor, context) {
+	  throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
+	}
+
+	var BookItem = exports.BookItem = (_dec = (0, _core.Component)({
+	  selector: 'book-item',
+	  template: '\n    <table class="table" width="400" height="5">\n    <thead>\n      <tr class="background-top">\n        <th>Book Name</th>\n        <th>Author</th>\n        <th>ISBN</th>\n        <th>Book Quantity</th>\n        <th>Published Date</th>\n        <th>Book Category</th>\n        <th>Books Issued</th>\n      </tr>\n    </thead>\n    <tbody>\n          <tr [myHighlight]="blue" id="{{book.id}}" [ngClass]="selectBook"  *ngFor="let book of current_books" (click)="selectBookID($event)">\n            <td>{{book.book_name }}</td>\n            <td>{{book.author_name}}</td>\n            <td>{{book.isbn_code}}</td>\n            <td>{{book.book_quantity}}</td>\n            <td>{{book.published_date | date | returnMonthYear }}</td>\n            <td>{{book.book_category}}</td>\n            <td>{{book.book_issued}}</td>\n          </tr>\n    </tbody>\n  </table>\n  ',
+	  styleUrls: ['./css/stylesheet.css']
+	}), _dec2 = (0, _core.Input)(), _dec3 = (0, _core.Output)(), _dec(_class = (_class2 = function () {
+	  function BookItem() {
+	    _classCallCheck(this, BookItem);
+
+	    _initDefineProp(this, 'current_books', _descriptor, this);
+
+	    _initDefineProp(this, 'selectBook', _descriptor2, this);
+	  }
+
+	  _createClass(BookItem, [{
+	    key: 'ngOnInit',
+	    value: function ngOnInit() {}
+	  }, {
+	    key: 'selectBookID',
+	    value: function selectBookID(event) {
+	      this.selectBook.emit(event);
+	    }
+	  }]);
+
+	  return BookItem;
+	}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'current_books', [_dec2], {
+	  enumerable: true,
+	  initializer: function initializer() {
+	    return this.current_books;
+	  }
+	}), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'selectBook', [_dec3], {
+	  enumerable: true,
+	  initializer: function initializer() {
+	    return new _core.EventEmitter();
+	  }
+	})), _class2)) || _class);
+
+/***/ },
+
+/***/ 77:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1098,7 +1200,7 @@ webpackJsonp([0],{
 
 	var _shared = __webpack_require__(67);
 
-	var _book_transactionComponent = __webpack_require__(77);
+	var _book_transactionComponent = __webpack_require__(78);
 
 	var _book_transactionComponent2 = _interopRequireDefault(_book_transactionComponent);
 
@@ -1180,14 +1282,14 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 77:
+/***/ 78:
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"container\">\n\n  <table *ngIf=\"book_id\" width=\"400\" height=\"5\" id=\"book_transactions\">\n    <thead *ngIf='!zero_transaction_message'>\n      <h3>Book Transactions for {{book.book_name}}</h3>\n      <tr>\n        <th>Transaction Date</th>\n        <th>Transaction Type</th>\n        <th>Transaction Status</th>\n        <th>Returned Date </th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr class=\"book_transactions\" *ngFor=\"let book_transaction of book_transactions\">\n        <td>{{book_transaction.created_at | date }}</td>\n        <td>{{book_transaction.transaction_type | uppercase}}</td>\n        <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n        <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n        <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n      </tr>\n    </tbody>\n  </table>\n  <p class=\"flex-center\" *ngIf='zero_transaction_message'>No book transactions for <br><strong>{{book.book_name}} </strong></p>\n\n  <div *ngIf='!book_id' class=\"flex-center\">\n    <h3>No book selected go to <a href=\"#/books\">books</a> and select a book to view transactions</h3>\n  </div>\n</div>\n"
 
 /***/ },
 
-/***/ 78:
+/***/ 79:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1222,7 +1324,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 79:
+/***/ 80:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

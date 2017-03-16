@@ -16,9 +16,10 @@ rails db:seed
 ```bash
 cd client
 npm install
+npm install gulp
 npm start
 
-Once all files bundle run outside of client folder
+Once all files bundle run outside of client folder run:
 rails server
 Open it in your browser (http://localhost:3000)
 ```
