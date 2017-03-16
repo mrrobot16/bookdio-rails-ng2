@@ -5,6 +5,12 @@ table {
   width: 100%;
   border-collapse: collapse;
   border-color: grey;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+.table-responsive {
+    overflow-x: initial;
 }
 
 td, th {
@@ -73,6 +79,7 @@ table#book_transactions > tbody > tr > button {
 .background-top {
   background-color: crimson;
   color: orange;
+  border-top: #dddddd solid 2px;
 }
 
 .flex-center {

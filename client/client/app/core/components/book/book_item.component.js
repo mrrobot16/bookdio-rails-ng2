@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'book-item',
   template: `
-    <table class="table" width="400" height="5">
+    <table id='books' class="table" width="400" height="5">
     <thead>
       <tr class="background-top">
         <th>Book Name</th>
@@ -15,8 +15,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
       </tr>
     </thead>
     <tbody>
-          <tr [myHighlight]="blue" id="{{book.id}}" [ngClass]="selectBook"  *ngFor="let book of current_books" (click)="selectBookID($event)">
-            <td>{{book.book_name }}</td>
+          <tr class="animate" [myHighlight]="blue" id="{{book.id}}" [ngClass]="selectBook"  *ngFor="let book of current_books" (click)="selectBookID($event)">
+            <td data-label="Book Name">{{book.book_name }}</td>
             <td>{{book.author_name}}</td>
             <td>{{book.isbn_code}}</td>
             <td>{{book.book_quantity}}</td>
