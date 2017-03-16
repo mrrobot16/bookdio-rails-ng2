@@ -1,6 +1,16 @@
 @media screen and (max-width: 767px){
+  #books {
+    border: 0;
+  }
+
   #books thead {
       display: none;
+  }
+  #books tbody td:before {
+      content: attr(data-label);
+      float: left;
+      text-transform: uppercase;
+      font-weight: bold;
   }
 
   #books tr {
@@ -9,7 +19,15 @@
     margin-bottom: 10px;
     display: block;
   }
-
+  #books tr:after {
+      content: "";
+      display: table;
+      clear: both;
+  }
+  #books tr:before {
+      display: block;
+      border-bottom: 2px solid rgba(255, 255, 255, 255, 0.15);
+  }
   #books td {
     box-sizing: border-box;
     display: block;
@@ -28,5 +46,4 @@
   .table#books > tbody > tr > td:first-child, .table#books > tbody > tr > th:first-child, .table#books > tfoot > tr > td:first-child, .table#books > tfoot > tr > th:first-child, .table#books > thead > tr > td:first-child, .table#books > thead > tr > th:first-child {
       border-top: none;
   }
-
 }
