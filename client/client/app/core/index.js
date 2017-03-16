@@ -9,13 +9,13 @@ import { BookTransactionComponent } from './components/book_transactions/book_tr
 import { BookService } from './services/book.service';
 import { SharedService } from './services/shared.service';
 import { BookTransactionService } from './services/book_transaction.service';
-
+import {HelperService} from './helpers/helper.service';
 
 // Pipes
 import { ReturnMonthYearPipe } from './pipes/return_month.pipe';
 // Directive
 import { HighlightDirective } from './directives/highlight.directive';
 // Export all
-export const CORE_PROVIDERS = [BookService, BookTransactionService, SharedService];
+export const CORE_PROVIDERS = [BookService, BookTransactionService, SharedService, HelperService];
 export const CORE_DECLARATIONS = [AppComponent, TopNavBar, BookComponent, BookItem, BookFormComponent, BookTransactionComponent, HighlightDirective, ReturnMonthYearPipe];
 export { AppComponent, TopNavBar,BookComponent, BookTransactionComponent, BookItem };

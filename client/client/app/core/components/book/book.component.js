@@ -2,6 +2,7 @@ import { Component,  OnInit } from '@angular/core';
 import {BookFormComponent} from './book_form.component'
 import { BookService } from '../../services/book.service';
 import { SharedService } from '../../services/shared.service';
+import { HelperService } from '../../helpers/helper.service';
 import { Subscription } from 'rxjs/Subscription';
 import template from './book.component.html';
 
@@ -15,9 +16,10 @@ export class BookComponent implements OnInit {
   current_books = []
   page_number = 1
   all_books = []
-  constructor(book_service: BookService, shared_service: SharedService){
+  constructor(book_service: BookService, shared_service: SharedService, helper_service: HelperService ){
     this.book_service = book_service
     this.shared_service = shared_service
+    this.helper_service = helper_service
   }
 
   ngOnInit(){
@@ -34,13 +36,13 @@ export class BookComponent implements OnInit {
       })
       this.current_books = books
       this.setBookPage(this.page_number)
-    }, this.logError)
+    }, this.helper_service.logError)
   }
 
   selectBookID(event){
     this.all_books = [].slice.call(event.target.parentElement.parentElement.children)
     this.all_books.forEach((book)=>{
-      book.classList.contains('selectedBook') && book != event.target.parentElement ? this.setBookID(0) : this.returnNone;
+      book.classList.contains('selectedBook') && book != event.target.parentElement ? this.setBookID(0) : this.helper_service.returnNone;
     })
     if(event.target.parentElement.classList.contains('selectedBook')){
       event.target.parentElement.classList.remove('selectedBook')
@@ -94,7 +96,7 @@ export class BookComponent implements OnInit {
             book.classList.remove('selectedBook')
           }
         })
-      }, this.logError)
+      }, this.helper_service.logError)
       return promise;
     }
     else {
@@ -136,11 +138,4 @@ export class BookComponent implements OnInit {
     }
   }
 
-   logError(error){
-    console.log("error: ", error)
-   }
-
-   returnNone(){
-     return false;
-   }
 }

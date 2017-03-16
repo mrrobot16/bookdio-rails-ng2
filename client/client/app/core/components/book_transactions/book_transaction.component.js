@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BookTransactionService } from '../../services/book_transaction.service';
 import { BookService } from '../../services/book.service';
 import { SharedService } from '../../services/shared.service';
+import { HelperService } from '../../serivices/helper.service';
 import template from './book_transaction.component.html';
 
 @Component({
@@ -12,11 +13,12 @@ import template from './book_transaction.component.html';
 })
 export class BookTransactionComponent implements OnInit {
   book = {}
-  constructor(book_service: BookService, book_transaction_service: BookTransactionService, shared_service: SharedService, router: ActivatedRoute){
+  constructor(book_service: BookService, book_transaction_service: BookTransactionService, shared_service: SharedService, router: ActivatedRoute, helper_service: HelperService){
     this.book_transaction_service = book_transaction_service;
     this.book_service = book_service;
     this.shared_service = shared_service;
-    this.router = router
+    this.helper_service = helper_service;
+    this.router = router;
   }
 
   ngOnInit(){
@@ -24,6 +26,7 @@ export class BookTransactionComponent implements OnInit {
     this.getBook(this.book_id)
     this.getBookTransactions(this.book_id)
     this.zero_transaction_message = false;
+
   }
 
   getBook(id){
@@ -44,7 +47,7 @@ export class BookTransactionComponent implements OnInit {
           this.zero_transaction_message = true
         }
         return;
-      }, this.logError)
+      }, this.helper_service.logError)
     }
   }
 
@@ -53,9 +56,4 @@ export class BookTransactionComponent implements OnInit {
       this.getBookTransactions(this.book_id)
     })
   }
-
-  logError(error){
-    console.log("error: ", error);
-  }
-
 }
