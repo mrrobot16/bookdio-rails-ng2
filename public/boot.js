@@ -69,7 +69,7 @@ webpackJsonp([0],{
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.BookItem = exports.BookTransactionComponent = exports.BookComponent = exports.TopNavBar = exports.AppComponent = exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = undefined;
+	exports.HelperService = exports.BookItem = exports.BookTransactionComponent = exports.BookComponent = exports.TopNavBar = exports.AppComponent = exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = undefined;
 
 	var _app = __webpack_require__(66);
 
@@ -89,7 +89,7 @@ webpackJsonp([0],{
 
 	var _book_transaction2 = __webpack_require__(73);
 
-	var _helper = __webpack_require__(75);
+	var _helper = __webpack_require__(74);
 
 	var _return_month = __webpack_require__(80);
 
@@ -110,6 +110,7 @@ webpackJsonp([0],{
 	exports.BookComponent = _book.BookComponent;
 	exports.BookTransactionComponent = _book_transaction.BookTransactionComponent;
 	exports.BookItem = _book_item.BookItem;
+	exports.HelperService = _helper.HelperService;
 
 /***/ },
 
@@ -297,7 +298,7 @@ webpackJsonp([0],{
 
 	var _shared = __webpack_require__(67);
 
-	var _helper = __webpack_require__(75);
+	var _helper = __webpack_require__(74);
 
 	var _Subscription = __webpack_require__(11);
 
@@ -312,7 +313,7 @@ webpackJsonp([0],{
 	var BookComponent = exports.BookComponent = (_dec = (0, _core.Component)({
 	  selector: 'books',
 	  template: _bookComponent2.default,
-	  styleUrls: ['./css/stylesheet.css']
+	  styleUrls: ['./css/stylesheet.css', './css/mobile.css']
 	}), _dec(_class = function () {
 	  function BookComponent(book_service, shared_service, helper_service) {
 	    _classCallCheck(this, BookComponent);
@@ -331,7 +332,7 @@ webpackJsonp([0],{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
 	      this.resetBookID();
-	      this.send_id_book_transaction(this.book_id);
+	      // this.send_id_book_transaction(this.book_id)
 	      this.displayBooks();
 	    }
 	  }, {
@@ -355,7 +356,7 @@ webpackJsonp([0],{
 
 	      this.all_books = [].slice.call(event.target.parentElement.parentElement.children);
 	      this.all_books.forEach(function (book) {
-	        book.classList.contains('selectedBook') && book != event.target.parentElement ? _this2.setBookID(0) : _this2.helper_service.returnNone;
+	        book.classList.contains('selectedBook') && book != event.target.parentElement ? _this2.setBookID(0) : _this2.helper_service.returnNone();
 	      });
 	      if (event.target.parentElement.classList.contains('selectedBook')) {
 	        event.target.parentElement.classList.remove('selectedBook');
@@ -371,31 +372,35 @@ webpackJsonp([0],{
 	    value: function resetBookID() {
 	      this.book_id = 0;
 	      this.emitBookChange(this.book_id);
-	      this.send_id_book_transaction(this.book_id);
+	      // this.send_id_book_transaction(this.book_id)
+	      this.shared_service.setBookID(this.book_id);
 	    }
 	  }, {
 	    key: 'sendBookID',
 	    value: function sendBookID(id) {
 	      this.book_id = parseInt(id);
 	      this.emitBookChange(this.book_id);
-	      this.send_id_book_transaction(this.book_id);
+	      // this.send_id_book_transaction(this.book_id)
+	      this.shared_service.setBookID(this.book_id);
 	    }
-	  }, {
-	    key: 'send_id_book_transaction',
-	    value: function send_id_book_transaction(id) {
-	      this.shared_service.setBookID(id);
-	    }
+
+	    // send_id_book_transaction(id) {
+	    //   this.shared_service.setBookID(id)
+	    // }
+
 	  }, {
 	    key: 'setBookID',
 	    value: function setBookID(id) {
 	      if (id) {
 	        this.book_id = parseInt(id);
 	        this.emitBookChange(this.book_id);
-	        this.send_id_book_transaction(this.book_id);
+	        // this.send_id_book_transaction(this.book_id)
+	        this.shared_service.setBookID(this.book_id);
 	      } else {
 	        this.book_id = id;
 	        this.emitBookChange(this.book_id);
-	        this.send_id_book_transaction(this.book_id);
+	        // this.send_id_book_transaction(this.book_id)
+	        this.shared_service.setBookID(this.book_id);
 	      }
 	    }
 	  }, {
@@ -495,9 +500,9 @@ webpackJsonp([0],{
 
 	var _shared = __webpack_require__(67);
 
-	var _helper = __webpack_require__(75);
+	var _helper = __webpack_require__(74);
 
-	var _book_formComponent = __webpack_require__(74);
+	var _book_formComponent = __webpack_require__(75);
 
 	var _book_formComponent2 = _interopRequireDefault(_book_formComponent);
 
@@ -566,7 +571,6 @@ webpackJsonp([0],{
 
 	    _initDefineProp(this, 'deSelect', _descriptor5, this);
 
-	    this.el = element;
 	    this.book_service = book_service;
 	    this.book_transaction_service = book_transaction_service;
 	    this.shared_service = shared_service;
@@ -608,8 +612,8 @@ webpackJsonp([0],{
 	          })[0];
 	          _this.editBook();
 	        }
-	        book_id && book.book_quantity >= 1 ? _this.button_issue_disable = false : _this.helper_service.returnNone;
-	        (book_id && book.book_issued) < 1 ? _this.button_disable = false : _this.helper_service.returnNone;
+	        book_id && book.book_quantity >= 1 ? _this.button_issue_disable = false : _this.helper_service.returnNone();
+	        (book_id && book.book_issued) < 1 ? _this.button_disable = false : _this.helper_service.returnNone();
 	        if (book_id === 0) {
 	          _this.button_edit_disable = true;
 	          _this.cleanForm();
@@ -618,11 +622,6 @@ webpackJsonp([0],{
 	          _this.button_issue_disable = true;
 	        }
 	      });
-	    }
-	  }, {
-	    key: 'returnNone',
-	    value: function returnNone() {
-	      return;
 	    }
 	  }, {
 	    key: 'toggleEditMessage',
@@ -1064,13 +1063,6 @@ webpackJsonp([0],{
 /***/ 74:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"flex-center container buttons\">\n  <button class=\"btn-primary button\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add Book</button>\n  <button class=\"btn btn-default button\" type=\"button\" name=\"button\" (click)=\"editBook()\" [disabled]=\"button_edit_disable\">Edit Book</button>\n  <button class=\"btn btn-success button\" type=\"button\" name=\"button\" (click)=\"issueBook()\" [disabled]='button_issue_disable'>Issue Book</button>\n  <button class=\"btn btn-danger button \" type=\"button\" name=\"button\" (click)=\"deleteBook()\" [disabled]=\"button_disable\">Delete Book</button>\n</div>\n\n<div [ngClass]='toggleEditError' class=\"flex-center container\">\n  <p>You must select book from in order to edit</p>\n</div>\n<div class=\"container\">\n  <form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n      <div class=\"form-group\">\n          <label>Book Name</label>\n          <input type=\"text\" formControlName=\"book_name\" class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Author</label>\n          <input type=\"text\" formControlName=\"author_name\" class=\"form-control\" required>\n      </div>\n      <div class=\"form-group\">\n          <label>ISBN Code</label>\n          <div [ngClass]=\"toggleMessage\">\n            <span>Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>\n            <button class=\"btn-primary\" type=\"button\" (click)=\"toggleDisabled('off')\">Confirm</button>\n          </div>\n          <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\" required>\n      </div>\n      <div class=\"form-group\">\n          <label>Book Quantity</label>\n          <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Published Date</label>\n          <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Book Category</label>\n          <input type=\"text\" formControlName=\"book_category\" class=\"form-control\" required>\n      </div>\n\n      <span class=\"buttons\"><button type=\"submit\" class=\"btn btn-primary button\">Save Book</button></span>\n  </form>\n</div>\n"
-
-/***/ },
-
-/***/ 75:
-/***/ function(module, exports) {
-
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
@@ -1094,12 +1086,19 @@ webpackJsonp([0],{
 	  }, {
 	    key: "returnNone",
 	    value: function returnNone() {
-	      return;
+	      return false;
 	    }
 	  }]);
 
 	  return HelperService;
 	}();
+
+/***/ },
+
+/***/ 75:
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"flex-center container buttons\">\n  <button class=\"btn-primary button\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add Book</button>\n  <button class=\"btn btn-default button\" type=\"button\" name=\"button\" (click)=\"editBook()\" [disabled]=\"button_edit_disable\">Edit Book</button>\n  <button class=\"btn btn-success button\" type=\"button\" name=\"button\" (click)=\"issueBook()\" [disabled]='button_issue_disable'>Issue Book</button>\n  <button class=\"btn btn-danger button \" type=\"button\" name=\"button\" (click)=\"deleteBook()\" [disabled]=\"button_disable\">Delete Book</button>\n</div>\n\n<div [ngClass]='toggleEditError' class=\"flex-center container\">\n  <p>You must select book from in order to edit</p>\n</div>\n<div class=\"container\">\n  <form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n      <div class=\"form-group\">\n          <label>Book Name</label>\n          <input type=\"text\" formControlName=\"book_name\" class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Author</label>\n          <input type=\"text\" formControlName=\"author_name\" class=\"form-control\" required>\n      </div>\n      <div class=\"form-group\">\n          <label>ISBN Code</label>\n          <div [ngClass]=\"toggleMessage\">\n            <span>Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>\n            <button class=\"btn-primary\" type=\"button\" (click)=\"toggleDisabled('off')\">Confirm</button>\n          </div>\n          <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\" required>\n      </div>\n      <div class=\"form-group\">\n          <label>Book Quantity</label>\n          <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Published Date</label>\n          <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Book Category</label>\n          <input type=\"text\" formControlName=\"book_category\" class=\"form-control\" required>\n      </div>\n\n      <span class=\"buttons\"><button type=\"submit\" class=\"btn btn-primary button\">Save Book</button></span>\n  </form>\n</div>\n"
 
 /***/ },
 
@@ -1233,7 +1232,7 @@ webpackJsonp([0],{
 
 	var _shared = __webpack_require__(67);
 
-	var _helper = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../serivices/helper.service\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _helper = __webpack_require__(74);
 
 	var _book_transactionComponent = __webpack_require__(79);
 

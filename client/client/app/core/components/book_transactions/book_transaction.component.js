@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BookTransactionService } from '../../services/book_transaction.service';
 import { BookService } from '../../services/book.service';
 import { SharedService } from '../../services/shared.service';
-import { HelperService } from '../../serivices/helper.service';
+import { HelperService } from '../../helpers/helper.service';
 import template from './book_transaction.component.html';
 
 @Component({

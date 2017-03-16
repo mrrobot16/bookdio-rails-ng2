@@ -6,6 +6,6 @@ export class HelperService {
     console.log("Error: ", error);
   }
   returnNone(){
-    return;
+    return false;
   }
 }

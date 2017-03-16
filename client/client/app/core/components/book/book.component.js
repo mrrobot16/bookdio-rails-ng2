@@ -9,7 +9,7 @@ import template from './book.component.html';
 @Component({
   selector: 'books',
   template: template,
-  styleUrls: ['./css/stylesheet.css']
+  styleUrls: ['./css/stylesheet.css','./css/mobile.css']
 })
 export class BookComponent implements OnInit {
   books = []
@@ -24,7 +24,7 @@ export class BookComponent implements OnInit {
 
   ngOnInit(){
     this.resetBookID()
-    this.send_id_book_transaction(this.book_id)
+    // this.send_id_book_transaction(this.book_id)
     this.displayBooks()
   }
 
@@ -42,7 +42,7 @@ export class BookComponent implements OnInit {
   selectBookID(event){
     this.all_books = [].slice.call(event.target.parentElement.parentElement.children)
     this.all_books.forEach((book)=>{
-      book.classList.contains('selectedBook') && book != event.target.parentElement ? this.setBookID(0) : this.helper_service.returnNone;
+      book.classList.contains('selectedBook') && book != event.target.parentElement ? this.setBookID(0) : this.helper_service.returnNone();
     })
     if(event.target.parentElement.classList.contains('selectedBook')){
       event.target.parentElement.classList.remove('selectedBook')
@@ -58,29 +58,33 @@ export class BookComponent implements OnInit {
   resetBookID(){
     this.book_id = 0
     this.emitBookChange(this.book_id)
-    this.send_id_book_transaction(this.book_id)
+    // this.send_id_book_transaction(this.book_id)
+    this.shared_service.setBookID(this.book_id)
   }
 
   sendBookID(id){
     this.book_id = parseInt(id)
     this.emitBookChange(this.book_id)
-    this.send_id_book_transaction(this.book_id)
+    // this.send_id_book_transaction(this.book_id)
+    this.shared_service.setBookID(this.book_id)
   }
 
-  send_id_book_transaction(id) {
-    this.shared_service.setBookID(id)
-  }
+  // send_id_book_transaction(id) {
+  //   this.shared_service.setBookID(id)
+  // }
 
   setBookID(id){
     if(id){
       this.book_id = parseInt(id)
       this.emitBookChange(this.book_id)
-      this.send_id_book_transaction(this.book_id)
+      // this.send_id_book_transaction(this.book_id)
+      this.shared_service.setBookID(this.book_id)
     }
     else {
       this.book_id = id
       this.emitBookChange(this.book_id)
-      this.send_id_book_transaction(this.book_id)
+      // this.send_id_book_transaction(this.book_id)
+      this.shared_service.setBookID(this.book_id)
     }
   }
 
@@ -137,5 +141,4 @@ export class BookComponent implements OnInit {
       }
     }
   }
-
 }

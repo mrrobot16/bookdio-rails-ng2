@@ -24,7 +24,6 @@ export class BookFormComponent implements OnInit {
   @Output() deSelect = new EventEmitter()
   constructor(book_service: BookService, book_transaction_service: BookTransactionService,
     shared_service: SharedService, builder: FormBuilder, helper_service: HelperService){
-    this.el = element;
     this.book_service = book_service;
     this.book_transaction_service = book_transaction_service;
     this.shared_service = shared_service;
@@ -62,8 +61,8 @@ export class BookFormComponent implements OnInit {
           })[0]
           this.editBook()
         }
-        (book_id && book.book_quantity >=1) ? this.button_issue_disable = false : this.helper_service.returnNone;
-        (book_id && book.book_issued) < 1 ? this.button_disable = false : this.helper_service.returnNone;
+        (book_id && book.book_quantity >=1) ? this.button_issue_disable = false : this.helper_service.returnNone();
+        (book_id && book.book_issued) < 1 ? this.button_disable = false : this.helper_service.returnNone();
         if(book_id === 0) {
           this.button_edit_disable = true
           this.cleanForm()
@@ -73,10 +72,6 @@ export class BookFormComponent implements OnInit {
         }
       }
     )
-  }
-
-  returnNone(){
-    return;
   }
 
   toggleEditMessage(){
@@ -260,7 +255,6 @@ export class BookFormComponent implements OnInit {
           this.cleanForm()
         })
       }
+    }
   }
-}
-
 }
