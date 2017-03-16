@@ -7,11 +7,12 @@ bundle install
 rails db:create
 rails db:migrate
 
-Create Books
+Add books to the database.
 rails db:seed
 ```
 
 ### Angular2 Start
+#### Open new tab in terminal and run the following commands
 ```bash
 cd client
 npm install
