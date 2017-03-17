@@ -61,7 +61,7 @@ form > div:nth-child(3) > div > button {
 
 
 .selectedBook {
-  background-color: red !important;
+  background-color: #ff7600 !important;
   /*color: white !important;*/
   color: #00ff2b !important;
 }
