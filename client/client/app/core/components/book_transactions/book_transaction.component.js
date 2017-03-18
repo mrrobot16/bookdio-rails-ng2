@@ -13,7 +13,12 @@ import template from './book_transaction.component.html';
 })
 export class BookTransactionComponent implements OnInit {
   book = {}
-  constructor(book_service: BookService, book_transaction_service: BookTransactionService, shared_service: SharedService, router: ActivatedRoute, helper_service: HelperService){
+  page_number = 1
+  book_transactions = []
+  current_book_transactions = []
+  constructor(
+    book_service: BookService, book_transaction_service: BookTransactionService,
+    shared_service: SharedService, router: ActivatedRoute, helper_service: HelperService){
     this.book_transaction_service = book_transaction_service;
     this.book_service = book_service;
     this.shared_service = shared_service;
@@ -26,7 +31,6 @@ export class BookTransactionComponent implements OnInit {
     this.getBook(this.book_id)
     this.getBookTransactions(this.book_id)
     this.zero_transaction_message = false;
-
   }
 
   getBook(id){
@@ -43,6 +47,8 @@ export class BookTransactionComponent implements OnInit {
       let book_transactions = this.book_transaction_service.getBookTransactions(id)
       book_transactions.subscribe((book_transactions)=>{
         this.book_transactions = book_transactions
+        this.current_book_transactions = this.book_transactions
+        this.setBookTransactionPage(this.page_number)
         if(this.book_transactions.length === 0){
           this.zero_transaction_message = true
         }
@@ -55,5 +61,35 @@ export class BookTransactionComponent implements OnInit {
     this.book_transaction_service.updateBookTransaction(book_transaction).then(()=>{
       this.getBookTransactions(this.book_id)
     })
+  }
+  paginateBooks(state){
+    if (state=='previous'){
+      if(this.page_number < 2){
+        this.page_number = 1
+        return
+      }
+      this.setBookTransactionPage(this.page_number-1)
+    }
+    if (state=='next') {
+      if(this.book_transactions.length < 9){
+        return;
+      }
+      else {
+        this.setBookTransactionPage(this.page_number+1)
+      }
+    }
+  }
+
+  setBookTransactionPage(page_number){
+    if(page_number === 1){
+      this.page_number = 1
+      console.log(this.current_book_transactions.length);
+      this.current_book_transactions = this.book_transactions.slice(0,10)
+      console.log(this.current_book_transactions.length);
+    }
+    else {
+      this.page_number = page_number
+      this.current_book_transactions = this.book_transactions.slice((page_number-1)*10, page_number*10)
+    }
   }
 }

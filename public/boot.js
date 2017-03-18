@@ -1251,6 +1251,9 @@ webpackJsonp([0],{
 	    _classCallCheck(this, BookTransactionComponent);
 
 	    this.book = {};
+	    this.page_number = 1;
+	    this.book_transactions = [];
+	    this.current_book_transactions = [];
 
 	    this.book_transaction_service = book_transaction_service;
 	    this.book_service = book_service;
@@ -1288,6 +1291,8 @@ webpackJsonp([0],{
 	        var book_transactions = this.book_transaction_service.getBookTransactions(id);
 	        book_transactions.subscribe(function (book_transactions) {
 	          _this2.book_transactions = book_transactions;
+	          _this2.current_book_transactions = _this2.book_transactions;
+	          _this2.setBookTransactionPage(_this2.page_number);
 	          if (_this2.book_transactions.length === 0) {
 	            _this2.zero_transaction_message = true;
 	          }
@@ -1304,6 +1309,37 @@ webpackJsonp([0],{
 	        _this3.getBookTransactions(_this3.book_id);
 	      });
 	    }
+	  }, {
+	    key: 'paginateBooks',
+	    value: function paginateBooks(state) {
+	      if (state == 'previous') {
+	        if (this.page_number < 2) {
+	          this.page_number = 1;
+	          return;
+	        }
+	        this.setBookTransactionPage(this.page_number - 1);
+	      }
+	      if (state == 'next') {
+	        if (this.book_transactions.length < 9) {
+	          return;
+	        } else {
+	          this.setBookTransactionPage(this.page_number + 1);
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'setBookTransactionPage',
+	    value: function setBookTransactionPage(page_number) {
+	      if (page_number === 1) {
+	        this.page_number = 1;
+	        console.log(this.current_book_transactions.length);
+	        this.current_book_transactions = this.book_transactions.slice(0, 10);
+	        console.log(this.current_book_transactions.length);
+	      } else {
+	        this.page_number = page_number;
+	        this.current_book_transactions = this.book_transactions.slice((page_number - 1) * 10, page_number * 10);
+	      }
+	    }
 	  }]);
 
 	  return BookTransactionComponent;
@@ -1315,7 +1351,7 @@ webpackJsonp([0],{
 /***/ 79:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container\">\n\n  <table *ngIf=\"book_id\" width=\"400\" height=\"5\" id=\"book_transactions\">\n    <thead *ngIf='!zero_transaction_message'>\n      <h3>Book Transactions for {{book.book_name}}</h3>\n      <tr>\n        <th>Transaction Date</th>\n        <th>Transaction Type</th>\n        <th>Transaction Status</th>\n        <th>Returned Date </th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr class=\"book_transactions\" *ngFor=\"let book_transaction of book_transactions\">\n        <td>{{book_transaction.created_at | date }}</td>\n        <td>{{book_transaction.transaction_type | uppercase}}</td>\n        <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n        <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n        <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n      </tr>\n    </tbody>\n  </table>\n  <p class=\"flex-center\" *ngIf='zero_transaction_message'>No book transactions for <br><strong>{{book.book_name}} </strong></p>\n\n  <div *ngIf='!book_id' class=\"flex-center\">\n    <h3>No book selected go to <a href=\"#/books\">books</a> and select a book to view transactions</h3>\n  </div>\n</div>\n"
+	module.exports = "<div class=\"container\">\n  <div *ngIf=\"book_id\">\n    <table width=\"400\" height=\"5\" id=\"book_transactions\">\n      <thead *ngIf='!zero_transaction_message'>\n        <h3>Book Transactions for {{book.book_name}}</h3>\n        <tr>\n          <th>Transaction Date</th>\n          <th>Transaction Type</th>\n          <th>Transaction Status</th>\n          <th>Returned Date </th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr class=\"book_transactions\" *ngFor=\"let book_transaction of current_book_transactions\">\n          <td>{{book_transaction.created_at | date }}</td>\n          <td>{{book_transaction.transaction_type | uppercase}}</td>\n          <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n          <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n          <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n        </tr>\n      </tbody>\n    </table>\n    <div class=\"flex-center container paginateBook\">\n      <button class=\"animate left-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('previous')\"></button>\n        <span>\n          <div>\n              <span>Showing from</span>\n              <span>{{1+(page_number-1)*10}}</span>–\n              <span>{{page_number*10 > book_transactions.length ? book_transactions.length : page_number*10  }}</span> of\n              <span>{{book_transactions.length}}</span>\n          </div>\n        </span>\n      <button class=\"animate right-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('next')\"></button>\n    </div>\n</div>\n  <p class=\"flex-center\" *ngIf='zero_transaction_message'>No book transactions for <br><strong>{{book.book_name}} </strong></p>\n\n  <div *ngIf='!book_id' class=\"flex-center\">\n    <h3>No book selected go to <a href=\"#/books\">books</a> and select a book to view transactions</h3>\n  </div>\n</div>\n"
 
 /***/ },
 
