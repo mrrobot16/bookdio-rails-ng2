@@ -15,7 +15,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
       </tr>
     </thead>
     <tbody>
-          <tr class="animate" [myHighlight]="blue" [ngClass]="selectBook"  *ngFor="let book of current_books" (click)="selectBookID($event, book.id)">
+          <tr class="animate" id="{{book.id}}" [myHighlight]="blue" [ngClass]="selectBook"  *ngFor="let book of current_books" (click)="selectBookID($event, book.id)">
             <td data-label="Book Name">{{book.book_name }}</td>
             <td data-label="Author">{{book.author_name}}</td>
             <td data-label="ISBN">{{book.isbn_code}}</td>
