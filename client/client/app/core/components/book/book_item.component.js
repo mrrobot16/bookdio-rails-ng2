@@ -15,7 +15,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
       </tr>
     </thead>
     <tbody>
-          <tr class="animate" [myHighlight]="blue" id="{{book.id}}" [ngClass]="selectBook"  *ngFor="let book of current_books" (click)="selectBookID($event)">
+          <tr class="animate" id="{{book.id}}" [myHighlight]="blue" [ngClass]="selectBook"  *ngFor="let book of current_books" (click)="selectBookID($event, book.id)">
             <td data-label="Book Name">{{book.book_name }}</td>
             <td data-label="Author">{{book.author_name}}</td>
             <td data-label="ISBN">{{book.isbn_code}}</td>
@@ -30,18 +30,16 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./css/stylesheet.css']
 })
 export class BookItem implements OnInit {
-  // @Input() book;
   @Input() current_books;
   @Output() selectBook = new EventEmitter();
   constructor(){
   }
 
   ngOnInit(){
-
   }
 
-  selectBookID(event){
-    this.selectBook.emit(event)
+  selectBookID(event, id){
+    this.selectBook.emit({ event: event, id:id})
   }
 
 

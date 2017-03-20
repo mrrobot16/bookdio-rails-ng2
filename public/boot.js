@@ -331,8 +331,7 @@ webpackJsonp([0],{
 	  _createClass(BookComponent, [{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
-	      this.resetBookID();
-	      // this.send_id_book_transaction(this.book_id)
+	      this.setBookID(0);
 	      this.displayBooks();
 	    }
 	  }, {
@@ -351,57 +350,28 @@ webpackJsonp([0],{
 	    }
 	  }, {
 	    key: 'selectBookID',
-	    value: function selectBookID(event) {
+	    value: function selectBookID(selected_book) {
 	      var _this2 = this;
 
-	      this.all_books = [].slice.call(event.target.parentElement.parentElement.children);
+	      this.all_books = [].slice.call(selected_book.event.target.parentElement.parentElement.children);
 	      this.all_books.forEach(function (book) {
-	        book.classList.contains('selectedBook') && book != event.target.parentElement ? _this2.setBookID(0) : _this2.helper_service.returnNone();
+	        book.classList.contains('selectedBook') && book != selected_book.event.target.parentElement ? _this2.setBookID(0) : _this2.helper_service.returnNone();
 	      });
-	      if (event.target.parentElement.classList.contains('selectedBook')) {
-	        event.target.parentElement.classList.remove('selectedBook');
+	      if (selected_book.event.target.parentElement.classList.contains('selectedBook')) {
+	        selected_book.event.target.parentElement.classList.remove('selectedBook');
 	        this.setBookID(0);
 	      } else {
 	        this.unSelectBooks(this.all_books);
-	        event.target.parentElement.classList.add('selectedBook');
-	        this.setBookID(event.target.parentNode.id);
+	        selected_book.event.target.parentElement.classList.add('selectedBook');
+	        this.setBookID(selected_book.id);
 	      }
 	    }
-	  }, {
-	    key: 'resetBookID',
-	    value: function resetBookID() {
-	      this.book_id = 0;
-	      this.emitBookChange(this.book_id);
-	      // this.send_id_book_transaction(this.book_id)
-	      this.shared_service.setBookID(this.book_id);
-	    }
-	  }, {
-	    key: 'sendBookID',
-	    value: function sendBookID(id) {
-	      this.book_id = parseInt(id);
-	      this.emitBookChange(this.book_id);
-	      // this.send_id_book_transaction(this.book_id)
-	      this.shared_service.setBookID(this.book_id);
-	    }
-
-	    // send_id_book_transaction(id) {
-	    //   this.shared_service.setBookID(id)
-	    // }
-
 	  }, {
 	    key: 'setBookID',
 	    value: function setBookID(id) {
-	      if (id) {
-	        this.book_id = parseInt(id);
-	        this.emitBookChange(this.book_id);
-	        // this.send_id_book_transaction(this.book_id)
-	        this.shared_service.setBookID(this.book_id);
-	      } else {
-	        this.book_id = id;
-	        this.emitBookChange(this.book_id);
-	        // this.send_id_book_transaction(this.book_id)
-	        this.shared_service.setBookID(this.book_id);
-	      }
+	      this.book_id = id;
+	      this.emitBookChange(this.book_id);
+	      this.shared_service.setBookID(this.book_id);
 	    }
 	  }, {
 	    key: 'emitBookChange',
@@ -426,7 +396,7 @@ webpackJsonp([0],{
 	        this.all_books.forEach(function (book) {
 	          if (book.classList.contains('selectedBook')) {
 	            book.classList.remove('selectedBook');
-	            _this3.resetBookID();
+	            _this3.setBookID(0);
 	          }
 	        });
 	      }
@@ -1105,7 +1075,7 @@ webpackJsonp([0],{
 /***/ 76:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Number of books {{books.length}}</p>\n        <div class=\"books table-responsive\" *ngIf=\"books.length > 0\">\n          <book-item (selectBook)=\"selectBookID($event)\" [current_books]='current_books'></book-item>\n          <div class=\"flex-center container paginateBook\">\n            <button class=\"animate left-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('previous')\"></button>\n              <span>\n                <div>\n                    <span>Showing from</span>\n                    <span>{{1+(page_number-1)*10}}</span>–\n                    <span>{{page_number*10 > books.length ? books.length : page_number*10  }}</span> of\n                    <span>{{books.length}}</span>\n                </div>\n              </span>\n            <button class=\"animate right-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('next')\"></button>\n          </div>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' (deSelect)=\"unSelectBooks()\" [all_books]=\"books\" [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Number of books {{books.length}}</p>\n        <div class=\"books table-responsive\" *ngIf=\"books.length > 0\">\n          <book-item (selectBook)=\"selectBookID($event)\" [current_books]='current_books'></book-item>\n          <div class=\"flex-center container paginateBook\">\n            <button id=\"previous\" class=\"animate left-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('previous')\"></button>\n              <span>\n                <div>\n                    <span>Showing from</span>\n                    <span>{{1+(page_number-1)*10}}</span>–\n                    <span>{{page_number*10 > books.length ? books.length : page_number*10  }}</span> of\n                    <span>{{books.length}}</span>\n                </div>\n              </span>\n            <button id=\"next\" class=\"animate right-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('next')\"></button>\n          </div>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' (deSelect)=\"unSelectBooks()\" [all_books]=\"books\" [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 
@@ -1172,7 +1142,7 @@ webpackJsonp([0],{
 
 	var BookItem = exports.BookItem = (_dec = (0, _core.Component)({
 	  selector: 'book-item',
-	  template: '\n    <table id=\'books\' class="table" width="400" height="5">\n    <thead>\n      <tr class="background-top">\n        <th>Book Name</th>\n        <th>Author</th>\n        <th>ISBN</th>\n        <th>Book Quantity</th>\n        <th>Published Date</th>\n        <th>Book Category</th>\n        <th>Books Issued</th>\n      </tr>\n    </thead>\n    <tbody>\n          <tr class="animate" [myHighlight]="blue" id="{{book.id}}" [ngClass]="selectBook"  *ngFor="let book of current_books" (click)="selectBookID($event)">\n            <td data-label="Book Name">{{book.book_name }}</td>\n            <td data-label="Author">{{book.author_name}}</td>\n            <td data-label="ISBN">{{book.isbn_code}}</td>\n            <td data-label="Book Quantity">{{book.book_quantity}}</td>\n            <td data-label="Published Date">{{book.published_date | date | returnMonthYear }}</td>\n            <td data-label="Book Category">{{book.book_category}}</td>\n            <td data-label="Books Issued">{{book.book_issued}}</td>\n          </tr>\n    </tbody>\n  </table>\n  ',
+	  template: '\n    <table id=\'books\' class="table" width="400" height="5">\n    <thead>\n      <tr class="background-top">\n        <th>Book Name</th>\n        <th>Author</th>\n        <th>ISBN</th>\n        <th>Book Quantity</th>\n        <th>Published Date</th>\n        <th>Book Category</th>\n        <th>Books Issued</th>\n      </tr>\n    </thead>\n    <tbody>\n          <tr class="animate" id="{{book.id}}" [myHighlight]="blue" [ngClass]="selectBook"  *ngFor="let book of current_books" (click)="selectBookID($event, book.id)">\n            <td data-label="Book Name">{{book.book_name }}</td>\n            <td data-label="Author">{{book.author_name}}</td>\n            <td data-label="ISBN">{{book.isbn_code}}</td>\n            <td data-label="Book Quantity">{{book.book_quantity}}</td>\n            <td data-label="Published Date">{{book.published_date | date | returnMonthYear }}</td>\n            <td data-label="Book Category">{{book.book_category}}</td>\n            <td data-label="Books Issued">{{book.book_issued}}</td>\n          </tr>\n    </tbody>\n  </table>\n  ',
 	  styleUrls: ['./css/stylesheet.css']
 	}), _dec2 = (0, _core.Input)(), _dec3 = (0, _core.Output)(), _dec(_class = (_class2 = function () {
 	  function BookItem() {
@@ -1188,8 +1158,8 @@ webpackJsonp([0],{
 	    value: function ngOnInit() {}
 	  }, {
 	    key: 'selectBookID',
-	    value: function selectBookID(event) {
-	      this.selectBook.emit(event);
+	    value: function selectBookID(event, id) {
+	      this.selectBook.emit({ event: event, id: id });
 	    }
 	  }]);
 
