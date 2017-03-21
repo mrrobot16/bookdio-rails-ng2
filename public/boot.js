@@ -1236,6 +1236,7 @@ webpackJsonp([0],{
 	  _createClass(BookTransactionComponent, [{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
+	      console.log('change');
 	      this.book_id = parseInt(this.router.snapshot.params.id);
 	      this.getBook(this.book_id);
 	      this.getBookTransactions(this.book_id);
