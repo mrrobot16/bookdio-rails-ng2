@@ -1,8 +1,8 @@
 <div class="container">
   <div *ngIf="book_id">
+    <h3 *ngIf="!book_id">Book Transactions for {{book.book_name}}</h3>
     <table width="400" height="5" class="transactions" id="books">
       <thead *ngIf='!zero_transaction_message'>
-        <h3>Book Transactions for {{book.book_name}}</h3>
         <tr>
           <th>Transaction Date</th>
           <th>Transaction Type</th>
@@ -20,7 +20,7 @@
         </tr>
       </tbody>
     </table>
-    <div class="flex-center container paginateBook">
+    <div *ngIf='!book_id' class="flex-center container paginateBook">
       <button class="animate left-arrow button" type="button" name="button" (click)="paginateBooks('previous')"></button>
         <span>
           <div>
