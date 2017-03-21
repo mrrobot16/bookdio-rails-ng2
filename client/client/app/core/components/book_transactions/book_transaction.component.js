@@ -27,7 +27,6 @@ export class BookTransactionComponent implements OnInit {
   }
 
   ngOnInit(){
-    console.log('change');
     this.book_id = parseInt(this.router.snapshot.params.id)
     this.getBook(this.book_id)
     this.getBookTransactions(this.book_id)
@@ -72,7 +71,7 @@ export class BookTransactionComponent implements OnInit {
       this.setBookTransactionPage(this.page_number-1)
     }
     if (state=='next') {
-      if(this.book_transactions.length < 9){
+      if(this.current_book_transactions.length < 9){
         return;
       }
       else {

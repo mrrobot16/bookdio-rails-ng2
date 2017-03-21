@@ -1236,7 +1236,6 @@ webpackJsonp([0],{
 	  _createClass(BookTransactionComponent, [{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
-	      console.log('change');
 	      this.book_id = parseInt(this.router.snapshot.params.id);
 	      this.getBook(this.book_id);
 	      this.getBookTransactions(this.book_id);
@@ -1292,7 +1291,7 @@ webpackJsonp([0],{
 	        this.setBookTransactionPage(this.page_number - 1);
 	      }
 	      if (state == 'next') {
-	        if (this.book_transactions.length < 9) {
+	        if (this.current_book_transactions.length < 9) {
 	          return;
 	        } else {
 	          this.setBookTransactionPage(this.page_number + 1);
