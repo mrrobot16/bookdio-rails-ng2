@@ -1,8 +1,8 @@
-<div class="flex-center container buttons">
-  <button id="add-book" class="btn-primary button" type="button" name="button" (click)="showForm()">Add Book</button>
-  <button class="btn btn-default button" type="button" name="button" (click)="editBook()" [disabled]="button_edit_disable">Edit Book</button>
-  <button class="btn btn-success button" type="button" name="button" (click)="issueBook()" [disabled]='button_issue_disable'>Issue Book</button>
-  <button class="btn btn-danger button " type="button" name="button" (click)="deleteBook()" [disabled]="button_disable">Delete Book</button>
+<div class="flex-center container buttons form-buttons">
+  <button id="add-book" class="btn-primary button" type="button" name="button" (click)="showForm()">Add</button>
+  <button class="btn btn-default button" type="button" name="button" (click)="editBook()" [disabled]="button_edit_disable">Edit</button>
+  <button class="btn btn-success button" type="button" name="button" (click)="issueBook()" [disabled]='button_issue_disable'>Rent</button>
+  <button class="btn btn-danger button " type="button" name="button" (click)="deleteBook()" [disabled]="button_disable">Delete</button>
 </div>
 
 <div [ngClass]='toggleEditError' class="flex-center container">

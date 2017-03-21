@@ -66,14 +66,20 @@ form > div:nth-child(3) > div > button {
   color: #00ff2b !important;
 }
 
-table#book_transactions > tbody > tr > button {
+/*table#book_transactions > tbody > tr > button {
   margin-left: 1em;
   margin-top: 8px;
   height: 1.8em;
-}
+}*/
 
 .book_transactions > button {
 
+}
+
+.transactions > tbody > tr > button {
+  margin-left: 1em;
+  margin-top: 8px;
+  height: 1.8em;
 }
 
 .background-top {
