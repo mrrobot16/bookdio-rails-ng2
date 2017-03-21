@@ -97,6 +97,7 @@ export class BookComponent implements OnInit {
   }
 
   paginateBooks(state){
+    this.setBookID(0)
     if(state=='previous'){
       if(this.page_number < 2){
         this.page_number = 1
