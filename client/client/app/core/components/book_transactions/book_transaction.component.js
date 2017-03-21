@@ -83,9 +83,9 @@ export class BookTransactionComponent implements OnInit {
   setBookTransactionPage(page_number){
     if(page_number === 1){
       this.page_number = 1
-      console.log(this.current_book_transactions.length);
+      // console.log(this.current_book_transactions.length);
       this.current_book_transactions = this.book_transactions.slice(0,10)
-      console.log(this.current_book_transactions.length);
+      // console.log(this.current_book_transactions.length);
     }
     else {
       this.page_number = page_number
