@@ -90,6 +90,4 @@ id:10,
 isbn_code:"971-2-19639-234-3",
 published_date:"2016-12-01"
 }]
-module.exports = {
-  books:books
-}
+module.exports = books

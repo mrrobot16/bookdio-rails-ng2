@@ -91,7 +91,7 @@ webpackJsonp([0],{
 
 	var _helper = __webpack_require__(74);
 
-	var _return_month = __webpack_require__(80);
+	var _return_time = __webpack_require__(80);
 
 	var _highlight = __webpack_require__(81);
 
@@ -104,7 +104,7 @@ webpackJsonp([0],{
 	// Components
 	var CORE_PROVIDERS = exports.CORE_PROVIDERS = [_book2.BookService, _book_transaction2.BookTransactionService, _shared.SharedService, _helper.HelperService];
 	// Directive
-	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_app.AppComponent, _topBar.TopNavBar, _book.BookComponent, _book_item.BookItem, _book_form.BookFormComponent, _book_transaction.BookTransactionComponent, _highlight.HighlightDirective, _return_month.ReturnMonthYearPipe];
+	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_app.AppComponent, _topBar.TopNavBar, _book.BookComponent, _book_item.BookItem, _book_form.BookFormComponent, _book_transaction.BookTransactionComponent, _highlight.HighlightDirective, _return_time.ReturnMonthYearPipe, _return_time.ReturnTimeShortDate];
 	exports.AppComponent = _app.AppComponent;
 	exports.TopNavBar = _topBar.TopNavBar;
 	exports.BookComponent = _book.BookComponent;
@@ -341,7 +341,7 @@ webpackJsonp([0],{
 	          return b.book_issued - a.book_issued;
 	        });
 	        _this.current_books = books;
-	        _this.setBookPage(_this.page_number);
+	        // this.setBookPage(this.page_number)
 	      }, this.helper_service.logError);
 	    }
 	  }, {
@@ -1072,7 +1072,7 @@ webpackJsonp([0],{
 /***/ 76:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Number of books <span id='total_books'>{{books.length}}</span></p>\n        <div class=\"books table-responsive\" *ngIf=\"books.length > 0\">\n          <book-item (selectBook)=\"selectBookID($event)\" [current_books]='current_books'></book-item>\n          <div class=\"flex-center container paginateBook\">\n            <button id=\"previous\" class=\"animate left-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('previous')\"></button>\n              <span>\n                <div>\n                    <span>Showing from</span>\n                    <span>{{1+(page_number-1)*10}}</span>–\n                    <span>{{page_number*10 > books.length ? books.length : page_number*10  }}</span> of\n                    <span>{{books.length}}</span>\n                </div>\n              </span>\n            <button id=\"next\" class=\"animate right-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('next')\"></button>\n          </div>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' (deSelect)=\"unSelectBooks()\" [all_books]=\"books\" [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Number of books <span id='total_books'>{{books.length}}</span></p>\n        <div class=\"books table-responsive\" *ngIf=\"books.length > 0\">\n          <div><book-item (selectBook)=\"selectBookID($event)\" [current_books]='current_books'></book-item></div>\n          <div class=\"flex-center container paginateBook\">\n            <button id=\"previous\" class=\"animate left-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('previous')\"></button>\n              <span>\n                <div>\n                    <span>Showing from</span>\n                    <span>{{1+(page_number-1)*10}}</span>–\n                    <span>{{page_number*10 > books.length ? books.length : page_number*10  }}</span> of\n                    <span>{{books.length}}</span>\n                </div>\n              </span>\n            <button id=\"next\" class=\"animate right-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('next')\"></button>\n          </div>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' (deSelect)=\"unSelectBooks()\" [all_books]=\"books\" [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 
@@ -1325,20 +1325,28 @@ webpackJsonp([0],{
 /***/ 80:
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.ReturnMonthYearPipe = undefined;
+	exports.ReturnTimeShortDate = exports.ReturnMonthYearPipe = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _dec, _class;
+	var _dec, _class, _dec2, _class2;
 
 	var _core = __webpack_require__(23);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function timeAM(time) {
+	  var hours = parseInt(time.slice(0, 2));
+	  hours >= 13 ? hours = hours - 12 + ":" + time.slice(3, 5) + " PM" : hours = hours + ":" + time.slice(3, 5) + " AM";
+	  return hours;
+	}
+
+	var month_to_num = { jan: "01", feb: "02", mar: "03", apr: "04", may: "05", jun: "06", jul: "07", aug: "08", sep: "09", oct: "10", nov: "11", dec: "12" };
 
 	var ReturnMonthYearPipe = exports.ReturnMonthYearPipe = (_dec = (0, _core.Pipe)({ name: 'returnMonthYear' }), _dec(_class = function () {
 	  function ReturnMonthYearPipe() {
@@ -1346,7 +1354,7 @@ webpackJsonp([0],{
 	  }
 
 	  _createClass(ReturnMonthYearPipe, [{
-	    key: 'transform',
+	    key: "transform",
 	    value: function transform(date) {
 	      return date.slice(0, 4) + date.substr(date.length - 4);
 	    }
@@ -1354,6 +1362,29 @@ webpackJsonp([0],{
 
 	  return ReturnMonthYearPipe;
 	}()) || _class);
+	var ReturnTimeShortDate = exports.ReturnTimeShortDate = (_dec2 = (0, _core.Pipe)({ name: "returnTimeShortDate" }), _dec2(_class2 = function () {
+	  function ReturnTimeShortDate() {
+	    _classCallCheck(this, ReturnTimeShortDate);
+	  }
+
+	  _createClass(ReturnTimeShortDate, [{
+	    key: "timeAM",
+	    value: function timeAM(time) {
+	      var hours = parseInt(time.slice(0, 2));
+	      hours >= 13 ? hours = hours - 12 + ":" + time.slice(3, 5) + " PM" : hours = hours + ":" + time.slice(3, 5) + " AM";
+	      return hours;
+	    }
+	  }, {
+	    key: "transform",
+	    value: function transform(value) {
+	      value = new Date(value).toString().split(" ");
+	      value = this.timeAM(value[4].slice(0, -3)) + " " + month_to_num[value[1].toLowerCase()] + "/" + value[2] + "/" + value[3];
+	      return value;
+	    }
+	  }]);
+
+	  return ReturnTimeShortDate;
+	}()) || _class2);
 
 /***/ },
 
