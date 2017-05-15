@@ -91,7 +91,7 @@ webpackJsonp([0],{
 
 	var _helper = __webpack_require__(74);
 
-	var _return_time = __webpack_require__(80);
+	var _datetime = __webpack_require__(80);
 
 	var _highlight = __webpack_require__(81);
 
@@ -104,7 +104,7 @@ webpackJsonp([0],{
 	// Components
 	var CORE_PROVIDERS = exports.CORE_PROVIDERS = [_book2.BookService, _book_transaction2.BookTransactionService, _shared.SharedService, _helper.HelperService];
 	// Directive
-	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_app.AppComponent, _topBar.TopNavBar, _book.BookComponent, _book_item.BookItem, _book_form.BookFormComponent, _book_transaction.BookTransactionComponent, _highlight.HighlightDirective, _return_time.ReturnMonthYearPipe, _return_time.ReturnTimeShortDate];
+	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_app.AppComponent, _topBar.TopNavBar, _book.BookComponent, _book_item.BookItem, _book_form.BookFormComponent, _book_transaction.BookTransactionComponent, _highlight.HighlightDirective, _datetime.ReturnMonthYearPipe, _datetime.ReturnTimeShortDate];
 	exports.AppComponent = _app.AppComponent;
 	exports.TopNavBar = _topBar.TopNavBar;
 	exports.BookComponent = _book.BookComponent;
@@ -341,7 +341,7 @@ webpackJsonp([0],{
 	          return b.book_issued - a.book_issued;
 	        });
 	        _this.current_books = books;
-	        // this.setBookPage(this.page_number)
+	        _this.setBookPage(_this.page_number);
 	      }, this.helper_service.logError);
 	    }
 	  }, {
@@ -1072,7 +1072,7 @@ webpackJsonp([0],{
 /***/ 76:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Number of books <span id='total_books'>{{books.length}}</span></p>\n        <div class=\"books table-responsive\" *ngIf=\"books.length > 0\">\n          <div><book-item (selectBook)=\"selectBookID($event)\" [current_books]='current_books'></book-item></div>\n          <div class=\"flex-center container paginateBook\">\n            <button id=\"previous\" class=\"animate left-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('previous')\"></button>\n              <span>\n                <div>\n                    <span>Showing from</span>\n                    <span>{{1+(page_number-1)*10}}</span>–\n                    <span>{{page_number*10 > books.length ? books.length : page_number*10  }}</span> of\n                    <span>{{books.length}}</span>\n                </div>\n              </span>\n            <button id=\"next\" class=\"animate right-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('next')\"></button>\n          </div>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' (deSelect)=\"unSelectBooks()\" [all_books]=\"books\" [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Number of books <span id='total_books'>{{books.length}}</span></p>\n        <div class=\"books table-responsive\" *ngIf=\"books.length > 0\">\n          <book-item (selectBook)=\"selectBookID($event)\" [current_books]='current_books'></book-item>\n          <div class=\"flex-center container paginateBook\">\n            <button id=\"previous\" class=\"animate left-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('previous')\"></button>\n              <span>\n                <div>\n                    <span>Showing from</span>\n                    <span>{{1+(page_number-1)*10}}</span>–\n                    <span>{{page_number*10 > books.length ? books.length : page_number*10  }}</span> of\n                    <span>{{books.length}}</span>\n                </div>\n              </span>\n            <button id=\"next\" class=\"animate right-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('next')\"></button>\n          </div>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' (deSelect)=\"unSelectBooks()\" [all_books]=\"books\" [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
 
 /***/ },
 

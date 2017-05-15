@@ -108,7 +108,3 @@ form > div:nth-child(3) > div > button {
   background-color: #9dff00 !important;
   background: url(http://i.imgur.com/6FoJCbD.png) -40px -19px no-repeat;
 }
-
-.overflow {
-  overflow-y: scroll;
-}
