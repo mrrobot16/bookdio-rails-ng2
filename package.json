@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "scripts": {
     "start": "cd client && npm start",
-    "build": "npm install gulp --save"
+    "build": "cd client && npm install gulp --save"
   }
 }

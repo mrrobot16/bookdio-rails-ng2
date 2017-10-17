@@ -2,7 +2,8 @@
   "name": "bookdio",
   "version": "1.0.0",
   "scripts": {
-    "start": "gulp serve"
+    "start": "gulp serve",
+    "build": "npm install gulp --save"
   },
   "description": "Challenge for Synechron",
   "engines": {
@@ -26,7 +27,7 @@
     "bootstrap": "3.3.7",
     "core-js": "2.4.1",
     "del": "2.2.2",
-    "gulp": "3.9.1",
+    "gulp": "^3.9.1",
     "gulp-cssnano": "2.1.2",
     "gulp-delete-lines": "0.0.7",
     "gulp-less": "3.3.0",
