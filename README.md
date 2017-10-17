@@ -1,25 +1,22 @@
-## Synechron Challenge Book
+## Bookdio Synechron Challenge Book
+
 ### Rails Start using Postgresql
+https://www.postgresql.org/download/
+Open Postgresql app
 ```bash
-git clone https://github.com/mrrobot16/synechron-book
-cd synechron-book
+git clone https://github.com/mrrobot16/bookdio-rails-ng2
+cd bookdio-rails-ng2
 bundle install
 rails db:create
 rails db:migrate
 
 Add books to the database.
 rails db:seed
-```
 
-### Angular2 Start
-#### Open new tab in terminal and run the following commands
-```bash
-cd client
-npm install
+npm run build
+For now new tab on terminal run:
+
 npm start
-
-Once all files bundle
-do
-cd .. && rails server
-Open it in your browser (http://localhost:3000)
+LIGHT IT UP! http://localhost:3000
+rails server
 ```

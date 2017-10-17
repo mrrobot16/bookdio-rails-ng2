@@ -2,27 +2,28 @@ import { Component,  OnInit } from '@angular/core';
 import {BookFormComponent} from './book_form.component'
 import { BookService } from '../../services/book.service';
 import { SharedService } from '../../services/shared.service';
+import { HelperService } from '../../helpers/helper.service';
 import { Subscription } from 'rxjs/Subscription';
 import template from './book.component.html';
 
 @Component({
   selector: 'books',
   template: template,
-  styleUrls: ['./css/stylesheet.css']
+  styleUrls: ['./css/stylesheet.css','./css/mobile.css']
 })
 export class BookComponent implements OnInit {
   books = []
   current_books = []
   page_number = 1
   all_books = []
-  constructor(book_service: BookService, shared_service: SharedService){
+  constructor(book_service: BookService, shared_service: SharedService, helper_service: HelperService ){
     this.book_service = book_service
     this.shared_service = shared_service
+    this.helper_service = helper_service
   }
 
   ngOnInit(){
-    this.resetBookID()
-    this.send_id_book_transaction(this.book_id)
+    this.setBookID(0)
     this.displayBooks()
   }
 
@@ -34,52 +35,29 @@ export class BookComponent implements OnInit {
       })
       this.current_books = books
       this.setBookPage(this.page_number)
-    }, this.logError)
+    }, this.helper_service.logError)
   }
 
-  selectBookID(event){
-    this.all_books = [].slice.call(event.target.parentElement.parentElement.children)
+  selectBookID(selected_book){
+    this.all_books = [].slice.call(selected_book.event.target.parentElement.parentElement.children)
     this.all_books.forEach((book)=>{
-      book.classList.contains('selectedBook') && book != event.target.parentElement ? this.setBookID(0) : this.returnNone;
+      book.classList.contains('selectedBook') && book != selected_book.event.target.parentElement ? this.setBookID(0) : this.helper_service.returnNone();
     })
-    if(event.target.parentElement.classList.contains('selectedBook')){
-      event.target.parentElement.classList.remove('selectedBook')
+    if(selected_book.event.target.parentElement.classList.contains('selectedBook')){
+      selected_book.event.target.parentElement.classList.remove('selectedBook')
       this.setBookID(0)
     }
     else {
       this.unSelectBooks(this.all_books)
-      event.target.parentElement.classList.add('selectedBook')
-      this.setBookID(event.target.parentNode.id)
+      selected_book.event.target.parentElement.classList.add('selectedBook')
+      this.setBookID(selected_book.id)
     }
-  }
-
-  resetBookID(){
-    this.book_id = 0
-    this.emitBookChange(this.book_id)
-    this.send_id_book_transaction(this.book_id)
-  }
-
-  sendBookID(id){
-    this.book_id = parseInt(id)
-    this.emitBookChange(this.book_id)
-    this.send_id_book_transaction(this.book_id)
-  }
-
-  send_id_book_transaction(id) {
-    this.shared_service.setBookID(id)
   }
 
   setBookID(id){
-    if(id){
-      this.book_id = parseInt(id)
-      this.emitBookChange(this.book_id)
-      this.send_id_book_transaction(this.book_id)
-    }
-    else {
       this.book_id = id
       this.emitBookChange(this.book_id)
-      this.send_id_book_transaction(this.book_id)
-    }
+      this.shared_service.setBookID(this.book_id)
   }
 
   emitBookChange(id){
@@ -94,14 +72,14 @@ export class BookComponent implements OnInit {
             book.classList.remove('selectedBook')
           }
         })
-      }, this.logError)
+      }, this.helper_service.logError)
       return promise;
     }
     else {
       this.all_books.forEach((book)=>{
         if(book.classList.contains('selectedBook')){
             book.classList.remove('selectedBook')
-            this.resetBookID()
+            this.setBookID(0)
         }
       })
     }
@@ -119,6 +97,7 @@ export class BookComponent implements OnInit {
   }
 
   paginateBooks(state){
+    this.setBookID(0)
     if(state=='previous'){
       if(this.page_number < 2){
         this.page_number = 1
@@ -135,12 +114,4 @@ export class BookComponent implements OnInit {
       }
     }
   }
-
-   logError(error){
-    console.log("error: ", error)
-   }
-
-   returnNone(){
-     return false;
-   }
 }

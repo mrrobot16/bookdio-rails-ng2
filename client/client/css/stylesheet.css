@@ -5,6 +5,12 @@ table {
   width: 100%;
   border-collapse: collapse;
   border-color: grey;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+.table-responsive {
+    overflow-x: initial;
 }
 
 td, th {
@@ -55,24 +61,31 @@ form > div:nth-child(3) > div > button {
 
 
 .selectedBook {
-  background-color: red !important;
+  background-color: #ff7600 !important;
   /*color: white !important;*/
   color: #00ff2b !important;
 }
 
-table#book_transactions > tbody > tr > button {
+/*table#book_transactions > tbody > tr > button {
   margin-left: 1em;
   margin-top: 8px;
   height: 1.8em;
-}
+}*/
 
 .book_transactions > button {
 
 }
 
+.transactions > tbody > tr > button {
+  margin-left: 1em;
+  margin-top: 8px;
+  height: 1.8em;
+}
+
 .background-top {
   background-color: crimson;
   color: orange;
+  border-top: #dddddd solid 2px;
 }
 
 .flex-center {

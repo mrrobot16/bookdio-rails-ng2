@@ -1,10 +1,13 @@
-import { Component, Input, Output, EventEmitter, OnInit, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 // Form Objects
-import {FormBuilder} from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+
 // Services
 import { BookService } from '../../services/book.service';
 import { BookTransactionService } from '../../services/book_transaction.service';
-import { SharedService} from '../../services/shared.service';
+import { SharedService } from '../../services/shared.service';
+import { HelperService } from '../../helpers/helper.service';
+
 // View
 import template from './book_form.component.html';
 
@@ -20,16 +23,15 @@ export class BookFormComponent implements OnInit {
   @Output() getAllBooks = new EventEmitter()
   @Output() deSelect = new EventEmitter()
   constructor(book_service: BookService, book_transaction_service: BookTransactionService,
-    shared_service: SharedService, builder: FormBuilder, element: ElementRef){
-    this.el = element;
+    shared_service: SharedService, builder: FormBuilder, helper_service: HelperService){
     this.book_service = book_service;
     this.book_transaction_service = book_transaction_service;
     this.shared_service = shared_service;
     this.builder = builder;
+    this.helper_service = helper_service;
   }
 
   ngOnInit(){
-    this.now = new Date()
     this.property_names = ["book_name", "author_name", "isbn_code",
     "published_date", "book_category", "book_quantity"]
     this.duplicate_isbn = null
@@ -52,7 +54,6 @@ export class BookFormComponent implements OnInit {
     this.shared_service.pushedBookID.subscribe(
       (book_id) => {
         this.book_id = book_id
-        // console.log("book_id:",this.book_id);
         if(this.book_id){
           this.button_edit_disable = false
           var book = this.all_books.filter((book)=>{
@@ -60,8 +61,8 @@ export class BookFormComponent implements OnInit {
           })[0]
           this.editBook()
         }
-        (book_id && book.book_quantity >=1) ? this.button_issue_disable = false : this.returnNone;
-        (book_id && book.book_issued) < 1 ? this.button_disable = false : this.returnNone;
+        (book_id && book.book_quantity >=1) ? this.button_issue_disable = false : this.helper_service.returnNone();
+        (book_id && book.book_issued) < 1 ? this.button_disable = false : this.helper_service.returnNone();
         if(book_id === 0) {
           this.button_edit_disable = true
           this.cleanForm()
@@ -71,10 +72,6 @@ export class BookFormComponent implements OnInit {
         }
       }
     )
-  }
-
-  returnNone(){
-    return;
   }
 
   toggleEditMessage(){
@@ -258,7 +255,6 @@ export class BookFormComponent implements OnInit {
           this.cleanForm()
         })
       }
+    }
   }
-}
-
 }

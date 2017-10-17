@@ -6,17 +6,10 @@ import 'rxjs/add/operator/map';
 export class SharedService {
   pushedBookID = new EventEmitter();
   book_id = 0;
-  constructor(){
-
-  }
+  constructor(){}
 
   getBookID(){
-    if (this.book_id) {
-      return this.book_id
-    }
-    else {
-      return 0;
-    }
+    this.book_id ? this.book_id : 0
   }
 
   setBookID(id){

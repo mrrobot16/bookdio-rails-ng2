@@ -69,7 +69,7 @@ webpackJsonp([0],{
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.BookTransactionComponent = exports.BookComponent = exports.TopNavBar = exports.AppComponent = exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = undefined;
+	exports.HelperService = exports.BookItem = exports.BookTransactionComponent = exports.BookComponent = exports.TopNavBar = exports.AppComponent = exports.CORE_DECLARATIONS = exports.CORE_PROVIDERS = undefined;
 
 	var _app = __webpack_require__(66);
 
@@ -77,9 +77,11 @@ webpackJsonp([0],{
 
 	var _book = __webpack_require__(70);
 
+	var _book_item = __webpack_require__(77);
+
 	var _book_form = __webpack_require__(71);
 
-	var _book_transaction = __webpack_require__(76);
+	var _book_transaction = __webpack_require__(78);
 
 	var _book2 = __webpack_require__(72);
 
@@ -87,24 +89,28 @@ webpackJsonp([0],{
 
 	var _book_transaction2 = __webpack_require__(73);
 
-	var _return_month = __webpack_require__(78);
+	var _helper = __webpack_require__(74);
 
-	var _highlight = __webpack_require__(79);
+	var _datetime = __webpack_require__(80);
+
+	var _highlight = __webpack_require__(81);
 
 	// Export all
 
 
 	// Pipes
-	// Components
-	var CORE_PROVIDERS = exports.CORE_PROVIDERS = [_book2.BookService, _book_transaction2.BookTransactionService, _shared.SharedService];
-	// Directive
 
 	// Services
-	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_app.AppComponent, _topBar.TopNavBar, _book.BookComponent, _book_form.BookFormComponent, _book_transaction.BookTransactionComponent, _highlight.HighlightDirective, _return_month.ReturnMonthYearPipe];
+	// Components
+	var CORE_PROVIDERS = exports.CORE_PROVIDERS = [_book2.BookService, _book_transaction2.BookTransactionService, _shared.SharedService, _helper.HelperService];
+	// Directive
+	var CORE_DECLARATIONS = exports.CORE_DECLARATIONS = [_app.AppComponent, _topBar.TopNavBar, _book.BookComponent, _book_item.BookItem, _book_form.BookFormComponent, _book_transaction.BookTransactionComponent, _highlight.HighlightDirective, _datetime.ReturnMonthYearPipe, _datetime.ReturnTimeShortDate];
 	exports.AppComponent = _app.AppComponent;
 	exports.TopNavBar = _topBar.TopNavBar;
 	exports.BookComponent = _book.BookComponent;
 	exports.BookTransactionComponent = _book_transaction.BookTransactionComponent;
+	exports.BookItem = _book_item.BookItem;
+	exports.HelperService = _helper.HelperService;
 
 /***/ },
 
@@ -128,7 +134,7 @@ webpackJsonp([0],{
 
 	var AppComponent = exports.AppComponent = (_dec = (0, _core.Component)({
 	  selector: 'my-app',
-	  template: '\n  <div class="container body-container">\n      <div>\n        <h1>Welcome to our Book Recommendations</h1>\n        <top-nav-bar></top-nav-bar>\n      </div>\n    <router-outlet></router-outlet>\n  </div>\n  ',
+	  template: '\n  <div class="container body-container">\n      <div>\n        <span class=\'flex-center\'><h1>Welcome to our Book Recommendations</h1></span>\n        <top-nav-bar></top-nav-bar>\n      </div>\n    <router-outlet></router-outlet>\n  </div>\n  ',
 	  styleUrls: ['./css/stylesheet.css']
 	}), _dec(_class = function AppComponent() {
 	  _classCallCheck(this, AppComponent);
@@ -171,11 +177,7 @@ webpackJsonp([0],{
 	  _createClass(SharedService, [{
 	    key: 'getBookID',
 	    value: function getBookID() {
-	      if (this.book_id) {
-	        return this.book_id;
-	      } else {
-	        return 0;
-	      }
+	      this.book_id ? this.book_id : 0;
 	    }
 	  }, {
 	    key: 'setBookID',
@@ -292,9 +294,11 @@ webpackJsonp([0],{
 
 	var _shared = __webpack_require__(67);
 
+	var _helper = __webpack_require__(74);
+
 	var _Subscription = __webpack_require__(11);
 
-	var _bookComponent = __webpack_require__(75);
+	var _bookComponent = __webpack_require__(76);
 
 	var _bookComponent2 = _interopRequireDefault(_bookComponent);
 
@@ -305,9 +309,9 @@ webpackJsonp([0],{
 	var BookComponent = exports.BookComponent = (_dec = (0, _core.Component)({
 	  selector: 'books',
 	  template: _bookComponent2.default,
-	  styleUrls: ['./css/stylesheet.css']
+	  styleUrls: ['./css/stylesheet.css', './css/mobile.css']
 	}), _dec(_class = function () {
-	  function BookComponent(book_service, shared_service) {
+	  function BookComponent(book_service, shared_service, helper_service) {
 	    _classCallCheck(this, BookComponent);
 
 	    this.books = [];
@@ -317,13 +321,13 @@ webpackJsonp([0],{
 
 	    this.book_service = book_service;
 	    this.shared_service = shared_service;
+	    this.helper_service = helper_service;
 	  }
 
 	  _createClass(BookComponent, [{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
-	      this.resetBookID();
-	      this.send_id_book_transaction(this.book_id);
+	      this.setBookID(0);
 	      this.displayBooks();
 	    }
 	  }, {
@@ -338,57 +342,32 @@ webpackJsonp([0],{
 	        });
 	        _this.current_books = books;
 	        _this.setBookPage(_this.page_number);
-	      }, this.logError);
+	      }, this.helper_service.logError);
 	    }
 	  }, {
 	    key: 'selectBookID',
-	    value: function selectBookID(event) {
+	    value: function selectBookID(selected_book) {
 	      var _this2 = this;
 
-	      this.all_books = [].slice.call(event.target.parentElement.parentElement.children);
+	      this.all_books = [].slice.call(selected_book.event.target.parentElement.parentElement.children);
 	      this.all_books.forEach(function (book) {
-	        book.classList.contains('selectedBook') && book != event.target.parentElement ? _this2.setBookID(0) : _this2.returnNone;
+	        book.classList.contains('selectedBook') && book != selected_book.event.target.parentElement ? _this2.setBookID(0) : _this2.helper_service.returnNone();
 	      });
-	      if (event.target.parentElement.classList.contains('selectedBook')) {
-	        event.target.parentElement.classList.remove('selectedBook');
+	      if (selected_book.event.target.parentElement.classList.contains('selectedBook')) {
+	        selected_book.event.target.parentElement.classList.remove('selectedBook');
 	        this.setBookID(0);
 	      } else {
 	        this.unSelectBooks(this.all_books);
-	        event.target.parentElement.classList.add('selectedBook');
-	        this.setBookID(event.target.parentNode.id);
+	        selected_book.event.target.parentElement.classList.add('selectedBook');
+	        this.setBookID(selected_book.id);
 	      }
-	    }
-	  }, {
-	    key: 'resetBookID',
-	    value: function resetBookID() {
-	      this.book_id = 0;
-	      this.emitBookChange(this.book_id);
-	      this.send_id_book_transaction(this.book_id);
-	    }
-	  }, {
-	    key: 'sendBookID',
-	    value: function sendBookID(id) {
-	      this.book_id = parseInt(id);
-	      this.emitBookChange(this.book_id);
-	      this.send_id_book_transaction(this.book_id);
-	    }
-	  }, {
-	    key: 'send_id_book_transaction',
-	    value: function send_id_book_transaction(id) {
-	      this.shared_service.setBookID(id);
 	    }
 	  }, {
 	    key: 'setBookID',
 	    value: function setBookID(id) {
-	      if (id) {
-	        this.book_id = parseInt(id);
-	        this.emitBookChange(this.book_id);
-	        this.send_id_book_transaction(this.book_id);
-	      } else {
-	        this.book_id = id;
-	        this.emitBookChange(this.book_id);
-	        this.send_id_book_transaction(this.book_id);
-	      }
+	      this.book_id = id;
+	      this.emitBookChange(this.book_id);
+	      this.shared_service.setBookID(this.book_id);
 	    }
 	  }, {
 	    key: 'emitBookChange',
@@ -407,13 +386,13 @@ webpackJsonp([0],{
 	              book.classList.remove('selectedBook');
 	            }
 	          });
-	        }, this.logError);
+	        }, this.helper_service.logError);
 	        return promise;
 	      } else {
 	        this.all_books.forEach(function (book) {
 	          if (book.classList.contains('selectedBook')) {
 	            book.classList.remove('selectedBook');
-	            _this3.resetBookID();
+	            _this3.setBookID(0);
 	          }
 	        });
 	      }
@@ -432,6 +411,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'paginateBooks',
 	    value: function paginateBooks(state) {
+	      this.setBookID(0);
 	      if (state == 'previous') {
 	        if (this.page_number < 2) {
 	          this.page_number = 1;
@@ -447,21 +427,11 @@ webpackJsonp([0],{
 	        }
 	      }
 	    }
-	  }, {
-	    key: 'logError',
-	    value: function logError(error) {
-	      console.log("error: ", error);
-	    }
-	  }, {
-	    key: 'returnNone',
-	    value: function returnNone() {
-	      return false;
-	    }
 	  }]);
 
 	  return BookComponent;
 	}()) || _class);
-	Reflect.defineMetadata('design:paramtypes', [_book.BookService, _shared.SharedService], BookComponent);
+	Reflect.defineMetadata('design:paramtypes', [_book.BookService, _shared.SharedService, _helper.HelperService], BookComponent);
 
 /***/ },
 
@@ -480,7 +450,9 @@ webpackJsonp([0],{
 	var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
 	// Form Objects
 
+
 	// Services
+
 
 	// View
 
@@ -495,7 +467,9 @@ webpackJsonp([0],{
 
 	var _shared = __webpack_require__(67);
 
-	var _book_formComponent = __webpack_require__(74);
+	var _helper = __webpack_require__(74);
+
+	var _book_formComponent = __webpack_require__(75);
 
 	var _book_formComponent2 = _interopRequireDefault(_book_formComponent);
 
@@ -551,7 +525,7 @@ webpackJsonp([0],{
 	  template: _book_formComponent2.default,
 	  styleUrls: ['./css/stylesheet.css']
 	}), _dec2 = (0, _core.Input)(), _dec3 = (0, _core.Input)(), _dec4 = (0, _core.Input)(), _dec5 = (0, _core.Output)(), _dec6 = (0, _core.Output)(), _dec(_class = (_class2 = function () {
-	  function BookFormComponent(book_service, book_transaction_service, shared_service, builder, element) {
+	  function BookFormComponent(book_service, book_transaction_service, shared_service, builder, helper_service) {
 	    _classCallCheck(this, BookFormComponent);
 
 	    _initDefineProp(this, 'book_id', _descriptor, this);
@@ -564,17 +538,16 @@ webpackJsonp([0],{
 
 	    _initDefineProp(this, 'deSelect', _descriptor5, this);
 
-	    this.el = element;
 	    this.book_service = book_service;
 	    this.book_transaction_service = book_transaction_service;
 	    this.shared_service = shared_service;
 	    this.builder = builder;
+	    this.helper_service = helper_service;
 	  }
 
 	  _createClass(BookFormComponent, [{
 	    key: 'ngOnInit',
 	    value: function ngOnInit() {
-	      this.now = new Date();
 	      this.property_names = ["book_name", "author_name", "isbn_code", "published_date", "book_category", "book_quantity"];
 	      this.duplicate_isbn = null;
 	      this.setToggleMode();
@@ -599,7 +572,6 @@ webpackJsonp([0],{
 
 	      this.shared_service.pushedBookID.subscribe(function (book_id) {
 	        _this.book_id = book_id;
-	        // console.log("book_id:",this.book_id);
 	        if (_this.book_id) {
 	          _this.button_edit_disable = false;
 	          var book = _this.all_books.filter(function (book) {
@@ -607,8 +579,8 @@ webpackJsonp([0],{
 	          })[0];
 	          _this.editBook();
 	        }
-	        book_id && book.book_quantity >= 1 ? _this.button_issue_disable = false : _this.returnNone;
-	        (book_id && book.book_issued) < 1 ? _this.button_disable = false : _this.returnNone;
+	        book_id && book.book_quantity >= 1 ? _this.button_issue_disable = false : _this.helper_service.returnNone();
+	        (book_id && book.book_issued) < 1 ? _this.button_disable = false : _this.helper_service.returnNone();
 	        if (book_id === 0) {
 	          _this.button_edit_disable = true;
 	          _this.cleanForm();
@@ -617,11 +589,6 @@ webpackJsonp([0],{
 	          _this.button_issue_disable = true;
 	        }
 	      });
-	    }
-	  }, {
-	    key: 'returnNone',
-	    value: function returnNone() {
-	      return;
 	    }
 	  }, {
 	    key: 'toggleEditMessage',
@@ -858,7 +825,7 @@ webpackJsonp([0],{
 	    return new _core.EventEmitter();
 	  }
 	})), _class2)) || _class);
-	Reflect.defineMetadata('design:paramtypes', [_book.BookService, _book_transaction.BookTransactionService, _shared.SharedService, _forms.FormBuilder, _core.ElementRef], BookFormComponent);
+	Reflect.defineMetadata('design:paramtypes', [_book.BookService, _book_transaction.BookTransactionService, _shared.SharedService, _forms.FormBuilder, _helper.HelperService], BookFormComponent);
 
 /***/ },
 
@@ -1063,18 +1030,152 @@ webpackJsonp([0],{
 /***/ 74:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"flex-center container\">\n  <button class=\"btn-primary\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add Book</button>\n  <button class=\"btn btn-default\" type=\"button\" name=\"button\" (click)=\"editBook()\" [disabled]=\"button_edit_disable\">Edit Book</button>\n  <button class=\"btn btn-success\" type=\"button\" name=\"button\" (click)=\"issueBook()\" [disabled]='button_issue_disable'>Issue Book</button>\n  <button class=\"btn btn-danger\" type=\"button\" name=\"button\" (click)=\"deleteBook()\" [disabled]=\"button_disable\">Delete Book</button>\n</div>\n\n<div [ngClass]='toggleEditError' class=\"flex-center container\">\n  <p>You must select book from in order to edit</p>\n</div>\n<div class=\"container\">\n  <form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n      <div class=\"form-group\">\n          <label>Book Name</label>\n          <input type=\"text\" formControlName=\"book_name\" class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Author</label>\n          <input type=\"text\" formControlName=\"author_name\" class=\"form-control\" required>\n      </div>\n      <div class=\"form-group\">\n          <label>ISBN Code</label>\n          <div [ngClass]=\"toggleMessage\">\n            <span>Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>\n            <button class=\"btn-primary\" type=\"button\" (click)=\"toggleDisabled('off')\">Confirm</button>\n          </div>\n          <input type=\"text\" formControlName=\"isbn_code\" class=\"form-control\" required>\n      </div>\n      <div class=\"form-group\">\n          <label>Book Quantity</label>\n          <input type=\"number\" formControlName=\"book_quantity\" class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Published Date</label>\n          <input type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Book Category</label>\n          <input type=\"text\" formControlName=\"book_category\" class=\"form-control\" required>\n      </div>\n\n      <button type=\"submit\" class=\"btn btn-primary\">Save Book</button>\n  </form>\n</div>\n"
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var HelperService = exports.HelperService = function () {
+	  function HelperService() {
+	    _classCallCheck(this, HelperService);
+	  }
+
+	  _createClass(HelperService, [{
+	    key: "logError",
+	    value: function logError(error) {
+	      console.log("Error: ", error);
+	    }
+	  }, {
+	    key: "returnNone",
+	    value: function returnNone() {
+	      return false;
+	    }
+	  }]);
+
+	  return HelperService;
+	}();
 
 /***/ },
 
 /***/ 75:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Number of books {{books.length}}</p>\n        <div class=\"books table-responsive\" *ngIf=\"books.length > 0\">\n          <table class=\"table\" width=\"400\" height=\"5\">\n            <thead>\n              <tr class=\"background-top\">\n                <th>Book Name</th>\n                <th>Author</th>\n                <th>ISBN</th>\n                <th>Book Quantity</th>\n                <th>Published Date</th>\n                <th>Book Category</th>\n                <th>Books Issued</th>\n              </tr>\n            </thead>\n            <tbody>\n                  <tr [myHighlight]=\"blue\" id=\"{{book.id}}\" [ngClass]=\"selectBook\"  *ngFor=\"let book of current_books\" (click)=\"selectBookID($event)\">\n                    <td>{{book.book_name }}</td>\n                    <td>{{book.author_name}}</td>\n                    <td>{{book.isbn_code}}</td>\n                    <td>{{book.book_quantity}}</td>\n                    <td>{{book.published_date | date | returnMonthYear }}</td>\n                    <td>{{book.book_category}}</td>\n                    <td>{{book.book_issued}}</td>\n                  </tr>\n            </tbody>\n\n          </table>\n          <div class=\"flex-center container paginateBook\">\n            <button class=\"left-arrow\" type=\"button\" name=\"button\" (click)=\"paginateBooks('previous')\"></button>\n              <span>\n                <div>\n                    <span>Showing from</span>\n                    <span>{{1+(page_number-1)*10}}</span>–\n                    <span>{{page_number*10 > books.length ? books.length : page_number*10  }}</span> of\n                    <span>{{books.length}}</span>\n                </div>\n              </span>\n            <button class=\"right-arrow\" type=\"button\" name=\"button\" (click)=\"paginateBooks('next')\"></button>\n          </div>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' (deSelect)=\"unSelectBooks()\" [all_books]=\"books\" [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
+	module.exports = "<div class=\"flex-center container buttons form-buttons\">\n  <button id=\"add-book\" class=\"btn-primary button\" type=\"button\" name=\"button\" (click)=\"showForm()\">Add</button>\n  <button class=\"btn btn-default button\" type=\"button\" name=\"button\" (click)=\"editBook()\" [disabled]=\"button_edit_disable\">Edit</button>\n  <button class=\"btn btn-success button\" type=\"button\" name=\"button\" (click)=\"issueBook()\" [disabled]='button_issue_disable'>Rent</button>\n  <button class=\"btn btn-danger button \" type=\"button\" name=\"button\" (click)=\"deleteBook()\" [disabled]=\"button_disable\">Delete</button>\n</div>\n\n<div [ngClass]='toggleEditError' class=\"flex-center container\">\n  <p>You must select book from in order to edit</p>\n</div>\n<div class=\"container\">\n  <form [ngClass]=\"toggleShow\" (ngSubmit)=\"onSubmit(bookForm.value, $event)\" [formGroup]=\"bookForm\">\n      <div class=\"form-group\">\n          <label>Book Name</label>\n          <input id=\"book_name\" type=\"text\" formControlName=\"book_name\" class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Author</label>\n          <input id=\"author_name\" type=\"text\" formControlName=\"author_name\" class=\"form-control\" required>\n      </div>\n      <div class=\"form-group\">\n          <label>ISBN Code</label>\n          <div [ngClass]=\"toggleMessage\">\n            <span>Warning: Duplicate Book ISBN. You will only be able to add more book_quantity, Confirm?</span>\n            <button class=\"btn-primary\" type=\"button\" (click)=\"toggleDisabled('off')\">Confirm</button>\n          </div>\n          <input id=\"isbn_code\" type=\"text\" formControlName=\"isbn_code\" class=\"form-control\" required>\n      </div>\n      <div class=\"form-group\">\n          <label>Book Quantity</label>\n          <input id=\"book_quantity\" type=\"number\" formControlName=\"book_quantity\" class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Published Date</label>\n          <input id=\"pub_date\" type=\"month\" formControlName=\"published_date\" maxlength=4 max='2018' class=\"form-control\" required>\n      </div>\n\n      <div class=\"form-group\">\n          <label>Book Category</label>\n          <input id=\"book_category\" type=\"text\" formControlName=\"book_category\" class=\"form-control\" required>\n      </div>\n\n      <span class=\"buttons\">\n        <button id='submit-book' type=\"submit\" class=\"btn btn-primary button\">Save Book</button>\n      </span>\n  </form>\n</div>\n"
 
 /***/ },
 
 /***/ 76:
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"row container\">\n    <div class=\"col-sm-12\">\n      <p class=\"lead underlined\">Number of books <span id='total_books'>{{books.length}}</span></p>\n        <div class=\"books table-responsive\" *ngIf=\"books.length > 0\">\n          <book-item (selectBook)=\"selectBookID($event)\" [current_books]='current_books'></book-item>\n          <div class=\"flex-center container paginateBook\">\n            <button id=\"previous\" class=\"animate left-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('previous')\"></button>\n              <span>\n                <div>\n                    <span>Showing from</span>\n                    <span>{{1+(page_number-1)*10}}</span>–\n                    <span>{{page_number*10 > books.length ? books.length : page_number*10  }}</span> of\n                    <span>{{books.length}}</span>\n                </div>\n              </span>\n            <button id=\"next\" class=\"animate right-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('next')\"></button>\n          </div>\n          <div class=\"book-form\">\n            <book-form (getAllBooks)='displayBooks()' (deSelect)=\"unSelectBooks()\" [all_books]=\"books\" [book_id]=\"book_id\"></book-form>\n          </div>\n        </div>\n    </div>\n</div>\n"
+
+/***/ },
+
+/***/ 77:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.BookItem = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2;
+
+	var _core = __webpack_require__(23);
+
+	function _initDefineProp(target, property, descriptor, context) {
+	  if (!descriptor) return;
+	  Object.defineProperty(target, property, {
+	    enumerable: descriptor.enumerable,
+	    configurable: descriptor.configurable,
+	    writable: descriptor.writable,
+	    value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
+	  });
+	}
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+	  var desc = {};
+	  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+	    desc[key] = descriptor[key];
+	  });
+	  desc.enumerable = !!desc.enumerable;
+	  desc.configurable = !!desc.configurable;
+
+	  if ('value' in desc || desc.initializer) {
+	    desc.writable = true;
+	  }
+
+	  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+	    return decorator(target, property, desc) || desc;
+	  }, desc);
+
+	  if (context && desc.initializer !== void 0) {
+	    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+	    desc.initializer = undefined;
+	  }
+
+	  if (desc.initializer === void 0) {
+	    Object['define' + 'Property'](target, property, desc);
+	    desc = null;
+	  }
+
+	  return desc;
+	}
+
+	function _initializerWarningHelper(descriptor, context) {
+	  throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
+	}
+
+	var BookItem = exports.BookItem = (_dec = (0, _core.Component)({
+	  selector: 'book-item',
+	  template: '\n    <table id=\'books\' class="table" width="400" height="5">\n    <thead>\n      <tr class="background-top">\n        <th>Book Name</th>\n        <th>Author</th>\n        <th>ISBN</th>\n        <th>Book Quantity</th>\n        <th>Published Date</th>\n        <th>Book Category</th>\n        <th>Books Issued</th>\n      </tr>\n    </thead>\n    <tbody>\n          <tr class="animate" id="{{book.id}}" [myHighlight]="blue" [ngClass]="selectBook"  *ngFor="let book of current_books" (click)="selectBookID($event, book.id)">\n            <td data-label="Book Name">{{book.book_name }}</td>\n            <td data-label="Author">{{book.author_name}}</td>\n            <td data-label="ISBN">{{book.isbn_code}}</td>\n            <td data-label="Book Quantity">{{book.book_quantity}}</td>\n            <td data-label="Published Date">{{book.published_date | date | returnMonthYear }}</td>\n            <td data-label="Book Category">{{book.book_category}}</td>\n            <td data-label="Books Issued">{{book.book_issued}}</td>\n          </tr>\n    </tbody>\n  </table>\n  ',
+	  styleUrls: ['./css/stylesheet.css']
+	}), _dec2 = (0, _core.Input)(), _dec3 = (0, _core.Output)(), _dec(_class = (_class2 = function () {
+	  function BookItem() {
+	    _classCallCheck(this, BookItem);
+
+	    _initDefineProp(this, 'current_books', _descriptor, this);
+
+	    _initDefineProp(this, 'selectBook', _descriptor2, this);
+	  }
+
+	  _createClass(BookItem, [{
+	    key: 'ngOnInit',
+	    value: function ngOnInit() {}
+	  }, {
+	    key: 'selectBookID',
+	    value: function selectBookID(event, id) {
+	      this.selectBook.emit({ event: event, id: id });
+	    }
+	  }]);
+
+	  return BookItem;
+	}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'current_books', [_dec2], {
+	  enumerable: true,
+	  initializer: function initializer() {
+	    return this.current_books;
+	  }
+	}), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'selectBook', [_dec3], {
+	  enumerable: true,
+	  initializer: function initializer() {
+	    return new _core.EventEmitter();
+	  }
+	})), _class2)) || _class);
+
+/***/ },
+
+/***/ 78:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1098,7 +1199,9 @@ webpackJsonp([0],{
 
 	var _shared = __webpack_require__(67);
 
-	var _book_transactionComponent = __webpack_require__(77);
+	var _helper = __webpack_require__(74);
+
+	var _book_transactionComponent = __webpack_require__(79);
 
 	var _book_transactionComponent2 = _interopRequireDefault(_book_transactionComponent);
 
@@ -1111,14 +1214,18 @@ webpackJsonp([0],{
 	  template: _book_transactionComponent2.default,
 	  styleUrls: ['./css/stylesheet.css']
 	}), _dec(_class = function () {
-	  function BookTransactionComponent(book_service, book_transaction_service, shared_service, router) {
+	  function BookTransactionComponent(book_service, book_transaction_service, shared_service, router, helper_service) {
 	    _classCallCheck(this, BookTransactionComponent);
 
 	    this.book = {};
+	    this.page_number = 1;
+	    this.book_transactions = [];
+	    this.current_book_transactions = [];
 
 	    this.book_transaction_service = book_transaction_service;
 	    this.book_service = book_service;
 	    this.shared_service = shared_service;
+	    this.helper_service = helper_service;
 	    this.router = router;
 	  }
 
@@ -1151,11 +1258,13 @@ webpackJsonp([0],{
 	        var book_transactions = this.book_transaction_service.getBookTransactions(id);
 	        book_transactions.subscribe(function (book_transactions) {
 	          _this2.book_transactions = book_transactions;
+	          _this2.current_book_transactions = _this2.book_transactions;
+	          _this2.setBookTransactionPage(_this2.page_number);
 	          if (_this2.book_transactions.length === 0) {
 	            _this2.zero_transaction_message = true;
 	          }
 	          return;
-	        }, this.logError);
+	        }, this.helper_service.logError);
 	      }
 	    }
 	  }, {
@@ -1168,42 +1277,76 @@ webpackJsonp([0],{
 	      });
 	    }
 	  }, {
-	    key: 'logError',
-	    value: function logError(error) {
-	      console.log("error: ", error);
+	    key: 'paginateBooks',
+	    value: function paginateBooks(state) {
+	      if (state == 'previous') {
+	        if (this.page_number < 2) {
+	          this.page_number = 1;
+	          return;
+	        }
+	        this.setBookTransactionPage(this.page_number - 1);
+	      }
+	      if (state == 'next') {
+	        if (this.current_book_transactions.length < 9) {
+	          return;
+	        } else {
+	          this.setBookTransactionPage(this.page_number + 1);
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'setBookTransactionPage',
+	    value: function setBookTransactionPage(page_number) {
+	      if (page_number === 1) {
+	        this.page_number = 1;
+	        // console.log(this.current_book_transactions.length);
+	        this.current_book_transactions = this.book_transactions.slice(0, 10);
+	        // console.log(this.current_book_transactions.length);
+	      } else {
+	        this.page_number = page_number;
+	        this.current_book_transactions = this.book_transactions.slice((page_number - 1) * 10, page_number * 10);
+	      }
 	    }
 	  }]);
 
 	  return BookTransactionComponent;
 	}()) || _class);
-	Reflect.defineMetadata('design:paramtypes', [_book.BookService, _book_transaction.BookTransactionService, _shared.SharedService, _router.ActivatedRoute], BookTransactionComponent);
+	Reflect.defineMetadata('design:paramtypes', [_book.BookService, _book_transaction.BookTransactionService, _shared.SharedService, _router.ActivatedRoute, _helper.HelperService], BookTransactionComponent);
 
 /***/ },
 
-/***/ 77:
+/***/ 79:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container\">\n\n  <table *ngIf=\"book_id\" width=\"400\" height=\"5\" id=\"book_transactions\">\n    <thead *ngIf='!zero_transaction_message'>\n      <h3>Book Transactions for {{book.book_name}}</h3>\n      <tr>\n        <th>Transaction Date</th>\n        <th>Transaction Type</th>\n        <th>Transaction Status</th>\n        <th>Returned Date </th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr class=\"book_transactions\" *ngFor=\"let book_transaction of book_transactions\">\n        <td>{{book_transaction.created_at | date }}</td>\n        <td>{{book_transaction.transaction_type | uppercase}}</td>\n        <td>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n        <td>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n        <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n      </tr>\n    </tbody>\n  </table>\n  <p class=\"flex-center\" *ngIf='zero_transaction_message'>No book transactions for <br><strong>{{book.book_name}} </strong></p>\n\n  <div *ngIf='!book_id' class=\"flex-center\">\n    <h3>No book selected go to <a href=\"#/books\">books</a> and select a book to view transactions</h3>\n  </div>\n</div>\n"
+	module.exports = "<div class=\"container\">\n  <div *ngIf=\"book_id\">\n    <h3 *ngIf=\"!book_id\">Book Transactions for {{book.book_name}}</h3>\n    <table width=\"400\" height=\"5\" class=\"transactions\" id=\"books\">\n      <thead *ngIf='!zero_transaction_message'>\n        <tr>\n          <th>Transaction Date</th>\n          <th>Transaction Type</th>\n          <th>Transaction Status</th>\n          <th>Returned Date </th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr class=\"book_transactions\" *ngFor=\"let book_transaction of current_book_transactions\">\n          <td data-label='Transaction Date'>{{book_transaction.created_at | date }}</td>\n          <td data-label='Transaction Type'>{{book_transaction.transaction_type | uppercase}}</td>\n          <td data-label='Transaction Status'>{{ book_transaction.transaction_status ? 'Open': 'Closed'}}</td>\n          <td data-label='Returned Date'>{{ book_transaction.transaction_status ? 'Not Returned': book_transaction.updated_at | date }}</td>\n          <button *ngIf='book_transaction.transaction_status' class=\"btn-danger\" (click)=\"returnBookIssue(book_transaction)\">Return Book</button>\n        </tr>\n      </tbody>\n    </table>\n    <div *ngIf='!book_id' class=\"flex-center container paginateBook\">\n      <button class=\"animate left-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('previous')\"></button>\n        <span>\n          <div>\n              <span>Showing from</span>\n              <span>{{1+(page_number-1)*10}}</span>–\n              <span>{{page_number*10 > book_transactions.length ? book_transactions.length : page_number*10  }}</span> of\n              <span>{{book_transactions.length}}</span>\n          </div>\n        </span>\n      <button class=\"animate right-arrow button\" type=\"button\" name=\"button\" (click)=\"paginateBooks('next')\"></button>\n    </div>\n</div>\n  <p class=\"flex-center\" *ngIf='zero_transaction_message'>No book transactions for <br><strong>{{book.book_name}} </strong></p>\n\n  <div *ngIf='!book_id' class=\"flex-center\">\n    <h3>No book selected go to <a href=\"#/books\">books</a> and select a book to view transactions</h3>\n  </div>\n</div>\n"
 
 /***/ },
 
-/***/ 78:
+/***/ 80:
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.ReturnMonthYearPipe = undefined;
+	exports.ReturnTimeShortDate = exports.ReturnMonthYearPipe = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _dec, _class;
+	var _dec, _class, _dec2, _class2;
 
 	var _core = __webpack_require__(23);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function timeAM(time) {
+	  var hours = parseInt(time.slice(0, 2));
+	  hours >= 13 ? hours = hours - 12 + ":" + time.slice(3, 5) + " PM" : hours = hours + ":" + time.slice(3, 5) + " AM";
+	  return hours;
+	}
+
+	var month_to_num = { jan: "01", feb: "02", mar: "03", apr: "04", may: "05", jun: "06", jul: "07", aug: "08", sep: "09", oct: "10", nov: "11", dec: "12" };
 
 	var ReturnMonthYearPipe = exports.ReturnMonthYearPipe = (_dec = (0, _core.Pipe)({ name: 'returnMonthYear' }), _dec(_class = function () {
 	  function ReturnMonthYearPipe() {
@@ -1211,7 +1354,7 @@ webpackJsonp([0],{
 	  }
 
 	  _createClass(ReturnMonthYearPipe, [{
-	    key: 'transform',
+	    key: "transform",
 	    value: function transform(date) {
 	      return date.slice(0, 4) + date.substr(date.length - 4);
 	    }
@@ -1219,10 +1362,33 @@ webpackJsonp([0],{
 
 	  return ReturnMonthYearPipe;
 	}()) || _class);
+	var ReturnTimeShortDate = exports.ReturnTimeShortDate = (_dec2 = (0, _core.Pipe)({ name: "returnTimeShortDate" }), _dec2(_class2 = function () {
+	  function ReturnTimeShortDate() {
+	    _classCallCheck(this, ReturnTimeShortDate);
+	  }
+
+	  _createClass(ReturnTimeShortDate, [{
+	    key: "timeAM",
+	    value: function timeAM(time) {
+	      var hours = parseInt(time.slice(0, 2));
+	      hours >= 13 ? hours = hours - 12 + ":" + time.slice(3, 5) + " PM" : hours = hours + ":" + time.slice(3, 5) + " AM";
+	      return hours;
+	    }
+	  }, {
+	    key: "transform",
+	    value: function transform(value) {
+	      value = new Date(value).toString().split(" ");
+	      value = this.timeAM(value[4].slice(0, -3)) + " " + month_to_num[value[1].toLowerCase()] + "/" + value[2] + "/" + value[3];
+	      return value;
+	    }
+	  }]);
+
+	  return ReturnTimeShortDate;
+	}()) || _class2);
 
 /***/ },
 
-/***/ 79:
+/***/ 81:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
